@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Quién Está Pensando: Usted o la Tecnología? · Digital Mind Lab</title>
+<meta name="description" content="A Digital Mind Identity WebQuest / Un WebQuest de Identidad Mental Digital">
+<style>
+:root{
+  --bg:#0a0e1a; --panel:#121829; --panel2:#1a2236; --line:#2a3450;
+  --text:#e8ecf5; --muted:#93a3c4; --accent:#4dd0e1; --accent2:#a78bfa;
+  --ok:#34d399; --warn:#fbbf24; --lock:#fb7185; --focus:#fbbf24;
+  --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--text);
+  font:16px/1.6 "Segoe UI",system-ui,-apple-system,"Helvetica Neue",sans-serif;
+  background-image:
+    radial-gradient(circle at 12% 8%,rgba(77,208,225,.10),transparent 42%),
+    radial-gradient(circle at 88% 92%,rgba(167,139,250,.10),transparent 42%);
+  background-attachment:fixed;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:920px;margin:0 auto;padding:0 18px 64px}
+
+/* ---------- header ---------- */
+header{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:14px 18px;border-bottom:1px solid var(--line);
+  background:rgba(10,14,26,.85);backdrop-filter:blur(8px);
+  position:sticky;top:0;z-index:50;flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.mark{
+  width:36px;height:36px;border-radius:10px;flex:none;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:grid;place-items:center;font-size:19px;
+}
+.brand b{display:block;font-size:14px;letter-spacing:.2px;line-height:1.25}
+.brand span{display:block;font-size:11.5px;color:var(--muted)}
+.langbtn{
+  background:var(--panel2);border:1px solid var(--line);color:var(--text);
+  border-radius:999px;padding:7px 14px;font:600 12.5px/1 inherit;cursor:pointer;
+  display:flex;align-items:center;gap:7px;flex:none;
+}
+.langbtn:hover{border-color:var(--accent)}
+
+/* ---------- path ---------- */
+.path{display:flex;align-items:center;gap:4px;padding:16px 0 4px;flex-wrap:wrap}
+.node{display:flex;align-items:center;gap:7px;flex:none}
+.dot{
+  width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  background:var(--panel2);border:2px solid var(--line);font-size:15px;
+  transition:.25s;
+}
+.node.done .dot{background:rgba(52,211,153,.16);border-color:var(--ok)}
+.node.now .dot{border-color:var(--accent);background:rgba(77,208,225,.16);box-shadow:0 0 0 4px rgba(77,208,225,.13)}
+.node small{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.3px}
+.node.now small{color:var(--accent)}
+.node.done small{color:var(--ok)}
+.link{flex:1;height:2px;background:var(--line);min-width:10px;border-radius:2px}
+.link.on{background:linear-gradient(90deg,var(--ok),var(--accent))}
+.bar{height:5px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:12px 0 22px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s ease}
+.stepcount{font-size:11.5px;color:var(--muted);text-align:right;margin:-16px 0 20px}
+
+/* ---------- panels ---------- */
+.panel{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+  padding:26px;animation:in .35s ease;
+}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .panel{animation:none}
+  *{transition:none!important}
+}
+h1{font-size:27px;line-height:1.25;margin:0 0 8px;letter-spacing:-.4px}
+h2{font-size:21px;margin:0 0 6px;letter-spacing:-.2px}
+h3{font-size:15px;margin:22px 0 10px;color:var(--accent);letter-spacing:.4px;text-transform:uppercase}
+.sub{color:var(--accent2);font-size:14px;font-weight:600;margin:0 0 18px;letter-spacing:.5px}
+.hint{color:var(--muted);font-size:14px;margin:0 0 18px}
+p{margin:0 0 14px}
+.lead{font-size:16.5px;line-height:1.72}
+
+.eq{
+  border-left:3px solid var(--accent);background:var(--panel2);
+  padding:18px 20px;border-radius:0 var(--r) var(--r) 0;margin:0 0 22px;
+  font-size:18px;font-weight:600;line-height:1.5;
+}
+.callout{
+  background:var(--panel2);border:1px solid var(--line);border-radius:var(--r);
+  padding:16px 18px;margin:0 0 18px;font-size:14.5px;
+}
+.callout.warn{border-color:var(--warn);background:rgba(251,191,36,.07)}
+.callout.lock{border-color:var(--lock);background:rgba(251,113,133,.08)}
+.callout.open{border-color:var(--ok);background:rgba(52,211,153,.08)}
+.callout b{color:var(--text)}
+
+/* ---------- forms ---------- */
+label{display:block;margin:0 0 16px;font-size:14px;font-weight:600}
+label .q{display:block;margin-bottom:7px;line-height:1.5}
+label .tip{display:block;font-weight:400;color:var(--muted);font-size:13px;margin:3px 0 7px;line-height:1.5}
+input[type=text],textarea,select{
+  width:100%;padding:11px 13px;background:var(--panel2);color:var(--text);
+  border:1px solid var(--line);border-radius:10px;font:inherit;font-size:15px;
+  font-weight:400;resize:vertical;
+}
+textarea{min-height:88px;line-height:1.6}
+input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible,[role=radio]:focus-visible{
+  outline:3px solid var(--focus);outline-offset:2px;
+}
+input::placeholder,textarea::placeholder{color:#5d6b8a}
+
+/* ---------- cards / choices ---------- */
+.cards{display:grid;gap:12px;margin:0 0 20px}
+@media(min-width:700px){.cards.three{grid-template-columns:repeat(3,1fr)}}
+.choice{
+  background:var(--panel2);border:2px solid var(--line);border-radius:var(--r);
+  padding:17px;cursor:pointer;text-align:left;font:inherit;color:var(--text);
+  display:flex;flex-direction:column;gap:8px;transition:.2s;width:100%;
+}
+.choice:hover{border-color:var(--accent2);transform:translateY(-2px)}
+.choice[aria-checked=true]{border-color:var(--accent);background:rgba(77,208,225,.11)}
+.choice .k{font-weight:800;font-size:12.5px;letter-spacing:1.1px;color:var(--accent2);display:flex;align-items:center;gap:7px}
+.choice[aria-checked=true] .k{color:var(--accent)}
+.choice .k .tick{
+  width:17px;height:17px;border-radius:50%;border:2px solid currentColor;flex:none;
+  display:grid;place-items:center;font-size:10px;
+}
+.choice[aria-checked=true] .k .tick{background:var(--accent);border-color:var(--accent);color:#06202a}
+.choice .d{font-size:14px;font-weight:400;line-height:1.55;color:var(--text)}
+
+.factlist{display:grid;gap:9px;margin:0 0 18px}
+@media(min-width:640px){.factlist{grid-template-columns:1fr 1fr}}
+.fact{
+  background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--accent2);
+  border-radius:9px;padding:12px 14px;font-size:14px;line-height:1.5;display:flex;gap:10px;
+}
+.fact b{color:var(--accent2);flex:none}
+
+.timer{
+  font:800 44px/1 "Segoe UI",system-ui,sans-serif;text-align:center;
+  color:var(--accent);letter-spacing:2px;margin:6px 0 4px;font-variant-numeric:tabular-nums;
+}
+.timer.low{color:var(--lock)}
+.timerlabel{text-align:center;color:var(--muted);font-size:12.5px;margin:0 0 18px;letter-spacing:.6px}
+
+.roster{list-style:none;padding:0;margin:0 0 16px;display:grid;gap:9px}
+.roster li{
+  background:var(--panel2);border:1px solid var(--line);border-radius:10px;
+  padding:12px 14px;font-size:14.5px;line-height:1.55;
+}
+.roster li b{color:var(--accent)}
+
+/* ---------- results ---------- */
+.badge{text-align:center;padding:8px 0 4px}
+.badge .icon{font-size:66px;line-height:1;display:block;margin-bottom:6px}
+.badge .name{font-size:25px;font-weight:800;letter-spacing:-.3px;margin-bottom:4px}
+.badge .score{
+  display:inline-block;background:var(--panel2);border:1px solid var(--accent);
+  color:var(--accent);border-radius:999px;padding:6px 18px;font-weight:700;font-size:14px;
+}
+.meter{margin:0 0 13px}
+.meter .top{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:5px;gap:10px}
+.meter .top b{color:var(--muted);font-weight:600}
+.meter .track{height:9px;background:var(--panel2);border-radius:99px;overflow:hidden}
+.meter .fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+
+/* ---------- identity card ---------- */
+.idcard{
+  background:linear-gradient(150deg,var(--panel2),#0e1424);
+  border:1px solid var(--accent);border-radius:var(--r);padding:22px;margin:0 0 20px;
+  box-shadow:0 0 32px rgba(77,208,225,.10);
+}
+.idcard .cap{font-size:11px;letter-spacing:1.6px;color:var(--accent);font-weight:700;margin-bottom:3px}
+.rule{
+  background:var(--panel2);border:1px solid var(--line);border-radius:10px;
+  padding:14px;margin:0 0 11px;
+}
+.rule .n{font-weight:800;color:var(--accent2);font-size:13px;letter-spacing:.6px;margin-bottom:7px}
+
+/* ---------- buttons ---------- */
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+button{font:inherit;cursor:pointer}
+.btn{
+  background:var(--panel2);border:1px solid var(--line);color:var(--text);
+  border-radius:10px;padding:12px 20px;font-weight:600;font-size:15px;transition:.2s;
+}
+.btn:hover{border-color:var(--accent2)}
+.btn.primary{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:none;color:#08131c;font-weight:800;
+}
+.btn.primary:hover{filter:brightness(1.1)}
+.btn.big{padding:16px 30px;font-size:17px;border-radius:12px}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;filter:none}
+.btn.danger:hover{border-color:var(--lock);color:var(--lock)}
+.spacer{flex:1}
+.gate{
+  color:var(--warn);font-size:13.5px;margin-top:12px;display:flex;gap:8px;align-items:flex-start;
+}
+.mantra{
+  text-align:center;font-weight:800;letter-spacing:1px;font-size:15px;line-height:1.9;
+  background:var(--panel2);border:1px solid var(--line);border-radius:var(--r);
+  padding:18px;margin:22px 0 16px;color:var(--accent);
+}
+.foot{text-align:center;color:var(--muted);font-size:12px;padding:22px 0 0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+@media print{
+  body{background:#fff;color:#000}
+  header,.path,.bar,.stepcount,.actions,.foot,nav{display:none!important}
+  .panel,.idcard,.rule{border-color:#999;background:#fff;color:#000;box-shadow:none}
+  .idcard .cap,.rule .n{color:#000}
+  h1,h2,h3{color:#000}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="mark" aria-hidden="true">🧠</div>
+    <div>
+      <b id="brandTitle">Digital Mind Lab</b>
+      <span id="brandSub">A Digital Mind Identity WebQuest</span>
+    </div>
+  </div>
+  <button class="langbtn" id="langBtn" type="button"><span>🌐</span><span id="langLabel">English</span></button>
+</header>
+
+<div class="wrap">
+  <nav class="path" id="path" aria-label="Progress"></nav>
+  <div class="bar"><i id="barFill" style="width:0%"></i></div>
+  <div class="stepcount" id="stepCount"></div>
+  <main id="screen" tabindex="-1"></main>
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+"use strict";
+
+/* =========================================================================
+   1. CONFIG
+   ========================================================================= */
+var QS = new URLSearchParams(location.search);
+var TIMER_SECONDS = Math.max(5, parseInt(QS.get("t"), 10) || 90);
+var KEY = "dml.v1";
+
+/* =========================================================================
+   2. STORAGE — never throws. Wix Editor/Preview blocks localStorage.
+   ========================================================================= */
+var store = (function () {
+  var mem = {}, ok = true;
+  try { localStorage.setItem("__dml", "1"); localStorage.removeItem("__dml"); }
+  catch (e) { ok = false; }
+  return {
+    available: ok,
+    get: function (k) { try { return ok ? localStorage.getItem(k) : mem[k]; } catch (e) { return mem[k]; } },
+    set: function (k, v) { try { ok ? localStorage.setItem(k, v) : (mem[k] = v); } catch (e) { mem[k] = v; } },
+    del: function (k) { try { ok ? localStorage.removeItem(k) : delete mem[k]; } catch (e) { delete mem[k]; } }
+  };
+})();
+
+/* =========================================================================
+   3. STATE
+   ========================================================================= */
+function blank() {
+  return {
+    lang: "es", step: 0,
+    cp1: { pasted: "", a1: "", a2: "", a3: "", a4: "", a5: "", choice: null, reflect: "" },
+    cp2: { started: false, revealed: false, showFacts: false, recall: "", choice: null, reflect: "" },
+    cp3: { round: 1, problem: "", s1: "", s2: "", s3: "", best: "", ai: "", c1: "", c2: "", c3: "", c4: "", choice: null, reflect: "" },
+    card: { name: "", skill: "", helps: "", replaces: "", r1: "", r2: "", r3: "" },
+    fin: { changed: "", f1: "", f2: "", f3: "", f4: "" }
+  };
+}
+var S = blank();
+(function load() {
+  try {
+    var raw = store.get(KEY);
+    if (raw) {
+      var p = JSON.parse(raw), b = blank();
+      for (var k in b) if (p[k] !== undefined) {
+        b[k] = (typeof b[k] === "object" && b[k] !== null && !Array.isArray(b[k]))
+          ? Object.assign(b[k], p[k]) : p[k];
+      }
+      S = b;
+      S.cp2.started = false; S.cp2.revealed = S.cp2.recall ? true : false;
+    }
+  } catch (e) { /* corrupt save: start clean */ }
+})();
+function save() { try { store.set(KEY, JSON.stringify(S)); } catch (e) {} }
+
+/* =========================================================================
+   4. CONTENT — every user-facing string, both languages
+   ========================================================================= */
+var C = {
+  en: {
+    code: "en", other: "Español", htmlLang: "en",
+    brand: "Digital Mind Lab", brandSub: "A Digital Mind Identity WebQuest",
+    nodes: ["START", "CRITICAL", "MEMORY", "PROBLEM", "IDENTITY"],
+    step: "Step %1 of %2", prev: "← Previous", next: "Next →",
+    restart: "Restart WebQuest",
+    restartAsk: "This will erase every answer you have written and start again from the beginning.\n\nAre you sure?",
+    foot: "The goal is not to stop using technology. The goal is to make sure technology remains the tool — and the human remains the thinker.",
+    gateChoice: "Choose the option that best describes you before continuing.",
+    gateText: "Write something before continuing. It does not need to be perfect.",
+    noStore: "Heads up: this browser is blocking local storage, so your answers will be lost if you refresh. On the published site this normally works.",
+
+    /* --- welcome --- */
+    wTitle: "Who Is Thinking: You or the Technology?",
+    wSub: "A DIGITAL MIND IDENTITY WEBQUEST",
+    wBody1: "Welcome to the Digital Mind Lab.",
+    wBody2: "Every day, we use search engines, smartphones, calculators, GPS and artificial intelligence to help us think, remember and solve problems. These tools can be powerful — but what happens when we rely on them so much that we stop exercising some of those abilities ourselves?",
+    wAsk: "Am I using technology as a tool for my brain, or as a replacement for my brain?",
+    wBtn: "🚪 Enter the Digital Mind Lab",
+
+    /* --- mission --- */
+    mTitle: "The Mission",
+    mEQ: "When does technology help us think, and when does it begin to think for us?",
+    mLead: "You will investigate three areas of your own mind.",
+    mCp: [
+      ["🔍", "Checkpoint 1", "Critical Thinking"],
+      ["🧠", "Checkpoint 2", "Memory"],
+      ["🧩", "Checkpoint 3", "Problem-Solving"]
+    ],
+    mPromise: "At every checkpoint you will complete a challenge and make a choice. Your choices will reveal your <b>Digital Thinking Identity</b>.",
+    mNote: "There are no right answers here, and nothing you write is graded for correctness. The only thing that matters is that you answer honestly — an honest answer you did not expect is worth more than a good-looking one.",
+
+    /* --- cp1 --- */
+    c1Title: "Should I Believe the First Answer?",
+    c1Kicker: "CHECKPOINT 1 · CRITICAL THINKING",
+    c1StepA: "Step A — Get the first answer",
+    c1Ask: "Ask an AI tool or search the internet:",
+    c1Q: "“Is social media good or bad for students?”",
+    c1Paste: "Paste or summarise the FIRST answer you receive.",
+    c1PasteTip: "Do not clean it up, do not improve it, and do not ask again to get a better one. We want the answer you would actually have walked away with.",
+    c1StepB: "Step B — Interrogate that answer",
+    c1Cards: [
+      ["Who created this information?", "Not “which app” — who is accountable if it is wrong? Who could be asked to justify it, or made to correct it?"],
+      ["What evidence is provided?", "Count the actual sources. A named study, a named researcher, a date, a number you could go and check. “Studies show” is not a source — it is the shape of one."],
+      ["Is another perspective possible?", "Whose view is missing? A student who found their study group through social media? A teacher who lost a class to it? A student with no data plan, excluded from both?"],
+      ["Can the claim be verified?", "Pick one specific sentence. Could you check it today, with a source you could name? Notice that “it depends on how it is used” cannot be wrong — which is exactly why it is worthless."],
+      ["Is anything important missing?", "What about your reality specifically? Your country, your university, your connection, the cost of your data, the platform your class actually coordinates on?"]
+    ],
+    c1Choose: "What best describes you?",
+    c1Opts: [
+      ["ACCEPT", "I usually trust the first answer because it sounds correct.", 1],
+      ["CHECK", "I usually check another source before deciding.", 2],
+      ["QUESTION", "I compare evidence, question assumptions, and form my own conclusion.", 3]
+    ],
+    c1RTitle: "Checkpoint 1 · Reflection",
+    c1RQ: "What is the difference between <b>receiving</b> information and <b>thinking critically</b> about information?",
+    c1RTip: "You just did both, in that order, in the last few minutes. Use what happened.",
+
+    /* --- cp2 --- */
+    c2Title: "Do I Know It, or Do I Know Where to Find It?",
+    c2Kicker: "CHECKPOINT 2 · MEMORY",
+    c2Intro: "You are about to see ten short facts about how human memory actually works. You will have %1 seconds. Then they disappear.",
+    c2Start: "▶ Start Memory Challenge",
+    c2Watch: "Memorise as much as you can",
+    c2Recall: "What do you remember?",
+    c2RecallTip: "Write down everything you can, in any order, in your own words. Do not scroll back and do not look it up.",
+    c2Reveal: "👁 Reveal the Facts",
+    c2Compare: "The facts again — compare",
+    c2Trap: "<b>Before you count how many you got —</b><br>Look at Fact 1 again. You just tried to memorise a sentence explaining that people do not memorise things they know they can look up later. How did that go?<br><br>Fact 4 said that pulling a memory out strengthens it more than re-reading it. The box you just filled in was exactly that. You did not only take a test — you strengthened whatever you managed to retrieve.<br><br>And if you took a screenshot of the list a minute ago, <b>Fact 6</b> has something to tell you.",
+    c2Qs: ["How many facts did you remember?", "Did you make a real effort to remember them?", "Did you assume you could look them up later?", "Is knowing something the same as knowing where to find it?"],
+    c2QNote: "Think about these four questions. You do not have to type answers — the reflection comes next.",
+    c2Choose: "Which describes you?",
+    c2Opts: [
+      ["STORE IT OUTSIDE", "I normally depend on my device to remember information for me.", 1],
+      ["REMEMBER THE IMPORTANT PARTS", "I remember important ideas but use technology for details.", 2],
+      ["MEMORY FIRST", "I actively try to understand and remember important information before relying on technology.", 3]
+    ],
+    c2RTitle: "Checkpoint 2 · Reflection",
+    c2RQ: "Complete this sentence:",
+    c2Stem: "“When I know information will always be available online, I tend to …”",
+    facts: [
+      "When people expect information to stay available online, they remember the information itself less well — but remember <b>where to find it</b> better.",
+      "A smartphone lying face-down and switched off on the desk still reduces available mental capacity.",
+      "Working memory holds only about <b>four</b> pieces of information at once.",
+      "Pulling a fact out of memory strengthens it far more than reading it again.",
+      "You remember ideas you produced yourself better than identical ideas you only read.",
+      "People who photograph objects remember them <b>worse</b> than people who simply look at them.",
+      "After switching tasks, part of your attention stays behind on the previous one.",
+      "Humans have always outsourced memory to other people. Devices are only a newer partner.",
+      "Material reviewed across several days is retained far longer than the same time spent in one session.",
+      "People who navigate by GPS engage spatial memory less than people who navigate from memory."
+    ],
+
+    /* --- cp3 --- */
+    c3Title: "Brain First or AI First?",
+    c3Kicker: "CHECKPOINT 3 · PROBLEM-SOLVING",
+    c3Scen: "The Group Project",
+    c3Lead: "<b>You have eight days.</b> Your group of five has to deliver a graded presentation. It has to be genuinely collaborative — your professor said explicitly that a presentation where two people clearly did everything will be marked down.",
+    c3Lead2: "But your group looks like this:",
+    c3Roster: [
+      "<b>Sara</b> lives in a vereda outside the city. She has signal in the town square and gets there roughly twice a week.",
+      "<b>Andrés</b> works nights. He sleeps during the hours your group would normally meet.",
+      "<b>Kelly</b> shares one computer with three siblings who also have coursework. She gets it late in the evening, if at all.",
+      "<b>Julián</b> has a good connection and a laptop, and has already offered to “just do it all so we don’t fail.”",
+      "<b>You.</b>"
+    ],
+    c3Lead3: "Nobody has money for new equipment, data plans or a coworking space. The deadline will not move.",
+    c3Q: "How does this group produce a genuinely shared piece of work in eight days?",
+    c3R1: "🔒 ROUND 1 — TECHNOLOGY LOCKED",
+    c3R1Body: "For the next few minutes, solve this <b>without</b> Google, AI, calculators or any digital assistance. Just you.",
+    c3F: [
+      ["What is the problem?", "State it in your own words — this is not the same as repeating the scenario back."],
+      ["Possible Solution 1", ""], ["Possible Solution 2", ""], ["Possible Solution 3", ""],
+      ["Which solution is best, and why?", ""]
+    ],
+    c3ToR2: "🔓 Unlock Technology → Round 2",
+    c3R2: "🔓 ROUND 2 — TECHNOLOGY UNLOCKED",
+    c3R2Body: "Now you may use AI or a search engine. Ask it the same problem.",
+    c3AI: "Paste or summarise what technology suggested.",
+    c3C: [
+      "Did technology suggest something you had not considered?",
+      "Was your solution different?",
+      "Did trying it yourself help you understand it?",
+      "What thinking would you have skipped if you had asked AI immediately?"
+    ],
+    c3Back1: "← Back to Round 1",
+    c3Choose: "Which describes you?",
+    c3Opts: [
+      ["ASK FIRST", "My first reaction is usually to ask Google or AI for the solution.", 1],
+      ["TRY AND THEN ASK", "I try briefly before asking technology for help.", 2],
+      ["THINK, THEN AUGMENT", "I develop my own ideas first and then use technology to improve, verify or challenge them.", 3]
+    ],
+    c3RTitle: "Checkpoint 3 · Reflection",
+    c3RQ: "What thinking would you have skipped if you had asked AI immediately?",
+    c3RTip: "You just solved this twice — once with your own mind, once with help. Somewhere between those two attempts is the thinking that only happens when nobody is helping you. Describe it.",
+
+    /* --- results --- */
+    rTitle: "Your Digital Thinking Identity",
+    rOf: "%1 / 9 points",
+    rBreak: "Where your points came from",
+    rSkills: ["🔍 Critical Thinking", "🧠 Memory", "🧩 Problem-Solving"],
+    rChallenge: "Your challenge",
+    rNote: "This is a finding, not a grade. None of these three identities is better than another as a person — they describe how much of your thinking you currently <b>choose</b>, and that can change starting today.",
+    ids: [
+      ["⚡", "The Automatic Outsourcer",
+        "Technology often becomes your first thinker. You value speed and convenience, but you may sometimes skip opportunities to exercise memory, critical thinking and problem-solving.",
+        "Try thinking independently before reaching for technology."],
+      ["🔎", "The Assisted Thinker",
+        "You use a combination of your own thinking and digital assistance. Sometimes technology comes first, while at other times you investigate independently.",
+        "Become more intentional about deciding when technology should help you."],
+      ["🧭", "The Cognitive Navigator",
+        "You tend to use technology as a partner rather than a replacement for thinking. You investigate, question, remember important ideas and attempt solutions before asking technology to assist.",
+        "Keep using technology strategically while staying open to the advantages it can offer."]
+    ],
+
+    /* --- identity card --- */
+    idTitle: "Digital Thinking Identity Card",
+    idName: "My name",
+    idNamePh: "Write your name",
+    idIdentity: "My Digital Thinking Identity",
+    idSkill: "My strongest cognitive skill is:",
+    idSkills: ["Critical Thinking", "Memory", "Problem-Solving"],
+    idHelps: "Technology <b>helps</b> my thinking when:",
+    idReplaces: "Technology <b>replaces</b> my thinking when:",
+    idRules: "My Three Cognitive Fitness Rules",
+    idRulesTip: "These three rules are a starting point, not a rulebook. Rewrite any of them in your own words, so they describe the person you actually intend to be.",
+    rules: [
+      ["1. Think Before You Search", "Before searching for an answer, spend some time on what you already know."],
+      ["2. Question Before You Believe", "Do not automatically accept the first answer from Google, social media or AI. Check the evidence and look for other perspectives."],
+      ["3. Remember Before You Store", "Decide which ideas matter enough to understand and remember, instead of assuming everything can just be searched again."]
+    ],
+    idPrint: "🖨 Print / Save as PDF",
+    idCopy: "📋 Copy My Full Transcript",
+    idCopied: "✓ Copied — now paste it wherever your teacher asked.",
+    copyManual: "Your browser blocked automatic copying. The text below is already selected — press Ctrl+C (or Cmd+C) to copy it.",
+
+    /* --- final --- */
+    fTitle: "Final Reflection",
+    fQ: "After completing this WebQuest, has your view of technology changed?",
+    fFs: [
+      "What did you learn about your technology habits?",
+      "Which checkpoint surprised you the most?",
+      "What is one habit you could change?",
+      "How can you use AI without letting AI replace your own thinking?"
+    ],
+    fMantra: "THINK → QUESTION → REMEMBER → SOLVE → THEN USE TECHNOLOGY",
+    fEnd: "The goal is not to stop using technology. The goal is to make sure technology remains the tool — and the human remains the thinker.",
+    fDone: "You have finished. 🧭",
+
+    /* --- transcript --- */
+    tr: {
+      head: "DIGITAL MIND LAB — WEBQUEST TRANSCRIPT",
+      name: "Name", identity: "Digital Thinking Identity", total: "Total score",
+      cp1: "CHECKPOINT 1 — CRITICAL THINKING", cp2: "CHECKPOINT 2 — MEMORY",
+      cp3: "CHECKPOINT 3 — PROBLEM-SOLVING", res: "RESULTS", card: "IDENTITY CARD",
+      fin: "FINAL REFLECTION", first: "First answer received", choice: "Choice",
+      reflect: "Reflection", recall: "What I remembered", ai: "What technology suggested",
+      skill: "Strongest skill", helps: "Technology helps when", replaces: "Technology replaces when",
+      rules: "My three rules", blank: "(left blank)"
+    }
+  },
+
+  es: {
+    code: "es", other: "English", htmlLang: "es",
+    brand: "Laboratorio de Mente Digital", brandSub: "Un WebQuest de Identidad Mental Digital",
+    nodes: ["INICIO", "CRÍTICO", "MEMORIA", "PROBLEMA", "IDENTIDAD"],
+    step: "Paso %1 de %2", prev: "← Anterior", next: "Siguiente →",
+    restart: "Reiniciar el WebQuest",
+    restartAsk: "Esto va a borrar todas las respuestas que usted ha escrito y va a empezar de nuevo desde el principio.\n\n¿Está seguro?",
+    foot: "El objetivo no es dejar de usar la tecnología. El objetivo es que la tecnología siga siendo la herramienta — y que el ser humano siga siendo quien piensa.",
+    gateChoice: "Escoja la opción que mejor lo describa antes de continuar.",
+    gateText: "Escriba algo antes de continuar. No tiene que ser perfecto.",
+    noStore: "Aviso: este navegador está bloqueando el almacenamiento local, así que sus respuestas se pierden si recarga la página. En el sitio publicado esto normalmente sí funciona.",
+
+    wTitle: "¿Quién Está Pensando: Usted o la Tecnología?",
+    wSub: "UN WEBQUEST DE IDENTIDAD MENTAL DIGITAL",
+    wBody1: "Bienvenido al Laboratorio de Mente Digital.",
+    wBody2: "Todos los días usamos buscadores, celulares, calculadoras, GPS e inteligencia artificial para ayudarnos a pensar, recordar y resolver problemas. Estas herramientas pueden ser muy poderosas — pero ¿qué pasa cuando dependemos tanto de ellas que dejamos de ejercitar algunas de esas capacidades por nuestra cuenta?",
+    wAsk: "¿Estoy usando la tecnología como herramienta para mi cerebro, o como reemplazo de mi cerebro?",
+    wBtn: "🚪 Entrar al Laboratorio de Mente Digital",
+
+    mTitle: "La Misión",
+    mEQ: "¿Cuándo nos ayuda la tecnología a pensar, y cuándo empieza a pensar por nosotros?",
+    mLead: "Usted va a investigar tres áreas de su propia mente.",
+    mCp: [
+      ["🔍", "Checkpoint 1", "Pensamiento Crítico"],
+      ["🧠", "Checkpoint 2", "Memoria"],
+      ["🧩", "Checkpoint 3", "Resolución de Problemas"]
+    ],
+    mPromise: "En cada checkpoint va a completar un reto y va a tomar una decisión. Sus decisiones van a revelar su <b>Identidad de Pensamiento Digital</b>.",
+    mNote: "Aquí no hay respuestas correctas, y nada de lo que escriba se califica por ser acertado. Lo único que importa es que responda con honestidad — una respuesta honesta que no esperaba vale más que una que se ve bien.",
+
+    c1Title: "¿Debería Creerle a la Primera Respuesta?",
+    c1Kicker: "CHECKPOINT 1 · PENSAMIENTO CRÍTICO",
+    c1StepA: "Paso A — Consiga la primera respuesta",
+    c1Ask: "Pregúntele a una IA o busque en internet:",
+    c1Q: "“¿Las redes sociales son buenas o malas para los estudiantes?”",
+    c1Paste: "Pegue o resuma la PRIMERA respuesta que reciba.",
+    c1PasteTip: "No la arregle, no la mejore y no vuelva a preguntar para obtener una mejor. Queremos la respuesta con la que usted se habría quedado en la vida real.",
+    c1StepB: "Paso B — Interrogue esa respuesta",
+    c1Cards: [
+      ["¿Quién creó esta información?", "No “cuál aplicación” — ¿quién responde si está equivocada? ¿A quién se le podría pedir que la justifique o que la corrija?"],
+      ["¿Qué evidencia se ofrece?", "Cuente las fuentes reales. Un estudio con nombre, un investigador, una fecha, una cifra que usted pueda ir a verificar. “Los estudios demuestran” no es una fuente: es la forma de una fuente."],
+      ["¿Es posible otra perspectiva?", "¿Qué mirada falta? ¿La de quien armó su grupo de estudio por redes? ¿La del docente que perdió la clase por ellas? ¿La de quien no tiene plan de datos y queda por fuera de las dos cosas?"],
+      ["¿Se puede verificar la afirmación?", "Escoja una frase específica. ¿Podría verificarla hoy, con una fuente que pueda nombrar? Fíjese en que “depende de cómo se use” no puede estar equivocada — y por eso mismo no sirve para nada."],
+      ["¿Falta algo importante?", "¿Qué pasa con su realidad concreta? Su país, su universidad, su conexión, lo que le cuestan los datos, la plataforma en la que su clase de verdad se organiza?"]
+    ],
+    c1Choose: "¿Qué lo describe mejor?",
+    c1Opts: [
+      ["ACEPTAR", "Normalmente confío en la primera respuesta porque suena correcta.", 1],
+      ["VERIFICAR", "Normalmente reviso otra fuente antes de decidir.", 2],
+      ["CUESTIONAR", "Comparo evidencia, cuestiono supuestos y formo mi propia conclusión.", 3]
+    ],
+    c1RTitle: "Checkpoint 1 · Reflexión",
+    c1RQ: "¿Cuál es la diferencia entre <b>recibir</b> información y <b>pensarla críticamente</b>?",
+    c1RTip: "Usted acaba de hacer las dos cosas, en ese orden, en los últimos minutos. Use lo que le pasó.",
+
+    c2Title: "¿Lo Sé, o Sé Dónde Encontrarlo?",
+    c2Kicker: "CHECKPOINT 2 · MEMORIA",
+    c2Intro: "Está a punto de ver diez datos cortos sobre cómo funciona realmente la memoria humana. Va a tener %1 segundos. Después desaparecen.",
+    c2Start: "▶ Empezar el Reto de Memoria",
+    c2Watch: "Memorice todo lo que pueda",
+    c2Recall: "¿Qué recuerda?",
+    c2RecallTip: "Escriba todo lo que pueda, en cualquier orden, con sus propias palabras. No devuelva la página y no lo busque.",
+    c2Reveal: "👁 Revelar los datos",
+    c2Compare: "Los datos otra vez — compare",
+    c2Trap: "<b>Antes de contar cuántos acertó —</b><br>Mire otra vez el Dato 1. Acaba de intentar memorizar una frase que explica que la gente no memoriza lo que sabe que puede buscar después. ¿Cómo le fue?<br><br>El Dato 4 decía que evocar un recuerdo lo fortalece más que releerlo. La casilla que acaba de llenar era justamente eso. No solo presentó una prueba: fortaleció lo que logró recordar.<br><br>Y si hace un minuto le tomó pantallazo a la lista, el <b>Dato 6</b> tiene algo que decirle.",
+    c2Qs: ["¿Cuántos datos recordó?", "¿Hizo un esfuerzo real por recordarlos?", "¿Asumió que después los podía buscar?", "¿Saber algo es lo mismo que saber dónde encontrarlo?"],
+    c2QNote: "Piense en estas cuatro preguntas. No tiene que escribir respuestas — la reflexión viene enseguida.",
+    c2Choose: "¿Cuál lo describe?",
+    c2Opts: [
+      ["GUARDAR POR FUERA", "Normalmente dependo de mi dispositivo para que recuerde la información por mí.", 1],
+      ["RECORDAR LO IMPORTANTE", "Recuerdo las ideas importantes pero uso la tecnología para los detalles.", 2],
+      ["MEMORIA PRIMERO", "Trato activamente de entender y recordar la información importante antes de recurrir a la tecnología.", 3]
+    ],
+    c2RTitle: "Checkpoint 2 · Reflexión",
+    c2RQ: "Complete esta frase:",
+    c2Stem: "“Cuando sé que la información siempre va a estar disponible en internet, tiendo a …”",
+    facts: [
+      "Cuando uno espera que la información siga disponible en internet, recuerda peor la información misma — pero recuerda mejor <b>dónde encontrarla</b>.",
+      "Un celular boca abajo y apagado sobre el escritorio igual reduce la capacidad mental disponible.",
+      "La memoria de trabajo sostiene apenas unos <b>cuatro</b> elementos a la vez.",
+      "Sacar un dato de la memoria lo fortalece mucho más que volverlo a leer.",
+      "Uno recuerda mejor las ideas que produjo que las mismas ideas que solo leyó.",
+      "Quien fotografía un objeto lo recuerda <b>peor</b> que quien simplemente lo observa.",
+      "Al cambiar de tarea, una parte de la atención se queda en la tarea anterior.",
+      "Los seres humanos siempre le han delegado memoria a otras personas. Los dispositivos son apenas un socio más nuevo.",
+      "El material repasado a lo largo de varios días se retiene mucho más que el mismo tiempo en una sola sentada.",
+      "Quien navega con GPS activa menos la memoria espacial que quien navega de memoria."
+    ],
+
+    c3Title: "¿Primero el Cerebro o Primero la IA?",
+    c3Kicker: "CHECKPOINT 3 · RESOLUCIÓN DE PROBLEMAS",
+    c3Scen: "El Trabajo en Grupo",
+    c3Lead: "<b>Tiene ocho días.</b> Su grupo de cinco tiene que entregar una presentación calificada. Tiene que ser realmente colaborativa — el profesor dijo explícitamente que si se nota que dos personas hicieron todo, baja la nota.",
+    c3Lead2: "Pero el grupo es así:",
+    c3Roster: [
+      "<b>Sara</b> vive en una vereda fuera de la ciudad. Tiene señal en el parque principal del pueblo y va más o menos dos veces por semana.",
+      "<b>Andrés</b> trabaja de noche. Duerme justo en las horas en que el grupo normalmente se reuniría.",
+      "<b>Kelly</b> comparte un computador con tres hermanos que también estudian. Lo alcanza tarde en la noche, cuando lo alcanza.",
+      "<b>Julián</b> tiene buena conexión y portátil, y ya se ofreció a “hacerlo todo de una para no perder”.",
+      "<b>Usted.</b>"
+    ],
+    c3Lead3: "Nadie tiene plata para equipos nuevos, planes de datos ni un espacio de coworking. La fecha de entrega no se mueve.",
+    c3Q: "¿Cómo logra este grupo un trabajo verdaderamente compartido en ocho días?",
+    c3R1: "🔒 RONDA 1 — TECNOLOGÍA BLOQUEADA",
+    c3R1Body: "Durante los próximos minutos, resuelva esto <b>sin</b> Google, IA, calculadora ni ninguna ayuda digital. Solo usted.",
+    c3F: [
+      ["¿Cuál es el problema?", "Dígalo con sus propias palabras — no es lo mismo que repetir el escenario."],
+      ["Posible Solución 1", ""], ["Posible Solución 2", ""], ["Posible Solución 3", ""],
+      ["¿Cuál solución le parece la mejor y por qué?", ""]
+    ],
+    c3ToR2: "🔓 Desbloquear la tecnología → Ronda 2",
+    c3R2: "🔓 RONDA 2 — TECNOLOGÍA DESBLOQUEADA",
+    c3R2Body: "Ahora sí puede usar IA o un buscador. Hágale el mismo problema.",
+    c3AI: "Pegue o resuma lo que sugirió la tecnología.",
+    c3C: [
+      "¿La tecnología sugirió algo que usted no había considerado?",
+      "¿Su solución fue diferente?",
+      "¿Intentarlo usted mismo le ayudó a entenderlo?",
+      "¿Qué pensamiento se habría saltado si le hubiera preguntado a la IA de una vez?"
+    ],
+    c3Back1: "← Volver a la Ronda 1",
+    c3Choose: "¿Cuál lo describe?",
+    c3Opts: [
+      ["PREGUNTAR DE UNA", "Mi primera reacción normalmente es preguntarle a Google o a la IA por la solución.", 1],
+      ["INTENTAR Y LUEGO PREGUNTAR", "Lo intento un rato antes de pedirle ayuda a la tecnología.", 2],
+      ["PENSAR Y LUEGO POTENCIAR", "Primero desarrollo mis propias ideas y después uso la tecnología para mejorarlas, verificarlas o ponerlas a prueba.", 3]
+    ],
+    c3RTitle: "Checkpoint 3 · Reflexión",
+    c3RQ: "¿Qué pensamiento se habría saltado si le hubiera preguntado a la IA de una vez?",
+    c3RTip: "Acaba de resolver esto dos veces: una con su propia mente y otra con ayuda. En algún punto entre esos dos intentos está el pensamiento que solo aparece cuando nadie le está ayudando. Descríbalo.",
+
+    rTitle: "Su Identidad de Pensamiento Digital",
+    rOf: "%1 / 9 puntos",
+    rBreak: "De dónde vienen sus puntos",
+    rSkills: ["🔍 Pensamiento Crítico", "🧠 Memoria", "🧩 Resolución de Problemas"],
+    rChallenge: "Su reto",
+    rNote: "Esto es un hallazgo, no una nota. Ninguna de estas tres identidades es mejor que otra como persona — describen cuánto de su pensamiento <b>elige</b> usted actualmente, y eso puede empezar a cambiar hoy.",
+    ids: [
+      ["⚡", "El Delegador Automático",
+        "La tecnología suele convertirse en su primer pensador. Usted valora la rapidez y la comodidad, pero a veces puede estar dejando pasar oportunidades de ejercitar la memoria, el pensamiento crítico y la resolución de problemas.",
+        "Intente pensar por su cuenta antes de recurrir a la tecnología."],
+      ["🔎", "El Pensador Asistido",
+        "Usted combina su propio pensamiento con la asistencia digital. A veces la tecnología va primero, y otras veces usted investiga por su cuenta.",
+        "Vuélvase más intencional al decidir cuándo la tecnología debe ayudarle."],
+      ["🧭", "El Navegante Cognitivo",
+        "Usted tiende a usar la tecnología como aliada y no como reemplazo del pensamiento. Investiga, cuestiona, recuerda las ideas importantes e intenta soluciones antes de pedirle ayuda a la tecnología.",
+        "Siga usando la tecnología de forma estratégica sin cerrarse a las ventajas que puede ofrecer."]
+    ],
+
+    idTitle: "Tarjeta de Identidad de Pensamiento Digital",
+    idName: "Mi nombre",
+    idNamePh: "Escriba su nombre",
+    idIdentity: "Mi Identidad de Pensamiento Digital",
+    idSkill: "Mi habilidad cognitiva más fuerte es:",
+    idSkills: ["Pensamiento Crítico", "Memoria", "Resolución de Problemas"],
+    idHelps: "La tecnología <b>ayuda</b> a mi pensamiento cuando:",
+    idReplaces: "La tecnología <b>reemplaza</b> mi pensamiento cuando:",
+    idRules: "Mis Tres Reglas de Buen Estado Cognitivo",
+    idRulesTip: "Estas tres reglas son un punto de partida, no un reglamento. Reescriba las que quiera con sus propias palabras, para que describan a la persona que usted de verdad quiere ser.",
+    rules: [
+      ["1. Piense Antes de Buscar", "Antes de buscar una respuesta, dedíquele un momento a lo que ya sabe."],
+      ["2. Cuestione Antes de Creer", "No acepte automáticamente la primera respuesta de Google, las redes o la IA. Revise la evidencia y busque otras perspectivas."],
+      ["3. Recuerde Antes de Guardar", "Decida cuáles ideas importan lo suficiente para entenderlas y recordarlas, en vez de asumir que todo se puede volver a buscar."]
+    ],
+    idPrint: "🖨 Imprimir / Guardar en PDF",
+    idCopy: "📋 Copiar mi transcripción completa",
+    idCopied: "✓ Copiado — ahora péguelo donde su docente le indicó.",
+    copyManual: "Su navegador bloqueó la copia automática. El texto de abajo ya está seleccionado — presione Ctrl+C (o Cmd+C) para copiarlo.",
+
+    fTitle: "Reflexión Final",
+    fQ: "Después de completar este WebQuest, ¿cambió su forma de ver la tecnología?",
+    fFs: [
+      "¿Qué aprendió sobre sus hábitos con la tecnología?",
+      "¿Cuál checkpoint lo sorprendió más?",
+      "¿Cuál es un hábito que usted podría cambiar?",
+      "¿Cómo puede usar la IA sin permitir que la IA reemplace su propio pensamiento?"
+    ],
+    fMantra: "PIENSE → CUESTIONE → RECUERDE → RESUELVA → LUEGO USE LA TECNOLOGÍA",
+    fEnd: "El objetivo no es dejar de usar la tecnología. El objetivo es que la tecnología siga siendo la herramienta — y que el ser humano siga siendo quien piensa.",
+    fDone: "Usted terminó. 🧭",
+
+    tr: {
+      head: "LABORATORIO DE MENTE DIGITAL — TRANSCRIPCIÓN DEL WEBQUEST",
+      name: "Nombre", identity: "Identidad de Pensamiento Digital", total: "Puntaje total",
+      cp1: "CHECKPOINT 1 — PENSAMIENTO CRÍTICO", cp2: "CHECKPOINT 2 — MEMORIA",
+      cp3: "CHECKPOINT 3 — RESOLUCIÓN DE PROBLEMAS", res: "RESULTADOS", card: "TARJETA DE IDENTIDAD",
+      fin: "REFLEXIÓN FINAL", first: "Primera respuesta recibida", choice: "Elección",
+      reflect: "Reflexión", recall: "Lo que recordé", ai: "Lo que sugirió la tecnología",
+      skill: "Habilidad más fuerte", helps: "La tecnología ayuda cuando", replaces: "La tecnología reemplaza cuando",
+      rules: "Mis tres reglas", blank: "(en blanco)"
+    }
+  }
+};
+function t() { return C[S.lang]; }
+
+/* =========================================================================
+   5. HELPERS
+   ========================================================================= */
+var $ = function (id) { return document.getElementById(id); };
+function esc(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  });
+}
+function get(path) {
+  var p = path.split("."), o = S;
+  for (var i = 0; i < p.length; i++) o = o[p[i]];
+  return o;
+}
+function set(path, v) {
+  var p = path.split("."), o = S;
+  for (var i = 0; i < p.length - 1; i++) o = o[p[i]];
+  o[p[p.length - 1]] = v;
+}
+function field(kind, path, labelHtml, tip, ph) {
+  var v = esc(get(path));
+  var tipHtml = tip ? '<span class="tip">' + tip + "</span>" : "";
+  var ctl = kind === "input"
+    ? '<input type="text" data-k="' + path + '" value="' + v + '" placeholder="' + esc(ph || "") + '">'
+    : '<textarea data-k="' + path + '" placeholder="' + esc(ph || "") + '">' + v + "</textarea>";
+  return '<label><span class="q">' + labelHtml + "</span>" + tipHtml + ctl + "</label>";
+}
+function choices(group, opts, cur) {
+  var h = '<div class="cards three" role="radiogroup" aria-label="' + esc(t().c1Choose) + '">';
+  for (var i = 0; i < opts.length; i++) {
+    var o = opts[i], on = cur === o[2];
+    h += '<button type="button" class="choice" role="radio" aria-checked="' + on + '"' +
+      ' data-group="' + group + '" data-pts="' + o[2] + '">' +
+      '<span class="k"><span class="tick" aria-hidden="true">' + (on ? "✓" : "") + "</span>" + esc(o[0]) + "</span>" +
+      '<span class="d">' + esc(o[1]) + "</span></button>";
+  }
+  return h + "</div>";
+}
+function factList() {
+  var f = t().facts, h = '<div class="factlist">';
+  for (var i = 0; i < f.length; i++) h += '<div class="fact"><b>' + (i + 1) + ".</b><span>" + f[i] + "</span></div>";
+  return h + "</div>";
+}
+
+/* =========================================================================
+   6. SCORING — pure
+   ========================================================================= */
+function scores() { return [S.cp1.choice || 0, S.cp2.choice || 0, S.cp3.choice || 0]; }
+function total() { var s = scores(); return s[0] + s[1] + s[2]; }
+function band(n) { return n <= 4 ? 0 : n <= 7 ? 1 : 2; }
+
+/* =========================================================================
+   7. SCREENS
+   ========================================================================= */
+var STEPS = [
+  "welcome", "mission", "cp1", "cp1r", "cp2", "cp2r", "cp3", "cp3r", "results", "card", "final"
+];
+var NODE_OF = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4];
+
+var V = {};
+
+V.welcome = function () {
+  var L = t();
+  return '<section class="panel"><h1>' + esc(L.wTitle) + '</h1>' +
+    '<p class="sub">' + esc(L.wSub) + "</p>" +
+    '<p class="lead">' + esc(L.wBody1) + "</p>" +
+    '<p class="lead">' + esc(L.wBody2) + "</p>" +
+    '<div class="eq">“' + esc(L.wAsk) + '”</div>' +
+    '<div class="actions"><button class="btn primary big" data-go="1">' + esc(L.wBtn) + "</button></div></section>";
+};
+
+V.mission = function () {
+  var L = t(), h = '<section class="panel"><h2>' + esc(L.mTitle) + "</h2>" +
+    '<div class="eq">' + esc(L.mEQ) + "</div>" +
+    '<p class="lead">' + esc(L.mLead) + "</p><div class=\"cards three\">";
+  for (var i = 0; i < L.mCp.length; i++) {
+    h += '<div class="choice" style="cursor:default">' +
+      '<span class="k">' + L.mCp[i][0] + " " + esc(L.mCp[i][1]) + "</span>" +
+      '<span class="d"><b>' + esc(L.mCp[i][2]) + "</b></span></div>";
+  }
+  h += "</div><p>" + L.mPromise + "</p>";
+  h += '<div class="callout">' + esc(L.mNote) + "</div>";
+  return h + "</section>";
+};
+
+V.cp1 = function () {
+  var L = t();
+  var h = '<section class="panel"><h3>' + esc(L.c1Kicker) + "</h3><h2>" + esc(L.c1Title) + "</h2>" +
+    '<h3>' + esc(L.c1StepA) + "</h3><p>" + esc(L.c1Ask) + "</p>" +
+    '<div class="eq">' + esc(L.c1Q) + "</div>" +
+    field("textarea", "cp1.pasted", esc(L.c1Paste), esc(L.c1PasteTip)) +
+    "<h3>" + esc(L.c1StepB) + "</h3>";
+  for (var i = 0; i < L.c1Cards.length; i++) {
+    h += field("textarea", "cp1.a" + (i + 1),
+      "<b>" + (i + 1) + ".</b> " + esc(L.c1Cards[i][0]), esc(L.c1Cards[i][1]));
+  }
+  h += "<h3>" + esc(L.c1Choose) + "</h3>" + choices("cp1", L.c1Opts, S.cp1.choice);
+  return h + "</section>";
+};
+
+V.cp1r = function () {
+  var L = t();
+  return '<section class="panel"><h3>' + esc(L.c1RTitle) + "</h3>" +
+    '<div class="eq">' + L.c1RQ + "</div>" +
+    field("textarea", "cp1.reflect", esc(L.c1RTip), "") + "</section>";
+};
+
+V.cp2 = function () {
+  var L = t(), h = '<section class="panel"><h3>' + esc(L.c2Kicker) + "</h3><h2>" + esc(L.c2Title) + "</h2>";
+
+  if (!S.cp2.started && !S.cp2.revealed) {
+    h += "<p class=\"lead\">" + esc(L.c2Intro.replace("%1", TIMER_SECONDS)) + "</p>" +
+      '<div class="actions"><button class="btn primary big" id="startMem">' + esc(L.c2Start) + "</button></div>";
+    return h + "</section>";
+  }
+  if (S.cp2.started) {
+    h += '<div class="timer" id="clock" role="timer" aria-live="off">' + TIMER_SECONDS + "</div>" +
+      '<p class="timerlabel">' + esc(L.c2Watch) + "</p>" + factList() +
+      '<p class="sr" aria-live="polite" id="timerSR"></p>';
+    return h + "</section>";
+  }
+  h += field("textarea", "cp2.recall", esc(L.c2Recall), esc(L.c2RecallTip));
+  if (!S.cp2.showFacts) {
+    h += '<div class="actions"><button class="btn" id="revealFacts">' + esc(L.c2Reveal) + "</button></div>";
+  } else {
+    h += '<div class="callout warn">' + L.c2Trap + "</div>";
+    h += "<h3>" + esc(L.c2Compare) + "</h3>" + factList();
+    h += '<div class="callout"><b>' + esc(L.c2QNote) + "</b><ul>";
+    for (var i = 0; i < L.c2Qs.length; i++) h += "<li>" + esc(L.c2Qs[i]) + "</li>";
+    h += "</ul></div>";
+    h += "<h3>" + esc(L.c2Choose) + "</h3>" + choices("cp2", L.c2Opts, S.cp2.choice);
+  }
+  return h + "</section>";
+};
+
+V.cp2r = function () {
+  var L = t();
+  return '<section class="panel"><h3>' + esc(L.c2RTitle) + "</h3>" +
+    "<p>" + esc(L.c2RQ) + '</p><div class="eq">' + esc(L.c2Stem) + "</div>" +
+    field("textarea", "cp2.reflect", esc(L.c2RQ), "") + "</section>";
+};
+
+V.cp3 = function () {
+  var L = t(), h = '<section class="panel"><h3>' + esc(L.c3Kicker) + "</h3><h2>" + esc(L.c3Title) + "</h2>";
+  h += "<h3>" + esc(L.c3Scen) + "</h3><p class=\"lead\">" + L.c3Lead + "</p><p>" + esc(L.c3Lead2) + '</p><ul class="roster">';
+  for (var i = 0; i < L.c3Roster.length; i++) h += "<li>" + L.c3Roster[i] + "</li>";
+  h += "</ul><p>" + esc(L.c3Lead3) + '</p><div class="eq">' + esc(L.c3Q) + "</div>";
+
+  if (S.cp3.round === 1) {
+    h += '<div class="callout lock"><b>' + esc(L.c3R1) + "</b><br>" + L.c3R1Body + "</div>";
+    var keys = ["problem", "s1", "s2", "s3", "best"];
+    for (var j = 0; j < L.c3F.length; j++) {
+      h += field("textarea", "cp3." + keys[j], esc(L.c3F[j][0]), esc(L.c3F[j][1]));
+    }
+    h += '<div class="actions"><button class="btn primary" id="toR2">' + esc(L.c3ToR2) + "</button></div>";
+  } else {
+    h += '<div class="callout open"><b>' + esc(L.c3R2) + "</b><br>" + esc(L.c3R2Body) + "</div>";
+    h += field("textarea", "cp3.ai", esc(L.c3AI), "");
+    for (var k = 0; k < L.c3C.length; k++) {
+      h += field("textarea", "cp3.c" + (k + 1), esc(L.c3C[k]), "");
+    }
+    h += "<h3>" + esc(L.c3Choose) + "</h3>" + choices("cp3", L.c3Opts, S.cp3.choice);
+    h += '<div class="actions"><button class="btn ghost" id="backR1">' + esc(L.c3Back1) + "</button></div>";
+  }
+  return h + "</section>";
+};
+
+V.cp3r = function () {
+  var L = t();
+  return '<section class="panel"><h3>' + esc(L.c3RTitle) + "</h3>" +
+    '<div class="eq">' + esc(L.c3RQ) + "</div>" +
+    field("textarea", "cp3.reflect", esc(L.c3RTip), "") + "</section>";
+};
+
+V.results = function () {
+  var L = t(), n = total(), id = L.ids[band(n)], sc = scores();
+  var h = '<section class="panel"><h3>' + esc(L.rTitle) + "</h3>" +
+    '<div class="badge" aria-live="polite">' +
+    '<span class="icon" aria-hidden="true">' + id[0] + "</span>" +
+    '<div class="name">' + esc(id[1]) + "</div>" +
+    '<div class="score">' + esc(L.rOf.replace("%1", n)) + "</div></div>" +
+    '<p class="lead" style="margin-top:20px">' + esc(id[2]) + "</p>" +
+    '<div class="callout open"><b>' + esc(L.rChallenge) + ":</b> " + esc(id[3]) + "</div>" +
+    "<h3>" + esc(L.rBreak) + "</h3>";
+  for (var i = 0; i < 3; i++) {
+    h += '<div class="meter"><div class="top"><b>' + L.rSkills[i] + "</b><span>" + sc[i] + "/3</span></div>" +
+      '<div class="track"><div class="fill" style="width:' + (sc[i] / 3 * 100) + '%"></div></div></div>';
+  }
+  h += '<div class="callout">' + L.rNote + "</div>";
+  return h + "</section>";
+};
+
+V.card = function () {
+  var L = t(), id = L.ids[band(total())];
+  var h = '<section class="panel"><h3>' + esc(L.idTitle) + '</h3><div class="idcard">' +
+    '<div class="cap">' + esc(L.idIdentity) + "</div>" +
+    '<div style="font-size:22px;font-weight:800;margin-bottom:16px">' + id[0] + " " + esc(id[1]) + "</div>" +
+    field("input", "card.name", esc(L.idName), "", L.idNamePh);
+
+  h += '<label><span class="q">' + esc(L.idSkill) + '</span><select data-k="card.skill"><option value="">—</option>';
+  for (var i = 0; i < L.idSkills.length; i++) {
+    h += '<option value="' + esc(L.idSkills[i]) + '"' + (S.card.skill === L.idSkills[i] ? " selected" : "") + ">" + esc(L.idSkills[i]) + "</option>";
+  }
+  h += "</select></label>";
+  h += field("textarea", "card.helps", L.idHelps, "");
+  h += field("textarea", "card.replaces", L.idReplaces, "");
+  h += "</div>";
+
+  h += "<h3>" + esc(L.idRules) + '</h3><p class="hint">' + esc(L.idRulesTip) + "</p>";
+  for (var j = 0; j < 3; j++) {
+    var key = "card.r" + (j + 1);
+    h += '<div class="rule"><div class="n">' + esc(L.rules[j][0]) + "</div>" +
+      '<textarea data-k="' + key + '" placeholder="' + esc(L.rules[j][1]) + '">' + esc(get(key)) + "</textarea></div>";
+  }
+  h += '<div class="actions">' +
+    '<button class="btn" id="printBtn">' + esc(L.idPrint) + "</button>" +
+    '<button class="btn primary" id="copyBtn">' + esc(L.idCopy) + "</button></div>" +
+    '<p class="gate" id="copyMsg" style="display:none;color:var(--ok)"></p>';
+  return h + "</section>";
+};
+
+V.final = function () {
+  var L = t();
+  var h = '<section class="panel"><h3>' + esc(L.fTitle) + "</h3>" +
+    '<div class="eq">' + esc(L.fQ) + "</div>" +
+    field("textarea", "fin.changed", esc(L.fQ), "");
+  for (var i = 0; i < L.fFs.length; i++) {
+    h += field("textarea", "fin.f" + (i + 1), esc(L.fFs[i]), "");
+  }
+  h += '<div class="mantra">' + esc(L.fMantra) + "</div>";
+  h += '<p class="lead">' + esc(L.fEnd) + "</p>";
+  h += '<div class="actions"><button class="btn" id="printBtn2">' + esc(L.idPrint) + "</button>" +
+    '<button class="btn primary" id="copyBtn2">' + esc(L.idCopy) + "</button>" +
+    '<span class="spacer"></span>' +
+    '<button class="btn danger ghost" id="restartBtn">' + esc(L.restart) + "</button></div>" +
+    '<p class="gate" id="copyMsg" style="display:none;color:var(--ok)"></p>';
+  return h + "</section>";
+};
+
+/* =========================================================================
+   8. GATES
+   ========================================================================= */
+function gate() {
+  var k = STEPS[S.step], L = t();
+  if (k === "cp1" && !S.cp1.choice) return L.gateChoice;
+  if (k === "cp1r" && !S.cp1.reflect.trim()) return L.gateText;
+  if (k === "cp2" && !S.cp2.choice) return L.gateChoice;
+  if (k === "cp2r" && !S.cp2.reflect.trim()) return L.gateText;
+  if (k === "cp3" && !S.cp3.choice) return L.gateChoice;
+  if (k === "cp3r" && !S.cp3.reflect.trim()) return L.gateText;
+  return null;
+}
+
+/* =========================================================================
+   9. RENDER
+   ========================================================================= */
+var timerId = null;
+function render() {
+  var L = t();
+  document.documentElement.lang = L.htmlLang;
+  $("brandTitle").textContent = L.brand;
+  $("brandSub").textContent = L.brandSub;
+  $("langLabel").textContent = L.other;
+  $("foot").textContent = L.foot;
+
+  /* path */
+  var ph = "", cur = NODE_OF[S.step], icons = ["▶", "🔍", "🧠", "🧩", "🧭"];
+  for (var i = 0; i < 5; i++) {
+    var cls = i < cur ? "done" : i === cur ? "now" : "";
+    ph += '<div class="node ' + cls + '"><span class="dot" aria-hidden="true">' + icons[i] + "</span>" +
+      "<small>" + esc(L.nodes[i]) + "</small></div>";
+    if (i < 4) ph += '<span class="link' + (i < cur ? " on" : "") + '"></span>';
+  }
+  $("path").innerHTML = ph;
+  $("barFill").style.width = (S.step / (STEPS.length - 1) * 100) + "%";
+  $("stepCount").textContent = L.step.replace("%1", S.step + 1).replace("%2", STEPS.length);
+
+  /* screen */
+  if (timerId) { clearInterval(timerId); timerId = null; }
+  var body = V[STEPS[S.step]]();
+
+  /* nav */
+  var g = gate(), navH = '<div class="actions">';
+  if (S.step > 0) navH += '<button class="btn" data-go="' + (S.step - 1) + '">' + esc(L.prev) + "</button>";
+  navH += '<span class="spacer"></span>';
+  if (S.step < STEPS.length - 1 && S.step > 0) {
+    navH += '<button class="btn primary" id="nextBtn"' + (g ? " disabled" : "") + ">" + esc(L.next) + "</button>";
+  }
+  navH += "</div>";
+  if (g) navH += '<p class="gate" role="status">⚠ ' + esc(g) + "</p>";
+  if (S.step > 0 && S.step < STEPS.length - 1) {
+    navH += '<div class="actions"><button class="btn ghost danger" id="restartBtn" style="font-size:13px;padding:8px 14px">' + esc(L.restart) + "</button></div>";
+  }
+  if (!store.available && S.step === 0) {
+    body += '<div class="callout warn" style="margin-top:16px">⚠ ' + esc(L.noStore) + "</div>";
+  }
+
+  $("screen").innerHTML = body + (S.step > 0 ? navH : "");
+  postHeight();
+  try { $("screen").focus({ preventScroll: true }); } catch (e) {}
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function go(n) {
+  if (n > S.step && gate()) return;
+  S.step = Math.max(0, Math.min(STEPS.length - 1, n));
+  save(); render();
+}
+
+/* =========================================================================
+   10. WIRING — bound once to the stable #screen container, never per render,
+   otherwise listeners accumulate and every click fires N times.
+   ========================================================================= */
+function wire() {
+  var sc = $("screen");
+
+  sc.addEventListener("input", function (e) {
+    var k = e.target.getAttribute("data-k");
+    if (!k) return;
+    set(k, e.target.value); save();
+    var b = $("nextBtn"); if (b) { var g = gate(); b.disabled = !!g; }
+  });
+  sc.addEventListener("change", function (e) {
+    var k = e.target.getAttribute("data-k");
+    if (k && e.target.tagName === "SELECT") { set(k, e.target.value); save(); }
+  });
+
+  sc.addEventListener("click", function (e) {
+    var el = e.target.closest("[data-go]");
+    if (el) { go(Number(el.getAttribute("data-go"))); return; }
+
+    var ch = e.target.closest("[data-group]");
+    if (ch) {
+      var grp = ch.getAttribute("data-group");
+      S[grp].choice = Number(ch.getAttribute("data-pts"));
+      save(); render(); return;
+    }
+
+    var id = e.target.id;
+    if (id === "nextBtn") { go(S.step + 1); return; }
+    if (id === "startMem") { startMemory(); return; }
+    if (id === "revealFacts") { S.cp2.showFacts = true; save(); render(); return; }
+    if (id === "toR2") { S.cp3.round = 2; save(); render(); return; }
+    if (id === "backR1") { S.cp3.round = 1; save(); render(); return; }
+    if (id === "printBtn" || id === "printBtn2") { window.print(); return; }
+    if (id === "copyBtn" || id === "copyBtn2") { copyTranscript(); return; }
+    if (id === "restartBtn") {
+      if (confirm(t().restartAsk)) { store.del(KEY); S = blank(); save(); render(); }
+      return;
+    }
+  });
+
+  sc.addEventListener("keydown", function (e) {
+    var ch = e.target.closest("[role=radio]");
+    if (ch && (e.key === " " || e.key === "Enter")) { e.preventDefault(); ch.click(); }
+  });
+}
+
+/* memory timer */
+function startMemory() {
+  S.cp2.started = true; S.cp2.showFacts = false; render();
+  var left = TIMER_SECONDS, clock = $("clock"), sr = $("timerSR");
+  timerId = setInterval(function () {
+    left--;
+    if (clock) {
+      clock.textContent = left;
+      if (left <= 10) clock.classList.add("low");
+    }
+    if (sr && (left === 30 || left === 10 || left === 5)) sr.textContent = left + "";
+    if (left <= 0) {
+      clearInterval(timerId); timerId = null;
+      S.cp2.started = false; S.cp2.revealed = true; save(); render();
+    }
+  }, 1000);
+}
+
+/* transcript */
+function buildTranscript() {
+  var L = t(), T = L.tr, n = total(), id = L.ids[band(n)], sc = scores();
+  var B = T.blank, nl = "\n";
+  function line(k, v) { return k + ": " + (String(v || "").trim() || B) + nl; }
+  var o = T.head + nl + "=".repeat(56) + nl + nl;
+  o += line(T.name, S.card.name);
+  o += line(T.identity, id[0] + " " + id[1]);
+  o += line(T.total, n + " / 9") + nl;
+
+  o += T.cp1 + " (" + sc[0] + "/3)" + nl + "-".repeat(40) + nl;
+  o += line(T.first, S.cp1.pasted);
+  for (var i = 0; i < L.c1Cards.length; i++) o += line(L.c1Cards[i][0], S.cp1["a" + (i + 1)]);
+  o += line(T.choice, S.cp1.choice ? L.c1Opts[S.cp1.choice - 1][0] : "");
+  o += line(T.reflect, S.cp1.reflect) + nl;
+
+  o += T.cp2 + " (" + sc[1] + "/3)" + nl + "-".repeat(40) + nl;
+  o += line(T.recall, S.cp2.recall);
+  o += line(T.choice, S.cp2.choice ? L.c2Opts[S.cp2.choice - 1][0] : "");
+  o += line(T.reflect, S.cp2.reflect) + nl;
+
+  o += T.cp3 + " (" + sc[2] + "/3)" + nl + "-".repeat(40) + nl;
+  var keys = ["problem", "s1", "s2", "s3", "best"];
+  for (var j = 0; j < L.c3F.length; j++) o += line(L.c3F[j][0], S.cp3[keys[j]]);
+  o += line(T.ai, S.cp3.ai);
+  for (var k = 0; k < L.c3C.length; k++) o += line(L.c3C[k], S.cp3["c" + (k + 1)]);
+  o += line(T.choice, S.cp3.choice ? L.c3Opts[S.cp3.choice - 1][0] : "");
+  o += line(T.reflect, S.cp3.reflect) + nl;
+
+  o += T.card + nl + "-".repeat(40) + nl;
+  o += line(T.skill, S.card.skill);
+  o += line(T.helps, S.card.helps);
+  o += line(T.replaces, S.card.replaces);
+  o += T.rules + ":" + nl;
+  for (var r = 0; r < 3; r++) {
+    o += "  " + (r + 1) + ". " + (String(S.card["r" + (r + 1)] || "").trim() || L.rules[r][1]) + nl;
+  }
+  o += nl + T.fin + nl + "-".repeat(40) + nl;
+  o += line(L.fQ, S.fin.changed);
+  for (var f = 0; f < L.fFs.length; f++) o += line(L.fFs[f], S.fin["f" + (f + 1)]);
+  o += nl + L.fMantra + nl;
+  return o;
+}
+
+function copyTranscript() {
+  var o = buildTranscript(), L = t();
+  var done = function () {
+    var m = $("copyMsg");
+    if (m) { m.textContent = L.idCopied; m.style.display = "flex"; }
+  };
+  /* Clipboard API needs a secure context AND clipboard-write permission, which
+     a cross-origin Wix iframe may withhold. Always keep a visible escape hatch. */
+  var fail = function () { manualCopy(o); };
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(o).then(done, function () { fallbackCopy(o, done, fail); });
+    } else fallbackCopy(o, done, fail);
+  } catch (e) { fail(); }
+}
+function fallbackCopy(text, cb, onFail) {
+  var ta = document.createElement("textarea");
+  ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+  document.body.appendChild(ta); ta.select();
+  var okd = false;
+  try { okd = document.execCommand("copy"); } catch (e) { okd = false; }
+  document.body.removeChild(ta);
+  okd ? cb() : onFail();
+}
+/* Last resort: show the text on the page, pre-selected, so the student can
+   still press Ctrl+C. Never a dead end. */
+function manualCopy(text) {
+  var L = t(), host = $("manualWrap");
+  if (!host) {
+    host = document.createElement("div");
+    host.id = "manualWrap";
+    host.className = "callout warn";
+    host.style.marginTop = "16px";
+    host.innerHTML = '<p style="margin:0 0 8px"><b>' + esc(L.copyManual) + "</b></p>" +
+      '<textarea id="manualBox" rows="10" style="width:100%;font-family:monospace;font-size:12px"></textarea>';
+    $("screen").appendChild(host);
+  }
+  var box = $("manualBox");
+  box.value = text;
+  box.focus(); box.select();
+  postHeight();
+}
+
+/* Wix iframe height (harmless everywhere else) */
+function postHeight() {
+  try {
+    var px = Math.ceil(document.documentElement.scrollHeight) + 24;
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ type: "dml:height", px: px }, "*");
+    }
+  } catch (e) {}
+}
+window.addEventListener("resize", postHeight);
+
+/* language */
+$("langBtn").addEventListener("click", function () {
+  S.lang = S.lang === "es" ? "en" : "es";
+  save(); render();
+});
+
+wire();
+render();
+setTimeout(postHeight, 400);
+</script>
+</body>
+</html>

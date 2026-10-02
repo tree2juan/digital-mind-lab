@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>¿Quién Está Pensando: Usted o la Tecnología? · Digital Mind Lab</title>
-<meta name="description" content="A Digital Mind Identity WebQuest / Un WebQuest de Identidad Mental Digital">
+<title>El Laboratorio de Mente Digital · Un WebQuest de Identidad de Pensamiento Digital</title>
+<meta name="description" content="The Digital Mind Lab: a Digital Thinking Identity WebQuest / El Laboratorio de Mente Digital: un WebQuest de Identidad de Pensamiento Digital">
+<meta name="author" content="Charles Niño, Juan José Betancour, Santiago Castrillón">
 <style>
 :root{
   --bg:#0a0e1a; --panel:#121829; --panel2:#1a2236; --line:#2a3450;
@@ -47,21 +48,22 @@ header{
 }
 .langbtn:hover{border-color:var(--accent)}
 
-/* ---------- path ---------- */
-.path{display:flex;align-items:center;gap:4px;padding:16px 0 4px;flex-wrap:wrap}
-.node{display:flex;align-items:center;gap:7px;flex:none}
-.dot{
-  width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
-  background:var(--panel2);border:2px solid var(--line);font-size:15px;
-  transition:.25s;
+/* ---------- section tabs (same headings, same order as the WebQuest document) ---------- */
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:16px 0 4px}
+@media(min-width:640px){.tabs{grid-template-columns:repeat(6,1fr)}}
+.tab{
+  display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;
+  background:var(--panel2);border:1px solid var(--line);border-radius:10px;
+  color:var(--muted);font-size:12px;font-weight:600;line-height:1.2;letter-spacing:.2px;
+  padding:9px 4px;transition:.2s;
 }
-.node.done .dot{background:rgba(52,211,153,.16);border-color:var(--ok)}
-.node.now .dot{border-color:var(--accent);background:rgba(77,208,225,.16);box-shadow:0 0 0 4px rgba(77,208,225,.13)}
-.node small{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.3px}
-.node.now small{color:var(--accent)}
-.node.done small{color:var(--ok)}
-.link{flex:1;height:2px;background:var(--line);min-width:10px;border-radius:2px}
-.link.on{background:linear-gradient(90deg,var(--ok),var(--accent))}
+.tab .ti{font-size:16px;line-height:1}
+.tab .tl{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tab:hover:not(:disabled){border-color:var(--accent2);color:var(--text)}
+.tab.done{border-color:var(--ok);color:var(--ok)}
+.tab.now{border-color:var(--accent);color:var(--accent);background:rgba(77,208,225,.12);box-shadow:0 0 0 3px rgba(77,208,225,.12)}
+.tab:disabled{opacity:.45;cursor:not-allowed}
+[hidden]{display:none!important}
 .bar{height:5px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:12px 0 22px}
 .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s ease}
 .stepcount{font-size:11.5px;color:var(--muted);text-align:right;margin:-16px 0 20px}
@@ -131,6 +133,26 @@ input::placeholder,textarea::placeholder{color:#5d6b8a}
 }
 .choice[aria-checked=true] .k .tick{background:var(--accent);border-color:var(--accent);color:#06202a}
 .choice .d{font-size:14px;font-weight:400;line-height:1.55;color:var(--text)}
+.choice.tile{cursor:default}
+.choice.tile:hover{border-color:var(--line);transform:none}
+
+.checklist{list-style:none;padding:0;margin:0 0 6px;display:grid;gap:8px}
+@media(min-width:640px){.checklist{grid-template-columns:1fr 1fr}}
+.checklist li{
+  background:var(--panel2);border:1px solid var(--line);border-radius:10px;
+  padding:10px 14px;font-size:14.5px;line-height:1.5;display:flex;gap:10px;
+}
+.checklist li::before{content:"✓";color:var(--ok);font-weight:800;flex:none}
+
+.reflist{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.reflist li{
+  background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--accent);
+  border-radius:10px;padding:14px 16px;
+}
+.reflist .rt{font-weight:700;font-size:15px;line-height:1.45;margin-bottom:6px}
+.reflist a{color:var(--accent);font-size:13px;line-height:1.5;word-break:break-all}
+.reflist a:hover{color:var(--text)}
+.pre{white-space:pre-wrap}
 
 .factlist{display:grid;gap:9px;margin:0 0 18px}
 @media(min-width:640px){.factlist{grid-template-columns:1fr 1fr}}
@@ -180,6 +202,7 @@ input::placeholder,textarea::placeholder{color:#5d6b8a}
   padding:14px;margin:0 0 11px;
 }
 .rule .n{font-weight:800;color:var(--accent2);font-size:13px;letter-spacing:.6px;margin-bottom:7px}
+.rule p{margin:0;font-size:14.5px}
 
 /* ---------- buttons ---------- */
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
@@ -208,14 +231,24 @@ button{font:inherit;cursor:pointer}
   padding:18px;margin:22px 0 16px;color:var(--accent);
 }
 .foot{text-align:center;color:var(--muted);font-size:12px;padding:22px 0 0}
+.credits{
+  max-width:640px;margin:18px auto 0;padding:14px 0 0;border-top:1px solid var(--line);
+  text-align:center;color:var(--muted);font-size:12.5px;line-height:1.6;
+}
+.credits .cap{font-size:10.5px;letter-spacing:1.6px;font-weight:700;color:var(--accent);text-transform:uppercase;margin:0 0 6px}
+.credits dl{margin:0}
+.credits dt{display:inline;font-weight:700;color:var(--text)}
+.credits dd{display:inline;margin:0 0 0 4px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 @media print{
   body{background:#fff;color:#000}
-  header,.path,.bar,.stepcount,.actions,.foot,nav{display:none!important}
+  header,.tabs,.bar,.stepcount,.actions,.foot,nav{display:none!important}
   .panel,.idcard,.rule{border-color:#999;background:#fff;color:#000;box-shadow:none}
   .idcard .cap,.rule .n{color:#000}
   h1,h2,h3{color:#000}
+  .credits{color:#333;border-color:#999}
+  .credits dt,.credits .cap{color:#000}
 }
 </style>
 </head>
@@ -225,19 +258,20 @@ button{font:inherit;cursor:pointer}
   <div class="brand">
     <div class="mark" aria-hidden="true">🧠</div>
     <div>
-      <b id="brandTitle">Digital Mind Lab</b>
-      <span id="brandSub">A Digital Mind Identity WebQuest</span>
+      <b id="brandTitle">The Digital Mind Lab</b>
+      <span id="brandSub">A Digital Thinking Identity WebQuest</span>
     </div>
   </div>
   <button class="langbtn" id="langBtn" type="button"><span>🌐</span><span id="langLabel">English</span></button>
 </header>
 
 <div class="wrap">
-  <nav class="path" id="path" aria-label="Progress"></nav>
+  <nav class="tabs" id="tabs" aria-label="WebQuest sections"></nav>
   <div class="bar"><i id="barFill" style="width:0%"></i></div>
   <div class="stepcount" id="stepCount"></div>
   <main id="screen" tabindex="-1"></main>
   <p class="foot" id="foot"></p>
+  <footer class="credits" id="credits"></footer>
 </div>
 
 <script>
@@ -248,7 +282,7 @@ button{font:inherit;cursor:pointer}
    ========================================================================= */
 var QS = new URLSearchParams(location.search);
 var TIMER_SECONDS = Math.max(5, parseInt(QS.get("t"), 10) || 90);
-var KEY = "dml.v1";
+var KEY = "dml.v2";
 
 /* =========================================================================
    2. STORAGE — never throws. Wix Editor/Preview blocks localStorage.
@@ -271,15 +305,18 @@ var store = (function () {
 function blank() {
   return {
     lang: "es", step: 0,
-    cp1: { pasted: "", a1: "", a2: "", a3: "", a4: "", a5: "", choice: null, reflect: "" },
-    cp2: { started: false, revealed: false, showFacts: false, recall: "", choice: null, reflect: "" },
-    cp3: { round: 1, problem: "", s1: "", s2: "", s3: "", best: "", ai: "", c1: "", c2: "", c3: "", c4: "", choice: null, reflect: "" },
+    cp1: { pasted: "", correct: "", trust: "", source: "", reflect: "" },
+    cp2: { started: false, revealed: false, showFacts: false, recall: "", reflect: "" },
+    cp3: { round: 1, first: "", ai: "", improved: "", compare: "", reflect: "" },
+    self: { cp1: null, cp2: null, cp3: null },
     card: { name: "", skill: "", helps: "", replaces: "", r1: "", r2: "", r3: "" },
-    fin: { changed: "", f1: "", f2: "", f3: "", f4: "" }
+    fin: { learned: "", changed: "" }
   };
 }
 var S = blank();
 (function load() {
+  /* dml.v1 saved answers for the old page order; they no longer map onto these pages. */
+  store.del("dml.v1");
   try {
     var raw = store.get(KEY);
     if (raw) {
@@ -301,65 +338,92 @@ function save() { try { store.set(KEY, JSON.stringify(S)); } catch (e) {} }
 var C = {
   en: {
     code: "en", other: "Español", htmlLang: "en",
-    brand: "Digital Mind Lab", brandSub: "A Digital Mind Identity WebQuest",
-    nodes: ["START", "CRITICAL", "MEMORY", "PROBLEM", "IDENTITY"],
-    step: "Step %1 of %2", prev: "← Previous", next: "Next →",
+    brand: "The Digital Mind Lab", brandSub: "A Digital Thinking Identity WebQuest",
+    navLabel: "WebQuest sections",
+    sections: ["Introduction", "Task", "Process", "Result", "Resources", "Evaluation"],
+    locked: "Complete the three steps of the Process first.",
+    step: "Page %1 of %2", prev: "← Previous", next: "Next →",
     restart: "Restart WebQuest",
     restartAsk: "This will erase every answer you have written and start again from the beginning.\n\nAre you sure?",
     foot: "The goal is not to stop using technology. The goal is to make sure technology remains the tool — and the human remains the thinker.",
-    gateChoice: "Choose the option that best describes you before continuing.",
     gateText: "Write something before continuing. It does not need to be perfect.",
+    gateFirst: "Paste or summarise the first answer you received before continuing.",
+    gateMem: "Write what you remember, then reveal the list and compare before continuing.",
+    gateSolve: "Write your first solution, your improved solution and your comparison before continuing.",
+    gateChoice: "Choose one answer in each area before continuing.",
+    gateCard: "Choose your strongest thinking skill and complete both explanations before continuing.",
     noStore: "Heads up: this browser is blocking local storage, so your answers will be lost if you refresh. On the published site this normally works.",
+    newTab: "(opens in a new tab)",
 
-    /* --- welcome --- */
-    wTitle: "Who Is Thinking: You or the Technology?",
-    wSub: "A DIGITAL MIND IDENTITY WEBQUEST",
-    wBody1: "Welcome to the Digital Mind Lab.",
-    wBody2: "Every day, we use search engines, smartphones, calculators, GPS and artificial intelligence to help us think, remember and solve problems. These tools can be powerful — but what happens when we rely on them so much that we stop exercising some of those abilities ourselves?",
-    wAsk: "Am I using technology as a tool for my brain, or as a replacement for my brain?",
-    wBtn: "🚪 Enter the Digital Mind Lab",
-
-    /* --- mission --- */
-    mTitle: "The Mission",
-    mEQ: "When does technology help us think, and when does it begin to think for us?",
-    mLead: "You will investigate three areas of your own mind.",
-    mCp: [
-      ["🔍", "Checkpoint 1", "Critical Thinking"],
-      ["🧠", "Checkpoint 2", "Memory"],
-      ["🧩", "Checkpoint 3", "Problem-Solving"]
+    /* --- credits --- */
+    credTitle: "Credits",
+    cred: [
+      ["Created by", "Charles Niño, Juan José Betancour, Santiago Castrillón"],
+      ["For", "Universidad Pontificia Bolivariana"],
+      ["Professor", "Juan Diego, Doctoral Candidate in Human and Social Sciences"],
+      ["In fulfilment of", "English Communicative Competence II"]
     ],
-    mPromise: "At every checkpoint you will complete a challenge and make a choice. Your choices will reveal your <b>Digital Thinking Identity</b>.",
-    mNote: "There are no right answers here, and nothing you write is graded for correctness. The only thing that matters is that you answer honestly — an honest answer you did not expect is worth more than a good-looking one.",
 
-    /* --- cp1 --- */
-    c1Title: "Should I Believe the First Answer?",
-    c1Kicker: "CHECKPOINT 1 · CRITICAL THINKING",
-    c1StepA: "Step A — Get the first answer",
-    c1Ask: "Ask an AI tool or search the internet:",
+    /* --- Introduction --- */
+    iTitle: "The Digital Mind Lab",
+    iSub: "A DIGITAL THINKING IDENTITY WEBQUEST",
+    iHead: "Introduction",
+    iP: [
+      "Technology has become a regular part of how people learn, find information, remember details and solve problems. The tool is a questionnaire based on the cognitive offloading theory by Evan F. Risko and Sam J. Gilbert (2016), which explains how people reduce mental effort by using external tools or actions to perform cognitive tasks.",
+      "Through three checkpoints focused on critical thinking, memory and problem-solving, people collect evidence about how they think both with and without technology. At the end of the task, they receive a “Digital Thinking Identity Card” that reflects their current habits and gives them an opportunity to consider which tasks they are comfortable handing over to technology and which skills they want to continue developing on their own.",
+      "The task is also designed to be accessible and private: it is bilingual in English and Spanish, works on phones and computers, requires no account or installation, and keeps everyone’s responses on their own device."
+    ],
+
+    /* --- Task --- */
+    tHead: "Task",
+    tLead: "In this WebQuest, people will use their own experience as the main source of information.",
+    tCpIntro: "There are three checkpoints:",
+    tCps: [["🔍", "Critical Thinking"], ["🧠", "Memory"], ["🧩", "Problem-Solving"]],
+    tEvery: "In every checkpoint, people must do an activity and then think about what happened. At the end, the website provides people with a Digital Thinking Identity.",
+    tIdIntro: "The three identities are:",
+    tNotGrade: "These identities are not a grade. They only show how much a person uses technology to help with thinking.",
+    tHaveIntro: "At the end of the WebQuest, the student will have:",
+    tHave: [
+      "Three short reflections",
+      "A Digital Thinking Identity Card",
+      "Their strongest thinking skill",
+      "An explanation of when technology helps them",
+      "An explanation of when technology replaces their thinking",
+      "Three Cognitive Fitness Rules",
+      "A final reflection"
+    ],
+
+    /* --- Process --- */
+    pHead: "Process",
+    pLead: "The WebQuest is divided into three main activities that help people think about the way they use technology in daily life.",
+    pSteps: [
+      ["🔍", "Step 1: Critical Thinking", "In the first activity, people ask an AI tool or search engine a question and look at the first answer they receive. Instead of accepting the answer immediately, they think about whether the information is correct, if they should trust it, and if it is necessary to check another source. At the end, they write a short reflection about how they normally use technology when searching for information."],
+      ["🧠", "Step 2: Memory", "In the second activity, people read a short list of information for a limited time. After the information disappears, they write everything they can remember and then compare their answers with the original list. This activity helps them think about how much they depend on technology to remember information and how much they use their own memory."],
+      ["🧩", "Step 3: Problem-Solving", "In the third activity, people receive a simple problem and first try to solve it without using any digital tool. After creating their first solution, they can use AI or another type of technology to improve or change their answer. Then, they compare both solutions and write a short reflection about how technology affected the way they solved the problem."]
+    ],
+    kStep: "PROCESS · STEP %1 OF 3",
+    kReflect: "PROCESS · STEP %1 · REFLECTION",
+
+    /* --- Step 1 --- */
+    c1Ask: "Ask an AI tool or a search engine this question:",
     c1Q: "“Is social media good or bad for students?”",
     c1Paste: "Paste or summarise the FIRST answer you receive.",
     c1PasteTip: "Do not clean it up, do not improve it, and do not ask again to get a better one. We want the answer you would actually have walked away with.",
-    c1StepB: "Step B — Interrogate that answer",
-    c1Cards: [
-      ["Who created this information?", "Not “which app” — who is accountable if it is wrong? Who could be asked to justify it, or made to correct it?"],
-      ["What evidence is provided?", "Count the actual sources. A named study, a named researcher, a date, a number you could go and check. “Studies show” is not a source — it is the shape of one."],
-      ["Is another perspective possible?", "Whose view is missing? A student who found their study group through social media? A teacher who lost a class to it? A student with no data plan, excluded from both?"],
-      ["Can the claim be verified?", "Pick one specific sentence. Could you check it today, with a source you could name? Notice that “it depends on how it is used” cannot be wrong — which is exactly why it is worthless."],
-      ["Is anything important missing?", "What about your reality specifically? Your country, your university, your connection, the cost of your data, the platform your class actually coordinates on?"]
+    c1Think: "Before accepting it, think about the answer:",
+    c1Checks: [
+      ["Is the information correct?", "What evidence does it give? A named study, a named researcher, a date, a number you could go and check? “Studies show” is not a source — it is the shape of one."],
+      ["Should you trust it?", "Who created this information, and who is accountable if it is wrong? Whose view is missing — a student who found their study group through social media, or one with no data plan?"],
+      ["Is it necessary to check another source?", "Pick one specific sentence. Could you check it today, with a source you could name? Is anything important missing about your own reality — your country, your university, your connection?"]
     ],
-    c1Choose: "What best describes you?",
     c1Opts: [
       ["ACCEPT", "I usually trust the first answer because it sounds correct.", 1],
       ["CHECK", "I usually check another source before deciding.", 2],
       ["QUESTION", "I compare evidence, question assumptions, and form my own conclusion.", 3]
     ],
-    c1RTitle: "Checkpoint 1 · Reflection",
-    c1RQ: "What is the difference between <b>receiving</b> information and <b>thinking critically</b> about information?",
-    c1RTip: "You just did both, in that order, in the last few minutes. Use what happened.",
+    c1RQ: "How do you normally use technology when you search for information?",
+    c1RTip: "Think about what you just did. Did you accept the first answer, check it, or question it? Is that what you usually do?",
 
-    /* --- cp2 --- */
-    c2Title: "Do I Know It, or Do I Know Where to Find It?",
-    c2Kicker: "CHECKPOINT 2 · MEMORY",
+    /* --- Step 2 --- */
     c2Intro: "You are about to see ten short facts about how human memory actually works. You will have %1 seconds. Then they disappear.",
     c2Start: "▶ Start Memory Challenge",
     c2Watch: "Memorise as much as you can",
@@ -370,15 +434,13 @@ var C = {
     c2Trap: "<b>Before you count how many you got —</b><br>Look at Fact 1 again. You just tried to memorise a sentence explaining that people do not memorise things they know they can look up later. How did that go?<br><br>Fact 4 said that pulling a memory out strengthens it more than re-reading it. The box you just filled in was exactly that. You did not only take a test — you strengthened whatever you managed to retrieve.<br><br>And if you took a screenshot of the list a minute ago, <b>Fact 6</b> has something to tell you.",
     c2Qs: ["How many facts did you remember?", "Did you make a real effort to remember them?", "Did you assume you could look them up later?", "Is knowing something the same as knowing where to find it?"],
     c2QNote: "Think about these four questions. You do not have to type answers — the reflection comes next.",
-    c2Choose: "Which describes you?",
     c2Opts: [
       ["STORE IT OUTSIDE", "I normally depend on my device to remember information for me.", 1],
       ["REMEMBER THE IMPORTANT PARTS", "I remember important ideas but use technology for details.", 2],
       ["MEMORY FIRST", "I actively try to understand and remember important information before relying on technology.", 3]
     ],
-    c2RTitle: "Checkpoint 2 · Reflection",
-    c2RQ: "Complete this sentence:",
-    c2Stem: "“When I know information will always be available online, I tend to …”",
+    c2RQ: "How much do you depend on technology to remember information, and how much do you use your own memory?",
+    c2RTip: "You can start with: “When I know information will always be available online, I tend to …”",
     facts: [
       "When people expect information to stay available online, they remember the information itself less well — but remember <b>where to find it</b> better.",
       "A smartphone lying face-down and switched off on the desk still reduces available mental capacity.",
@@ -392,9 +454,7 @@ var C = {
       "People who navigate by GPS engage spatial memory less than people who navigate from memory."
     ],
 
-    /* --- cp3 --- */
-    c3Title: "Brain First or AI First?",
-    c3Kicker: "CHECKPOINT 3 · PROBLEM-SOLVING",
+    /* --- Step 3 --- */
     c3Scen: "The Group Project",
     c3Lead: "<b>You have eight days.</b> Your group of five has to deliver a graded presentation. It has to be genuinely collaborative — your professor said explicitly that a presentation where two people clearly did everything will be marked down.",
     c3Lead2: "But your group looks like this:",
@@ -409,47 +469,46 @@ var C = {
     c3Q: "How does this group produce a genuinely shared piece of work in eight days?",
     c3R1: "🔒 ROUND 1 — TECHNOLOGY LOCKED",
     c3R1Body: "For the next few minutes, solve this <b>without</b> Google, AI, calculators or any digital assistance. Just you.",
-    c3F: [
-      ["What is the problem?", "State it in your own words — this is not the same as repeating the scenario back."],
-      ["Possible Solution 1", ""], ["Possible Solution 2", ""], ["Possible Solution 3", ""],
-      ["Which solution is best, and why?", ""]
-    ],
+    c3First: "Your first solution",
+    c3FirstTip: "State the problem in your own words, then explain how the group could solve it.",
     c3ToR2: "🔓 Unlock Technology → Round 2",
     c3R2: "🔓 ROUND 2 — TECHNOLOGY UNLOCKED",
-    c3R2Body: "Now you may use AI or a search engine. Ask it the same problem.",
+    c3R2Body: "Now you may use AI or another type of technology. Ask it the same problem, then use what it suggests to improve or change your answer.",
+    c3Mine: "Your first solution (Round 1)",
     c3AI: "Paste or summarise what technology suggested.",
-    c3C: [
-      "Did technology suggest something you had not considered?",
-      "Was your solution different?",
-      "Did trying it yourself help you understand it?",
-      "What thinking would you have skipped if you had asked AI immediately?"
-    ],
+    c3Improved: "Your improved or changed solution",
+    c3ImprovedTip: "Keep what still works from your first solution, and change what technology helped you see differently.",
+    c3Compare: "Compare both solutions",
+    c3CompareTip: "Did technology suggest something you had not considered? How is your first solution different? Did trying it yourself first help you understand the problem?",
     c3Back1: "← Back to Round 1",
-    c3Choose: "Which describes you?",
     c3Opts: [
       ["ASK FIRST", "My first reaction is usually to ask Google or AI for the solution.", 1],
       ["TRY AND THEN ASK", "I try briefly before asking technology for help.", 2],
       ["THINK, THEN AUGMENT", "I develop my own ideas first and then use technology to improve, verify or challenge them.", 3]
     ],
-    c3RTitle: "Checkpoint 3 · Reflection",
-    c3RQ: "What thinking would you have skipped if you had asked AI immediately?",
-    c3RTip: "You just solved this twice — once with your own mind, once with help. Somewhere between those two attempts is the thinking that only happens when nobody is helping you. Describe it.",
+    c3RQ: "How did technology affect the way you solved the problem?",
+    c3RTip: "You just solved this twice — once with your own mind, once with help. What changed between the two attempts? What thinking would you have skipped if you had asked AI immediately?",
 
-    /* --- results --- */
+    /* --- Result --- */
+    kResult: "RESULT · %1 OF 4",
+    sTitle: "Self-Evaluation",
+    sLead: "After completing the three activities, people answer a short self-evaluation based on their habits and responses. The WebQuest gives them one of three Digital Thinking Identities: Automatic Outsourcer, Assisted Thinker, or Cognitive Navigator. Finally, they write a reflection about what they learned and whether the activity changed the way they think about using technology.",
+    sHint: "For each area, choose the answer that best represents your habits. Be honest — this is not a grade.",
+    sQ: "What best describes you?",
     rTitle: "Your Digital Thinking Identity",
     rOf: "%1 / 9 points",
     rBreak: "Where your points came from",
     rSkills: ["🔍 Critical Thinking", "🧠 Memory", "🧩 Problem-Solving"],
     rChallenge: "Your challenge",
-    rNote: "This is a finding, not a grade. None of these three identities is better than another as a person — they describe how much of your thinking you currently <b>choose</b>, and that can change starting today.",
+    rNote: "The score is not a grade; it is only a way to show how much technology is being used to support or replace thinking.",
     ids: [
-      ["⚡", "The Automatic Outsourcer",
+      ["⚡", "Automatic Outsourcer",
         "Technology often becomes your first thinker. You value speed and convenience, but you may sometimes skip opportunities to exercise memory, critical thinking and problem-solving.",
         "Try thinking independently before reaching for technology."],
-      ["🔎", "The Assisted Thinker",
+      ["🔎", "Assisted Thinker",
         "You use a combination of your own thinking and digital assistance. Sometimes technology comes first, while at other times you investigate independently.",
         "Become more intentional about deciding when technology should help you."],
-      ["🧭", "The Cognitive Navigator",
+      ["🧭", "Cognitive Navigator",
         "You tend to use technology as a partner rather than a replacement for thinking. You investigate, question, remember important ideas and attempt solutions before asking technology to assist.",
         "Keep using technology strategically while staying open to the advantages it can offer."]
     ],
@@ -459,7 +518,7 @@ var C = {
     idName: "My name",
     idNamePh: "Write your name",
     idIdentity: "My Digital Thinking Identity",
-    idSkill: "My strongest cognitive skill is:",
+    idSkill: "My strongest thinking skill is:",
     idSkills: ["Critical Thinking", "Memory", "Problem-Solving"],
     idHelps: "Technology <b>helps</b> my thinking when:",
     idReplaces: "Technology <b>replaces</b> my thinking when:",
@@ -477,87 +536,117 @@ var C = {
 
     /* --- final --- */
     fTitle: "Final Reflection",
-    fQ: "After completing this WebQuest, has your view of technology changed?",
-    fFs: [
-      "What did you learn about your technology habits?",
-      "Which checkpoint surprised you the most?",
-      "What is one habit you could change?",
-      "How can you use AI without letting AI replace your own thinking?"
+    fEval: "Your final reflection is evaluated by how clearly you explain what you learned about your own use of technology.",
+    fQs: [
+      "What did you learn about your own use of technology?",
+      "Has this activity changed the way you think about using technology? How?"
     ],
     fMantra: "THINK → QUESTION → REMEMBER → SOLVE → THEN USE TECHNOLOGY",
-    fEnd: "The goal is not to stop using technology. The goal is to make sure technology remains the tool — and the human remains the thinker.",
-    fDone: "You have finished. 🧭",
+
+    /* --- Resources --- */
+    resHead: "Resources",
+    resNote: "",
+
+    /* --- Evaluation --- */
+    evHead: "Evaluation",
+    evP: "The evaluation is based on self-reflection and honesty. People choose the answers that best represent their habits and write short reflections about their experience. The WebQuest gives a score from 1 to 9 and uses it to show one of three Digital Thinking Identities. The score is not a grade; it is only a way to show how much technology is being used to support or replace thinking. The final reflection is evaluated by how clearly people explain what they learned about their own use of technology.",
 
     /* --- transcript --- */
     tr: {
-      head: "DIGITAL MIND LAB — WEBQUEST TRANSCRIPT",
+      head: "THE DIGITAL MIND LAB — WEBQUEST TRANSCRIPT",
       name: "Name", identity: "Digital Thinking Identity", total: "Total score",
-      cp1: "CHECKPOINT 1 — CRITICAL THINKING", cp2: "CHECKPOINT 2 — MEMORY",
-      cp3: "CHECKPOINT 3 — PROBLEM-SOLVING", res: "RESULTS", card: "IDENTITY CARD",
-      fin: "FINAL REFLECTION", first: "First answer received", choice: "Choice",
-      reflect: "Reflection", recall: "What I remembered", ai: "What technology suggested",
-      skill: "Strongest skill", helps: "Technology helps when", replaces: "Technology replaces when",
+      s1: "PROCESS · STEP 1 — CRITICAL THINKING", s2: "PROCESS · STEP 2 — MEMORY",
+      s3: "PROCESS · STEP 3 — PROBLEM-SOLVING", self: "RESULT · SELF-EVALUATION",
+      card: "RESULT · IDENTITY CARD", fin: "RESULT · FINAL REFLECTION",
+      first: "First answer received", reflect: "Reflection", recall: "What I remembered",
+      ai: "What technology suggested", skill: "Strongest thinking skill",
+      helps: "Technology helps when", replaces: "Technology replaces when",
       rules: "My three rules", blank: "(left blank)"
     }
   },
 
   es: {
     code: "es", other: "English", htmlLang: "es",
-    brand: "Laboratorio de Mente Digital", brandSub: "Un WebQuest de Identidad Mental Digital",
-    nodes: ["INICIO", "CRÍTICO", "MEMORIA", "PROBLEMA", "IDENTIDAD"],
-    step: "Paso %1 de %2", prev: "← Anterior", next: "Siguiente →",
+    brand: "El Laboratorio de Mente Digital", brandSub: "Un WebQuest de Identidad de Pensamiento Digital",
+    navLabel: "Secciones del WebQuest",
+    sections: ["Introducción", "Tarea", "Proceso", "Resultado", "Recursos", "Evaluación"],
+    locked: "Primero complete los tres pasos del Proceso.",
+    step: "Página %1 de %2", prev: "← Anterior", next: "Siguiente →",
     restart: "Reiniciar el WebQuest",
     restartAsk: "Esto va a borrar todas las respuestas que usted ha escrito y va a empezar de nuevo desde el principio.\n\n¿Está seguro?",
     foot: "El objetivo no es dejar de usar la tecnología. El objetivo es que la tecnología siga siendo la herramienta — y que el ser humano siga siendo quien piensa.",
-    gateChoice: "Escoja la opción que mejor lo describa antes de continuar.",
     gateText: "Escriba algo antes de continuar. No tiene que ser perfecto.",
+    gateFirst: "Pegue o resuma la primera respuesta que recibió antes de continuar.",
+    gateMem: "Escriba lo que recuerda, luego revele la lista y compare antes de continuar.",
+    gateSolve: "Escriba su primera solución, su solución mejorada y su comparación antes de continuar.",
+    gateChoice: "Escoja una respuesta en cada área antes de continuar.",
+    gateCard: "Escoja su habilidad de pensamiento más fuerte y complete las dos explicaciones antes de continuar.",
     noStore: "Aviso: este navegador está bloqueando el almacenamiento local, así que sus respuestas se pierden si recarga la página. En el sitio publicado esto normalmente sí funciona.",
+    newTab: "(se abre en una pestaña nueva)",
 
-    wTitle: "¿Quién Está Pensando: Usted o la Tecnología?",
-    wSub: "UN WEBQUEST DE IDENTIDAD MENTAL DIGITAL",
-    wBody1: "Bienvenido al Laboratorio de Mente Digital.",
-    wBody2: "Todos los días usamos buscadores, celulares, calculadoras, GPS e inteligencia artificial para ayudarnos a pensar, recordar y resolver problemas. Estas herramientas pueden ser muy poderosas — pero ¿qué pasa cuando dependemos tanto de ellas que dejamos de ejercitar algunas de esas capacidades por nuestra cuenta?",
-    wAsk: "¿Estoy usando la tecnología como herramienta para mi cerebro, o como reemplazo de mi cerebro?",
-    wBtn: "🚪 Entrar al Laboratorio de Mente Digital",
-
-    mTitle: "La Misión",
-    mEQ: "¿Cuándo nos ayuda la tecnología a pensar, y cuándo empieza a pensar por nosotros?",
-    mLead: "Usted va a investigar tres áreas de su propia mente.",
-    mCp: [
-      ["🔍", "Checkpoint 1", "Pensamiento Crítico"],
-      ["🧠", "Checkpoint 2", "Memoria"],
-      ["🧩", "Checkpoint 3", "Resolución de Problemas"]
+    credTitle: "Créditos",
+    cred: [
+      ["Creado por", "Charles Niño, Juan José Betancour, Santiago Castrillón"],
+      ["Para", "Universidad Pontificia Bolivariana"],
+      ["Profesor", "Juan Diego, candidato a doctor en Ciencias Humanas y Sociales"],
+      ["Como requisito del curso", "English Communicative Competence II"]
     ],
-    mPromise: "En cada checkpoint va a completar un reto y va a tomar una decisión. Sus decisiones van a revelar su <b>Identidad de Pensamiento Digital</b>.",
-    mNote: "Aquí no hay respuestas correctas, y nada de lo que escriba se califica por ser acertado. Lo único que importa es que responda con honestidad — una respuesta honesta que no esperaba vale más que una que se ve bien.",
 
-    c1Title: "¿Debería Creerle a la Primera Respuesta?",
-    c1Kicker: "CHECKPOINT 1 · PENSAMIENTO CRÍTICO",
-    c1StepA: "Paso A — Consiga la primera respuesta",
-    c1Ask: "Pregúntele a una IA o busque en internet:",
+    iTitle: "El Laboratorio de Mente Digital",
+    iSub: "UN WEBQUEST DE IDENTIDAD DE PENSAMIENTO DIGITAL",
+    iHead: "Introducción",
+    iP: [
+      "La tecnología se ha convertido en una parte habitual de la forma en que las personas aprenden, encuentran información, recuerdan detalles y resuelven problemas. La herramienta es un cuestionario basado en la teoría de la descarga cognitiva (cognitive offloading) de Evan F. Risko y Sam J. Gilbert (2016), que explica cómo las personas reducen el esfuerzo mental usando herramientas o acciones externas para realizar tareas cognitivas.",
+      "A través de tres checkpoints enfocados en el pensamiento crítico, la memoria y la resolución de problemas, las personas reúnen evidencia sobre cómo piensan con y sin tecnología. Al final de la tarea reciben una “Tarjeta de Identidad de Pensamiento Digital” que refleja sus hábitos actuales y les da la oportunidad de considerar qué tareas se sienten cómodas delegándole a la tecnología y qué habilidades quieren seguir desarrollando por su cuenta.",
+      "La tarea también está diseñada para ser accesible y privada: es bilingüe en inglés y español, funciona en celulares y computadores, no requiere cuenta ni instalación, y guarda las respuestas de cada persona en su propio dispositivo."
+    ],
+
+    tHead: "Tarea",
+    tLead: "En este WebQuest, las personas usarán su propia experiencia como la principal fuente de información.",
+    tCpIntro: "Hay tres checkpoints:",
+    tCps: [["🔍", "Pensamiento Crítico"], ["🧠", "Memoria"], ["🧩", "Resolución de Problemas"]],
+    tEvery: "En cada checkpoint, las personas deben hacer una actividad y luego pensar en lo que pasó. Al final, el sitio web les da una Identidad de Pensamiento Digital.",
+    tIdIntro: "Las tres identidades son:",
+    tNotGrade: "Estas identidades no son una nota. Solo muestran cuánto usa una persona la tecnología para ayudarse a pensar.",
+    tHaveIntro: "Al final del WebQuest, el estudiante tendrá:",
+    tHave: [
+      "Tres reflexiones cortas",
+      "Una Tarjeta de Identidad de Pensamiento Digital",
+      "Su habilidad de pensamiento más fuerte",
+      "Una explicación de cuándo la tecnología le ayuda",
+      "Una explicación de cuándo la tecnología reemplaza su pensamiento",
+      "Tres Reglas de Buen Estado Cognitivo",
+      "Una reflexión final"
+    ],
+
+    pHead: "Proceso",
+    pLead: "El WebQuest está dividido en tres actividades principales que ayudan a las personas a pensar en la forma en que usan la tecnología en su vida diaria.",
+    pSteps: [
+      ["🔍", "Paso 1: Pensamiento Crítico", "En la primera actividad, las personas le hacen una pregunta a una herramienta de IA o a un buscador y miran la primera respuesta que reciben. En lugar de aceptarla de inmediato, piensan si la información es correcta, si deberían confiar en ella y si es necesario revisar otra fuente. Al final, escriben una reflexión corta sobre cómo usan normalmente la tecnología cuando buscan información."],
+      ["🧠", "Paso 2: Memoria", "En la segunda actividad, las personas leen una lista corta de información durante un tiempo limitado. Cuando la información desaparece, escriben todo lo que pueden recordar y luego comparan sus respuestas con la lista original. Esta actividad les ayuda a pensar en cuánto dependen de la tecnología para recordar información y cuánto usan su propia memoria."],
+      ["🧩", "Paso 3: Resolución de Problemas", "En la tercera actividad, las personas reciben un problema sencillo y primero intentan resolverlo sin usar ninguna herramienta digital. Después de crear su primera solución, pueden usar IA u otro tipo de tecnología para mejorar o cambiar su respuesta. Luego comparan ambas soluciones y escriben una reflexión corta sobre cómo la tecnología afectó la forma en que resolvieron el problema."]
+    ],
+    kStep: "PROCESO · PASO %1 DE 3",
+    kReflect: "PROCESO · PASO %1 · REFLEXIÓN",
+
+    c1Ask: "Pregúntele a una herramienta de IA o a un buscador:",
     c1Q: "“¿Las redes sociales son buenas o malas para los estudiantes?”",
     c1Paste: "Pegue o resuma la PRIMERA respuesta que reciba.",
     c1PasteTip: "No la arregle, no la mejore y no vuelva a preguntar para obtener una mejor. Queremos la respuesta con la que usted se habría quedado en la vida real.",
-    c1StepB: "Paso B — Interrogue esa respuesta",
-    c1Cards: [
-      ["¿Quién creó esta información?", "No “cuál aplicación” — ¿quién responde si está equivocada? ¿A quién se le podría pedir que la justifique o que la corrija?"],
-      ["¿Qué evidencia se ofrece?", "Cuente las fuentes reales. Un estudio con nombre, un investigador, una fecha, una cifra que usted pueda ir a verificar. “Los estudios demuestran” no es una fuente: es la forma de una fuente."],
-      ["¿Es posible otra perspectiva?", "¿Qué mirada falta? ¿La de quien armó su grupo de estudio por redes? ¿La del docente que perdió la clase por ellas? ¿La de quien no tiene plan de datos y queda por fuera de las dos cosas?"],
-      ["¿Se puede verificar la afirmación?", "Escoja una frase específica. ¿Podría verificarla hoy, con una fuente que pueda nombrar? Fíjese en que “depende de cómo se use” no puede estar equivocada — y por eso mismo no sirve para nada."],
-      ["¿Falta algo importante?", "¿Qué pasa con su realidad concreta? Su país, su universidad, su conexión, lo que le cuestan los datos, la plataforma en la que su clase de verdad se organiza?"]
+    c1Think: "Antes de aceptarla, piense en la respuesta:",
+    c1Checks: [
+      ["¿La información es correcta?", "¿Qué evidencia ofrece? ¿Un estudio con nombre, un investigador, una fecha, una cifra que usted pueda ir a verificar? “Los estudios demuestran” no es una fuente: es la forma de una fuente."],
+      ["¿Debería confiar en ella?", "¿Quién creó esta información y quién responde si está equivocada? ¿Qué mirada falta: la de quien armó su grupo de estudio por redes, o la de quien no tiene plan de datos?"],
+      ["¿Es necesario revisar otra fuente?", "Escoja una frase específica. ¿Podría verificarla hoy, con una fuente que pueda nombrar? ¿Falta algo importante sobre su propia realidad: su país, su universidad, su conexión?"]
     ],
-    c1Choose: "¿Qué lo describe mejor?",
     c1Opts: [
       ["ACEPTAR", "Normalmente confío en la primera respuesta porque suena correcta.", 1],
       ["VERIFICAR", "Normalmente reviso otra fuente antes de decidir.", 2],
       ["CUESTIONAR", "Comparo evidencia, cuestiono supuestos y formo mi propia conclusión.", 3]
     ],
-    c1RTitle: "Checkpoint 1 · Reflexión",
-    c1RQ: "¿Cuál es la diferencia entre <b>recibir</b> información y <b>pensarla críticamente</b>?",
-    c1RTip: "Usted acaba de hacer las dos cosas, en ese orden, en los últimos minutos. Use lo que le pasó.",
+    c1RQ: "¿Cómo usa normalmente la tecnología cuando busca información?",
+    c1RTip: "Piense en lo que acaba de hacer. ¿Aceptó la primera respuesta, la verificó o la cuestionó? ¿Es eso lo que hace normalmente?",
 
-    c2Title: "¿Lo Sé, o Sé Dónde Encontrarlo?",
-    c2Kicker: "CHECKPOINT 2 · MEMORIA",
     c2Intro: "Está a punto de ver diez datos cortos sobre cómo funciona realmente la memoria humana. Va a tener %1 segundos. Después desaparecen.",
     c2Start: "▶ Empezar el Reto de Memoria",
     c2Watch: "Memorice todo lo que pueda",
@@ -568,15 +657,13 @@ var C = {
     c2Trap: "<b>Antes de contar cuántos acertó —</b><br>Mire otra vez el Dato 1. Acaba de intentar memorizar una frase que explica que la gente no memoriza lo que sabe que puede buscar después. ¿Cómo le fue?<br><br>El Dato 4 decía que evocar un recuerdo lo fortalece más que releerlo. La casilla que acaba de llenar era justamente eso. No solo presentó una prueba: fortaleció lo que logró recordar.<br><br>Y si hace un minuto le tomó pantallazo a la lista, el <b>Dato 6</b> tiene algo que decirle.",
     c2Qs: ["¿Cuántos datos recordó?", "¿Hizo un esfuerzo real por recordarlos?", "¿Asumió que después los podía buscar?", "¿Saber algo es lo mismo que saber dónde encontrarlo?"],
     c2QNote: "Piense en estas cuatro preguntas. No tiene que escribir respuestas — la reflexión viene enseguida.",
-    c2Choose: "¿Cuál lo describe?",
     c2Opts: [
       ["GUARDAR POR FUERA", "Normalmente dependo de mi dispositivo para que recuerde la información por mí.", 1],
       ["RECORDAR LO IMPORTANTE", "Recuerdo las ideas importantes pero uso la tecnología para los detalles.", 2],
       ["MEMORIA PRIMERO", "Trato activamente de entender y recordar la información importante antes de recurrir a la tecnología.", 3]
     ],
-    c2RTitle: "Checkpoint 2 · Reflexión",
-    c2RQ: "Complete esta frase:",
-    c2Stem: "“Cuando sé que la información siempre va a estar disponible en internet, tiendo a …”",
+    c2RQ: "¿Cuánto depende de la tecnología para recordar información y cuánto usa su propia memoria?",
+    c2RTip: "Puede empezar con: “Cuando sé que la información siempre va a estar disponible en internet, tiendo a …”",
     facts: [
       "Cuando uno espera que la información siga disponible en internet, recuerda peor la información misma — pero recuerda mejor <b>dónde encontrarla</b>.",
       "Un celular boca abajo y apagado sobre el escritorio igual reduce la capacidad mental disponible.",
@@ -590,8 +677,6 @@ var C = {
       "Quien navega con GPS activa menos la memoria espacial que quien navega de memoria."
     ],
 
-    c3Title: "¿Primero el Cerebro o Primero la IA?",
-    c3Kicker: "CHECKPOINT 3 · RESOLUCIÓN DE PROBLEMAS",
     c3Scen: "El Trabajo en Grupo",
     c3Lead: "<b>Tiene ocho días.</b> Su grupo de cinco tiene que entregar una presentación calificada. Tiene que ser realmente colaborativa — el profesor dijo explícitamente que si se nota que dos personas hicieron todo, baja la nota.",
     c3Lead2: "Pero el grupo es así:",
@@ -606,46 +691,45 @@ var C = {
     c3Q: "¿Cómo logra este grupo un trabajo verdaderamente compartido en ocho días?",
     c3R1: "🔒 RONDA 1 — TECNOLOGÍA BLOQUEADA",
     c3R1Body: "Durante los próximos minutos, resuelva esto <b>sin</b> Google, IA, calculadora ni ninguna ayuda digital. Solo usted.",
-    c3F: [
-      ["¿Cuál es el problema?", "Dígalo con sus propias palabras — no es lo mismo que repetir el escenario."],
-      ["Posible Solución 1", ""], ["Posible Solución 2", ""], ["Posible Solución 3", ""],
-      ["¿Cuál solución le parece la mejor y por qué?", ""]
-    ],
+    c3First: "Su primera solución",
+    c3FirstTip: "Diga el problema con sus propias palabras y luego explique cómo podría resolverlo el grupo.",
     c3ToR2: "🔓 Desbloquear la tecnología → Ronda 2",
     c3R2: "🔓 RONDA 2 — TECNOLOGÍA DESBLOQUEADA",
-    c3R2Body: "Ahora sí puede usar IA o un buscador. Hágale el mismo problema.",
+    c3R2Body: "Ahora sí puede usar IA u otro tipo de tecnología. Hágale el mismo problema y luego use lo que le sugiera para mejorar o cambiar su respuesta.",
+    c3Mine: "Su primera solución (Ronda 1)",
     c3AI: "Pegue o resuma lo que sugirió la tecnología.",
-    c3C: [
-      "¿La tecnología sugirió algo que usted no había considerado?",
-      "¿Su solución fue diferente?",
-      "¿Intentarlo usted mismo le ayudó a entenderlo?",
-      "¿Qué pensamiento se habría saltado si le hubiera preguntado a la IA de una vez?"
-    ],
+    c3Improved: "Su solución mejorada o cambiada",
+    c3ImprovedTip: "Conserve lo que todavía sirve de su primera solución y cambie lo que la tecnología le ayudó a ver de otra manera.",
+    c3Compare: "Compare las dos soluciones",
+    c3CompareTip: "¿La tecnología sugirió algo que usted no había considerado? ¿En qué se diferencia su primera solución? ¿Intentarlo usted mismo primero le ayudó a entender el problema?",
     c3Back1: "← Volver a la Ronda 1",
-    c3Choose: "¿Cuál lo describe?",
     c3Opts: [
       ["PREGUNTAR DE UNA", "Mi primera reacción normalmente es preguntarle a Google o a la IA por la solución.", 1],
       ["INTENTAR Y LUEGO PREGUNTAR", "Lo intento un rato antes de pedirle ayuda a la tecnología.", 2],
       ["PENSAR Y LUEGO POTENCIAR", "Primero desarrollo mis propias ideas y después uso la tecnología para mejorarlas, verificarlas o ponerlas a prueba.", 3]
     ],
-    c3RTitle: "Checkpoint 3 · Reflexión",
-    c3RQ: "¿Qué pensamiento se habría saltado si le hubiera preguntado a la IA de una vez?",
-    c3RTip: "Acaba de resolver esto dos veces: una con su propia mente y otra con ayuda. En algún punto entre esos dos intentos está el pensamiento que solo aparece cuando nadie le está ayudando. Descríbalo.",
+    c3RQ: "¿Cómo afectó la tecnología la forma en que resolvió el problema?",
+    c3RTip: "Acaba de resolver esto dos veces: una con su propia mente y otra con ayuda. ¿Qué cambió entre los dos intentos? ¿Qué pensamiento se habría saltado si le hubiera preguntado a la IA de una vez?",
 
+    kResult: "RESULTADO · %1 DE 4",
+    sTitle: "Autoevaluación",
+    sLead: "Después de completar las tres actividades, las personas responden una autoevaluación corta basada en sus hábitos y respuestas. El WebQuest les asigna una de tres Identidades de Pensamiento Digital: Delegador Automático, Pensador Asistido o Navegante Cognitivo. Finalmente, escriben una reflexión sobre lo que aprendieron y si la actividad cambió la forma en que piensan sobre el uso de la tecnología.",
+    sHint: "En cada área, escoja la respuesta que mejor represente sus hábitos. Sea honesto: esto no es una nota.",
+    sQ: "¿Qué lo describe mejor?",
     rTitle: "Su Identidad de Pensamiento Digital",
     rOf: "%1 / 9 puntos",
     rBreak: "De dónde vienen sus puntos",
     rSkills: ["🔍 Pensamiento Crítico", "🧠 Memoria", "🧩 Resolución de Problemas"],
     rChallenge: "Su reto",
-    rNote: "Esto es un hallazgo, no una nota. Ninguna de estas tres identidades es mejor que otra como persona — describen cuánto de su pensamiento <b>elige</b> usted actualmente, y eso puede empezar a cambiar hoy.",
+    rNote: "El puntaje no es una nota; es solo una forma de mostrar cuánto se está usando la tecnología para apoyar o reemplazar el pensamiento.",
     ids: [
-      ["⚡", "El Delegador Automático",
+      ["⚡", "Delegador Automático",
         "La tecnología suele convertirse en su primer pensador. Usted valora la rapidez y la comodidad, pero a veces puede estar dejando pasar oportunidades de ejercitar la memoria, el pensamiento crítico y la resolución de problemas.",
         "Intente pensar por su cuenta antes de recurrir a la tecnología."],
-      ["🔎", "El Pensador Asistido",
+      ["🔎", "Pensador Asistido",
         "Usted combina su propio pensamiento con la asistencia digital. A veces la tecnología va primero, y otras veces usted investiga por su cuenta.",
         "Vuélvase más intencional al decidir cuándo la tecnología debe ayudarle."],
-      ["🧭", "El Navegante Cognitivo",
+      ["🧭", "Navegante Cognitivo",
         "Usted tiende a usar la tecnología como aliada y no como reemplazo del pensamiento. Investiga, cuestiona, recuerda las ideas importantes e intenta soluciones antes de pedirle ayuda a la tecnología.",
         "Siga usando la tecnología de forma estratégica sin cerrarse a las ventajas que puede ofrecer."]
     ],
@@ -654,7 +738,7 @@ var C = {
     idName: "Mi nombre",
     idNamePh: "Escriba su nombre",
     idIdentity: "Mi Identidad de Pensamiento Digital",
-    idSkill: "Mi habilidad cognitiva más fuerte es:",
+    idSkill: "Mi habilidad de pensamiento más fuerte es:",
     idSkills: ["Pensamiento Crítico", "Memoria", "Resolución de Problemas"],
     idHelps: "La tecnología <b>ayuda</b> a mi pensamiento cuando:",
     idReplaces: "La tecnología <b>reemplaza</b> mi pensamiento cuando:",
@@ -671,29 +755,40 @@ var C = {
     copyManual: "Su navegador bloqueó la copia automática. El texto de abajo ya está seleccionado — presione Ctrl+C (o Cmd+C) para copiarlo.",
 
     fTitle: "Reflexión Final",
-    fQ: "Después de completar este WebQuest, ¿cambió su forma de ver la tecnología?",
-    fFs: [
-      "¿Qué aprendió sobre sus hábitos con la tecnología?",
-      "¿Cuál checkpoint lo sorprendió más?",
-      "¿Cuál es un hábito que usted podría cambiar?",
-      "¿Cómo puede usar la IA sin permitir que la IA reemplace su propio pensamiento?"
+    fEval: "Su reflexión final se evalúa según la claridad con que explique lo que aprendió sobre su propio uso de la tecnología.",
+    fQs: [
+      "¿Qué aprendió sobre su propio uso de la tecnología?",
+      "¿Esta actividad cambió la forma en que piensa sobre el uso de la tecnología? ¿Cómo?"
     ],
     fMantra: "PIENSE → CUESTIONE → RECUERDE → RESUELVA → LUEGO USE LA TECNOLOGÍA",
-    fEnd: "El objetivo no es dejar de usar la tecnología. El objetivo es que la tecnología siga siendo la herramienta — y que el ser humano siga siendo quien piensa.",
-    fDone: "Usted terminó. 🧭",
+
+    resHead: "Recursos",
+    resNote: "Los artículos están en inglés.",
+
+    evHead: "Evaluación",
+    evP: "La evaluación se basa en la autorreflexión y la honestidad. Las personas eligen las respuestas que mejor representan sus hábitos y escriben reflexiones cortas sobre su experiencia. El WebQuest da un puntaje de 1 a 9 y lo usa para mostrar una de tres Identidades de Pensamiento Digital. El puntaje no es una nota; es solo una forma de mostrar cuánto se está usando la tecnología para apoyar o reemplazar el pensamiento. La reflexión final se evalúa según la claridad con que las personas explican lo que aprendieron sobre su propio uso de la tecnología.",
 
     tr: {
-      head: "LABORATORIO DE MENTE DIGITAL — TRANSCRIPCIÓN DEL WEBQUEST",
+      head: "EL LABORATORIO DE MENTE DIGITAL — TRANSCRIPCIÓN DEL WEBQUEST",
       name: "Nombre", identity: "Identidad de Pensamiento Digital", total: "Puntaje total",
-      cp1: "CHECKPOINT 1 — PENSAMIENTO CRÍTICO", cp2: "CHECKPOINT 2 — MEMORIA",
-      cp3: "CHECKPOINT 3 — RESOLUCIÓN DE PROBLEMAS", res: "RESULTADOS", card: "TARJETA DE IDENTIDAD",
-      fin: "REFLEXIÓN FINAL", first: "Primera respuesta recibida", choice: "Elección",
-      reflect: "Reflexión", recall: "Lo que recordé", ai: "Lo que sugirió la tecnología",
-      skill: "Habilidad más fuerte", helps: "La tecnología ayuda cuando", replaces: "La tecnología reemplaza cuando",
+      s1: "PROCESO · PASO 1 — PENSAMIENTO CRÍTICO", s2: "PROCESO · PASO 2 — MEMORIA",
+      s3: "PROCESO · PASO 3 — RESOLUCIÓN DE PROBLEMAS", self: "RESULTADO · AUTOEVALUACIÓN",
+      card: "RESULTADO · TARJETA DE IDENTIDAD", fin: "RESULTADO · REFLEXIÓN FINAL",
+      first: "Primera respuesta recibida", reflect: "Reflexión", recall: "Lo que recordé",
+      ai: "Lo que sugirió la tecnología", skill: "Habilidad de pensamiento más fuerte",
+      helps: "La tecnología ayuda cuando", replaces: "La tecnología reemplaza cuando",
       rules: "Mis tres reglas", blank: "(en blanco)"
     }
   }
 };
+/* Resources from the WebQuest document (tracking parameters removed from the links). */
+var REFS = [
+  ["Cognitive Offloading — Risko & Gilbert (2016)", "https://www.cell.com/trends/cognitive-sciences/abstract/S1364-6613(16)30098-5"],
+  ["Google Effects on Memory — Sparrow, Liu & Wegner (2011)", "https://pubmed.ncbi.nlm.nih.gov/21764755/"],
+  ["Humans and Automation — Parasuraman & Riley (1997)", "https://web.mit.edu/16.459/www/parasuraman.pdf"],
+  ["Productive Failure — Kapur (2008)", "https://eric.ed.gov/?id=EJ800999"],
+  ["Brain Drain: The Mere Presence of One’s Own Smartphone Reduces Available Cognitive Capacity — Ward et al. (2017)", "https://www.journals.uchicago.edu/doi/10.1086/691462"]
+];
 function t() { return C[S.lang]; }
 
 /* =========================================================================
@@ -715,6 +810,7 @@ function set(path, v) {
   for (var i = 0; i < p.length - 1; i++) o = o[p[i]];
   o[p[p.length - 1]] = v;
 }
+function has(path) { var v = get(path); return String(v == null ? "" : v).trim() !== ""; }
 function field(kind, path, labelHtml, tip, ph) {
   var v = esc(get(path));
   var tipHtml = tip ? '<span class="tip">' + tip + "</span>" : "";
@@ -723,16 +819,19 @@ function field(kind, path, labelHtml, tip, ph) {
     : '<textarea data-k="' + path + '" placeholder="' + esc(ph || "") + '">' + v + "</textarea>";
   return '<label><span class="q">' + labelHtml + "</span>" + tipHtml + ctl + "</label>";
 }
-function choices(group, opts, cur) {
-  var h = '<div class="cards three" role="radiogroup" aria-label="' + esc(t().c1Choose) + '">';
+function choices(path, opts, cur, label) {
+  var h = '<div class="cards three" role="radiogroup" aria-label="' + esc(label) + '">';
   for (var i = 0; i < opts.length; i++) {
     var o = opts[i], on = cur === o[2];
     h += '<button type="button" class="choice" role="radio" aria-checked="' + on + '"' +
-      ' data-group="' + group + '" data-pts="' + o[2] + '">' +
+      ' data-choice="' + path + '" data-pts="' + o[2] + '">' +
       '<span class="k"><span class="tick" aria-hidden="true">' + (on ? "✓" : "") + "</span>" + esc(o[0]) + "</span>" +
       '<span class="d">' + esc(o[1]) + "</span></button>";
   }
   return h + "</div>";
+}
+function tile(icon, label) {
+  return '<div class="choice tile"><span class="d"><span aria-hidden="true">' + icon + "</span> <b>" + esc(label) + "</b></span></div>";
 }
 function factList() {
   var f = t().facts, h = '<div class="factlist">';
@@ -743,136 +842,164 @@ function factList() {
 /* =========================================================================
    6. SCORING — pure
    ========================================================================= */
-function scores() { return [S.cp1.choice || 0, S.cp2.choice || 0, S.cp3.choice || 0]; }
+var SELF_KEYS = ["cp1", "cp2", "cp3"];
+function scores() { return [S.self.cp1 || 0, S.self.cp2 || 0, S.self.cp3 || 0]; }
 function total() { var s = scores(); return s[0] + s[1] + s[2]; }
 function band(n) { return n <= 4 ? 0 : n <= 7 ? 1 : 2; }
 
 /* =========================================================================
-   7. SCREENS
+   7. PAGES — the same sections, in the same order, as the WebQuest document
    ========================================================================= */
 var STEPS = [
-  "welcome", "mission", "cp1", "cp1r", "cp2", "cp2r", "cp3", "cp3r", "results", "card", "final"
+  "intro", "task", "process",
+  "cp1", "cp1r", "cp2", "cp2r", "cp3", "cp3r",
+  "selfeval", "identity", "card", "final",
+  "resources", "evaluation"
 ];
-var NODE_OF = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4];
+/* Section (tab) of each page: 0 Introduction · 1 Task · 2 Process · 3 Result · 4 Resources · 5 Evaluation */
+var SECTION_OF = [0, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 5];
+var SECTION_ICON = ["📖", "🎯", "🔬", "🧭", "📚", "📝"];
+var SECTION_FIRST = [];
+for (var si = 0; si < STEPS.length; si++) {
+  if (SECTION_FIRST[SECTION_OF[si]] === undefined) SECTION_FIRST[SECTION_OF[si]] = si;
+}
+/* Reading pages are always open, so anyone (e.g. a reviewer) can browse them without doing the activities. */
+var FREE = { intro: true, task: true, process: true, resources: true, evaluation: true };
+var CP1_KEYS = ["correct", "trust", "source"];
+var FIN_KEYS = ["learned", "changed"];
 
 var V = {};
 
-V.welcome = function () {
-  var L = t();
-  return '<section class="panel"><h1>' + esc(L.wTitle) + '</h1>' +
-    '<p class="sub">' + esc(L.wSub) + "</p>" +
-    '<p class="lead">' + esc(L.wBody1) + "</p>" +
-    '<p class="lead">' + esc(L.wBody2) + "</p>" +
-    '<div class="eq">“' + esc(L.wAsk) + '”</div>' +
-    '<div class="actions"><button class="btn primary big" data-go="1">' + esc(L.wBtn) + "</button></div></section>";
-};
-
-V.mission = function () {
-  var L = t(), h = '<section class="panel"><h2>' + esc(L.mTitle) + "</h2>" +
-    '<div class="eq">' + esc(L.mEQ) + "</div>" +
-    '<p class="lead">' + esc(L.mLead) + "</p><div class=\"cards three\">";
-  for (var i = 0; i < L.mCp.length; i++) {
-    h += '<div class="choice" style="cursor:default">' +
-      '<span class="k">' + L.mCp[i][0] + " " + esc(L.mCp[i][1]) + "</span>" +
-      '<span class="d"><b>' + esc(L.mCp[i][2]) + "</b></span></div>";
-  }
-  h += "</div><p>" + L.mPromise + "</p>";
-  h += '<div class="callout">' + esc(L.mNote) + "</div>";
+V.intro = function () {
+  var L = t(), h = '<section class="panel"><h1>' + esc(L.iTitle) + "</h1>" +
+    '<p class="sub">' + esc(L.iSub) + "</p><h2>" + esc(L.iHead) + "</h2>";
+  for (var i = 0; i < L.iP.length; i++) h += '<p class="lead">' + esc(L.iP[i]) + "</p>";
   return h + "</section>";
 };
+
+V.task = function () {
+  var L = t(), i, h = '<section class="panel"><h2>' + esc(L.tHead) + "</h2>" +
+    '<p class="lead">' + esc(L.tLead) + "</p>" +
+    "<h3>" + esc(L.tCpIntro) + '</h3><div class="cards three">';
+  for (i = 0; i < L.tCps.length; i++) h += tile(L.tCps[i][0], L.tCps[i][1]);
+  h += "</div><p>" + esc(L.tEvery) + "</p><h3>" + esc(L.tIdIntro) + '</h3><div class="cards three">';
+  for (i = 0; i < L.ids.length; i++) h += tile(L.ids[i][0], L.ids[i][1]);
+  h += '</div><div class="callout">' + esc(L.tNotGrade) + "</div>" +
+    "<h3>" + esc(L.tHaveIntro) + '</h3><ul class="checklist">';
+  for (i = 0; i < L.tHave.length; i++) h += "<li>" + esc(L.tHave[i]) + "</li>";
+  return h + "</ul></section>";
+};
+
+V.process = function () {
+  var L = t(), h = '<section class="panel"><h2>' + esc(L.pHead) + "</h2>" +
+    '<p class="lead">' + esc(L.pLead) + "</p>";
+  for (var i = 0; i < L.pSteps.length; i++) {
+    h += '<div class="rule"><div class="n"><span aria-hidden="true">' + L.pSteps[i][0] + "</span> " +
+      esc(L.pSteps[i][1]) + "</div><p>" + esc(L.pSteps[i][2]) + "</p></div>";
+  }
+  return h + "</section>";
+};
+
+/* Heading of a Process step. The document's description of the step doubles as its instructions. */
+function stepHead(n, brief) {
+  var L = t(), s = L.pSteps[n - 1];
+  return "<h3>" + esc(L.kStep.replace("%1", n)) + "</h3><h2>" + esc(s[1]) + "</h2>" +
+    (brief ? "" : '<div class="callout">' + esc(s[2]) + "</div>");
+}
 
 V.cp1 = function () {
-  var L = t();
-  var h = '<section class="panel"><h3>' + esc(L.c1Kicker) + "</h3><h2>" + esc(L.c1Title) + "</h2>" +
-    '<h3>' + esc(L.c1StepA) + "</h3><p>" + esc(L.c1Ask) + "</p>" +
-    '<div class="eq">' + esc(L.c1Q) + "</div>" +
+  var L = t(), h = '<section class="panel">' + stepHead(1) +
+    "<p>" + esc(L.c1Ask) + '</p><div class="eq">' + esc(L.c1Q) + "</div>" +
     field("textarea", "cp1.pasted", esc(L.c1Paste), esc(L.c1PasteTip)) +
-    "<h3>" + esc(L.c1StepB) + "</h3>";
-  for (var i = 0; i < L.c1Cards.length; i++) {
-    h += field("textarea", "cp1.a" + (i + 1),
-      "<b>" + (i + 1) + ".</b> " + esc(L.c1Cards[i][0]), esc(L.c1Cards[i][1]));
+    "<h3>" + esc(L.c1Think) + "</h3>";
+  for (var i = 0; i < L.c1Checks.length; i++) {
+    h += field("textarea", "cp1." + CP1_KEYS[i],
+      "<b>" + (i + 1) + ".</b> " + esc(L.c1Checks[i][0]), esc(L.c1Checks[i][1]));
   }
-  h += "<h3>" + esc(L.c1Choose) + "</h3>" + choices("cp1", L.c1Opts, S.cp1.choice);
   return h + "</section>";
 };
 
-V.cp1r = function () {
-  var L = t();
-  return '<section class="panel"><h3>' + esc(L.c1RTitle) + "</h3>" +
-    '<div class="eq">' + L.c1RQ + "</div>" +
-    field("textarea", "cp1.reflect", esc(L.c1RTip), "") + "</section>";
-};
+function reflectPage(n, path, q, tip) {
+  return '<section class="panel"><h3>' + esc(t().kReflect.replace("%1", n)) + "</h3>" +
+    '<div class="eq">' + esc(q) + "</div>" + field("textarea", path, esc(tip), "") + "</section>";
+}
+V.cp1r = function () { var L = t(); return reflectPage(1, "cp1.reflect", L.c1RQ, L.c1RTip); };
+V.cp2r = function () { var L = t(); return reflectPage(2, "cp2.reflect", L.c2RQ, L.c2RTip); };
+V.cp3r = function () { var L = t(); return reflectPage(3, "cp3.reflect", L.c3RQ, L.c3RTip); };
 
 V.cp2 = function () {
-  var L = t(), h = '<section class="panel"><h3>' + esc(L.c2Kicker) + "</h3><h2>" + esc(L.c2Title) + "</h2>";
-
-  if (!S.cp2.started && !S.cp2.revealed) {
-    h += "<p class=\"lead\">" + esc(L.c2Intro.replace("%1", TIMER_SECONDS)) + "</p>" +
-      '<div class="actions"><button class="btn primary big" id="startMem">' + esc(L.c2Start) + "</button></div>";
-    return h + "</section>";
-  }
+  var L = t(), h = '<section class="panel">';
   if (S.cp2.started) {
-    h += '<div class="timer" id="clock" role="timer" aria-live="off">' + TIMER_SECONDS + "</div>" +
+    /* While the facts are on screen, keep the heading short so the whole list fits. */
+    h += stepHead(2, true) +
+      '<div class="timer" id="clock" role="timer" aria-live="off">' + secondsLeft() + "</div>" +
       '<p class="timerlabel">' + esc(L.c2Watch) + "</p>" + factList() +
       '<p class="sr" aria-live="polite" id="timerSR"></p>';
     return h + "</section>";
   }
+  h += stepHead(2);
+  if (!S.cp2.revealed) {
+    h += '<p class="lead">' + esc(L.c2Intro.replace("%1", TIMER_SECONDS)) + "</p>" +
+      '<div class="actions"><button class="btn primary big" id="startMem">' + esc(L.c2Start) + "</button></div>";
+    return h + "</section>";
+  }
   h += field("textarea", "cp2.recall", esc(L.c2Recall), esc(L.c2RecallTip));
   if (!S.cp2.showFacts) {
-    h += '<div class="actions"><button class="btn" id="revealFacts">' + esc(L.c2Reveal) + "</button></div>";
+    h += '<div class="actions"><button class="btn" id="revealFacts" data-needs="cp2.recall"' +
+      (has("cp2.recall") ? "" : " disabled") + ">" + esc(L.c2Reveal) + "</button></div>";
   } else {
-    h += '<div class="callout warn">' + L.c2Trap + "</div>";
-    h += "<h3>" + esc(L.c2Compare) + "</h3>" + factList();
-    h += '<div class="callout"><b>' + esc(L.c2QNote) + "</b><ul>";
+    h += '<div class="callout warn">' + L.c2Trap + "</div>" +
+      "<h3>" + esc(L.c2Compare) + "</h3>" + factList() +
+      '<div class="callout"><b>' + esc(L.c2QNote) + "</b><ul>";
     for (var i = 0; i < L.c2Qs.length; i++) h += "<li>" + esc(L.c2Qs[i]) + "</li>";
     h += "</ul></div>";
-    h += "<h3>" + esc(L.c2Choose) + "</h3>" + choices("cp2", L.c2Opts, S.cp2.choice);
   }
   return h + "</section>";
 };
 
-V.cp2r = function () {
-  var L = t();
-  return '<section class="panel"><h3>' + esc(L.c2RTitle) + "</h3>" +
-    "<p>" + esc(L.c2RQ) + '</p><div class="eq">' + esc(L.c2Stem) + "</div>" +
-    field("textarea", "cp2.reflect", esc(L.c2RQ), "") + "</section>";
-};
-
 V.cp3 = function () {
-  var L = t(), h = '<section class="panel"><h3>' + esc(L.c3Kicker) + "</h3><h2>" + esc(L.c3Title) + "</h2>";
-  h += "<h3>" + esc(L.c3Scen) + "</h3><p class=\"lead\">" + L.c3Lead + "</p><p>" + esc(L.c3Lead2) + '</p><ul class="roster">';
+  var L = t(), h = '<section class="panel">' + stepHead(3) +
+    "<h3>" + esc(L.c3Scen) + '</h3><p class="lead">' + L.c3Lead + "</p><p>" + esc(L.c3Lead2) + '</p><ul class="roster">';
   for (var i = 0; i < L.c3Roster.length; i++) h += "<li>" + L.c3Roster[i] + "</li>";
   h += "</ul><p>" + esc(L.c3Lead3) + '</p><div class="eq">' + esc(L.c3Q) + "</div>";
 
   if (S.cp3.round === 1) {
-    h += '<div class="callout lock"><b>' + esc(L.c3R1) + "</b><br>" + L.c3R1Body + "</div>";
-    var keys = ["problem", "s1", "s2", "s3", "best"];
-    for (var j = 0; j < L.c3F.length; j++) {
-      h += field("textarea", "cp3." + keys[j], esc(L.c3F[j][0]), esc(L.c3F[j][1]));
-    }
-    h += '<div class="actions"><button class="btn primary" id="toR2">' + esc(L.c3ToR2) + "</button></div>";
+    h += '<div class="callout lock"><b>' + esc(L.c3R1) + "</b><br>" + L.c3R1Body + "</div>" +
+      field("textarea", "cp3.first", esc(L.c3First), esc(L.c3FirstTip)) +
+      '<div class="actions"><button class="btn primary" id="toR2" data-needs="cp3.first"' +
+      (has("cp3.first") ? "" : " disabled") + ">" + esc(L.c3ToR2) + "</button></div>";
   } else {
-    h += '<div class="callout open"><b>' + esc(L.c3R2) + "</b><br>" + esc(L.c3R2Body) + "</div>";
-    h += field("textarea", "cp3.ai", esc(L.c3AI), "");
-    for (var k = 0; k < L.c3C.length; k++) {
-      h += field("textarea", "cp3.c" + (k + 1), esc(L.c3C[k]), "");
-    }
-    h += "<h3>" + esc(L.c3Choose) + "</h3>" + choices("cp3", L.c3Opts, S.cp3.choice);
-    h += '<div class="actions"><button class="btn ghost" id="backR1">' + esc(L.c3Back1) + "</button></div>";
+    h += '<div class="callout open"><b>' + esc(L.c3R2) + "</b><br>" + esc(L.c3R2Body) + "</div>" +
+      "<h3>" + esc(L.c3Mine) + '</h3><div class="callout pre">' + esc(S.cp3.first) + "</div>" +
+      field("textarea", "cp3.ai", esc(L.c3AI), "") +
+      field("textarea", "cp3.improved", esc(L.c3Improved), esc(L.c3ImprovedTip)) +
+      field("textarea", "cp3.compare", esc(L.c3Compare), esc(L.c3CompareTip)) +
+      '<div class="actions"><button class="btn ghost" id="backR1">' + esc(L.c3Back1) + "</button></div>";
   }
   return h + "</section>";
 };
 
-V.cp3r = function () {
-  var L = t();
-  return '<section class="panel"><h3>' + esc(L.c3RTitle) + "</h3>" +
-    '<div class="eq">' + esc(L.c3RQ) + "</div>" +
-    field("textarea", "cp3.reflect", esc(L.c3RTip), "") + "</section>";
+/* Heading of a Result page: "RESULT · n OF 4" plus the page title. */
+function resultHead(title) {
+  var L = t(), n = S.step - SECTION_FIRST[SECTION_OF[S.step]] + 1;
+  return "<h3>" + esc(L.kResult.replace("%1", n)) + "</h3><h2>" + esc(title) + "</h2>";
+}
+
+V.selfeval = function () {
+  var L = t(), opts = [L.c1Opts, L.c2Opts, L.c3Opts];
+  var h = '<section class="panel">' + resultHead(L.sTitle) +
+    '<div class="callout">' + esc(L.sLead) + "</div>" +
+    '<p class="hint">' + esc(L.sHint) + "</p>";
+  for (var i = 0; i < 3; i++) {
+    h += "<h3>" + esc(L.rSkills[i]) + "</h3>" +
+      choices("self." + SELF_KEYS[i], opts[i], S.self[SELF_KEYS[i]], L.rSkills[i] + " — " + L.sQ);
+  }
+  return h + "</section>";
 };
 
-V.results = function () {
+V.identity = function () {
   var L = t(), n = total(), id = L.ids[band(n)], sc = scores();
-  var h = '<section class="panel"><h3>' + esc(L.rTitle) + "</h3>" +
+  var h = '<section class="panel">' + resultHead(L.rTitle) +
     '<div class="badge" aria-live="polite">' +
     '<span class="icon" aria-hidden="true">' + id[0] + "</span>" +
     '<div class="name">' + esc(id[1]) + "</div>" +
@@ -881,23 +1008,24 @@ V.results = function () {
     '<div class="callout open"><b>' + esc(L.rChallenge) + ":</b> " + esc(id[3]) + "</div>" +
     "<h3>" + esc(L.rBreak) + "</h3>";
   for (var i = 0; i < 3; i++) {
-    h += '<div class="meter"><div class="top"><b>' + L.rSkills[i] + "</b><span>" + sc[i] + "/3</span></div>" +
+    h += '<div class="meter"><div class="top"><b>' + esc(L.rSkills[i]) + "</b><span>" + sc[i] + "/3</span></div>" +
       '<div class="track"><div class="fill" style="width:' + (sc[i] / 3 * 100) + '%"></div></div></div>';
   }
-  h += '<div class="callout">' + L.rNote + "</div>";
+  h += '<div class="callout">' + esc(L.rNote) + "</div>";
   return h + "</section>";
 };
 
 V.card = function () {
   var L = t(), id = L.ids[band(total())];
-  var h = '<section class="panel"><h3>' + esc(L.idTitle) + '</h3><div class="idcard">' +
+  var h = '<section class="panel">' + resultHead(L.idTitle) + '<div class="idcard">' +
     '<div class="cap">' + esc(L.idIdentity) + "</div>" +
     '<div style="font-size:22px;font-weight:800;margin-bottom:16px">' + id[0] + " " + esc(id[1]) + "</div>" +
     field("input", "card.name", esc(L.idName), "", L.idNamePh);
 
+  /* The skill is stored by position, so it survives switching language. */
   h += '<label><span class="q">' + esc(L.idSkill) + '</span><select data-k="card.skill"><option value="">—</option>';
   for (var i = 0; i < L.idSkills.length; i++) {
-    h += '<option value="' + esc(L.idSkills[i]) + '"' + (S.card.skill === L.idSkills[i] ? " selected" : "") + ">" + esc(L.idSkills[i]) + "</option>";
+    h += '<option value="' + i + '"' + (S.card.skill === String(i) ? " selected" : "") + ">" + esc(L.idSkills[i]) + "</option>";
   }
   h += "</select></label>";
   h += field("textarea", "card.helps", L.idHelps, "");
@@ -918,95 +1046,147 @@ V.card = function () {
 };
 
 V.final = function () {
-  var L = t();
-  var h = '<section class="panel"><h3>' + esc(L.fTitle) + "</h3>" +
-    '<div class="eq">' + esc(L.fQ) + "</div>" +
-    field("textarea", "fin.changed", esc(L.fQ), "");
-  for (var i = 0; i < L.fFs.length; i++) {
-    h += field("textarea", "fin.f" + (i + 1), esc(L.fFs[i]), "");
-  }
-  h += '<div class="mantra">' + esc(L.fMantra) + "</div>";
-  h += '<p class="lead">' + esc(L.fEnd) + "</p>";
-  h += '<div class="actions"><button class="btn" id="printBtn2">' + esc(L.idPrint) + "</button>" +
-    '<button class="btn primary" id="copyBtn2">' + esc(L.idCopy) + "</button>" +
-    '<span class="spacer"></span>' +
-    '<button class="btn danger ghost" id="restartBtn">' + esc(L.restart) + "</button></div>" +
+  var L = t(), h = '<section class="panel">' + resultHead(L.fTitle) +
+    '<div class="callout">' + esc(L.fEval) + "</div>";
+  for (var i = 0; i < L.fQs.length; i++) h += field("textarea", "fin." + FIN_KEYS[i], esc(L.fQs[i]), "");
+  h += '<div class="mantra">' + esc(L.fMantra) + "</div>" +
+    '<div class="actions"><button class="btn" id="printBtn2">' + esc(L.idPrint) + "</button>" +
+    '<button class="btn primary" id="copyBtn2">' + esc(L.idCopy) + "</button></div>" +
     '<p class="gate" id="copyMsg" style="display:none;color:var(--ok)"></p>';
   return h + "</section>";
 };
 
+V.resources = function () {
+  var L = t(), h = '<section class="panel"><h2>' + esc(L.resHead) + "</h2>";
+  if (L.resNote) h += '<p class="hint">' + esc(L.resNote) + "</p>";
+  h += '<ul class="reflist">';
+  for (var i = 0; i < REFS.length; i++) {
+    h += '<li><div class="rt">' + esc(REFS[i][0]) + "</div>" +
+      '<a href="' + esc(REFS[i][1]) + '" target="_blank" rel="noopener noreferrer">' + esc(REFS[i][1]) +
+      '<span class="sr"> ' + esc(L.newTab) + "</span></a></li>";
+  }
+  return h + "</ul></section>";
+};
+
+V.evaluation = function () {
+  var L = t();
+  return '<section class="panel"><h2>' + esc(L.evHead) + '</h2><p class="lead">' + esc(L.evP) + "</p></section>";
+};
+
 /* =========================================================================
-   8. GATES
+   8. GATES — what each page needs before the WebQuest moves on
    ========================================================================= */
-function gate() {
-  var k = STEPS[S.step], L = t();
-  if (k === "cp1" && !S.cp1.choice) return L.gateChoice;
-  if (k === "cp1r" && !S.cp1.reflect.trim()) return L.gateText;
-  if (k === "cp2" && !S.cp2.choice) return L.gateChoice;
-  if (k === "cp2r" && !S.cp2.reflect.trim()) return L.gateText;
-  if (k === "cp3" && !S.cp3.choice) return L.gateChoice;
-  if (k === "cp3r" && !S.cp3.reflect.trim()) return L.gateText;
+function gateAt(i) {
+  var L = t();
+  switch (STEPS[i]) {
+    case "cp1": return has("cp1.pasted") ? null : L.gateFirst;
+    case "cp1r": return has("cp1.reflect") ? null : L.gateText;
+    case "cp2": return S.cp2.showFacts && has("cp2.recall") ? null : L.gateMem;
+    case "cp2r": return has("cp2.reflect") ? null : L.gateText;
+    case "cp3": return has("cp3.first") && has("cp3.improved") && has("cp3.compare") ? null : L.gateSolve;
+    case "cp3r": return has("cp3.reflect") ? null : L.gateText;
+    case "selfeval": return S.self.cp1 && S.self.cp2 && S.self.cp3 ? null : L.gateChoice;
+    case "card": return has("card.skill") && has("card.helps") && has("card.replaces") ? null : L.gateCard;
+    case "final": return has("fin.learned") && has("fin.changed") ? null : L.gateText;
+  }
   return null;
+}
+function gate() { return gateAt(S.step); }
+/* A page can be entered if it is a reading page, or if every page before it is complete. */
+function canEnter(i) {
+  if (FREE[STEPS[i]]) return true;
+  for (var j = 0; j < i; j++) if (gateAt(j)) return false;
+  return true;
+}
+/* From a reading page opened out of order, "Previous" returns to where the person left off. */
+function prevStep() {
+  for (var j = S.step - 1; j >= 0; j--) if (canEnter(j)) return j;
+  return -1;
+}
+/* Only Process and Result contain activities, so only they can be marked complete. */
+function sectionDone(sec) {
+  if (sec !== SECTION_OF[STEPS.indexOf("cp1")] && sec !== SECTION_OF[STEPS.indexOf("selfeval")]) return false;
+  for (var j = 0; j < STEPS.length; j++) if (SECTION_OF[j] === sec && gateAt(j)) return false;
+  return true;
 }
 
 /* =========================================================================
    9. RENDER
    ========================================================================= */
-var timerId = null;
+var lastTabs = "";
+function renderTabs(L) {
+  var nav = $("tabs"), cur = SECTION_OF[S.step], h = "";
+  for (var i = 0; i < SECTION_FIRST.length; i++) {
+    var open = canEnter(SECTION_FIRST[i]), done = sectionDone(i), now = i === cur;
+    h += '<button type="button" class="tab' + (now ? " now" : "") + (done ? " done" : "") + '"' +
+      ' data-go="' + SECTION_FIRST[i] + '"' + (now ? ' aria-current="page"' : "") +
+      (open ? "" : ' disabled title="' + esc(L.locked) + '"') + ">" +
+      '<span class="ti" aria-hidden="true">' + (done ? "✓" : open ? SECTION_ICON[i] : "🔒") + "</span>" +
+      '<span class="tl">' + esc(L.sections[i]) + "</span></button>";
+  }
+  nav.setAttribute("aria-label", L.navLabel);
+  /* Called on every keystroke; only touch the DOM when something actually changed. */
+  if (h !== lastTabs) { nav.innerHTML = h; lastTabs = h; }
+}
+
+function renderCredits(L) {
+  var h = '<p class="cap">' + esc(L.credTitle) + "</p><dl>";
+  for (var i = 0; i < L.cred.length; i++) {
+    h += "<div><dt>" + esc(L.cred[i][0]) + ":</dt><dd>" + esc(L.cred[i][1]) + "</dd></div>";
+  }
+  $("credits").innerHTML = h + "</dl>";
+}
+
 function render() {
   var L = t();
   document.documentElement.lang = L.htmlLang;
+  document.title = L.brand + " · " + L.brandSub;
   $("brandTitle").textContent = L.brand;
   $("brandSub").textContent = L.brandSub;
   $("langLabel").textContent = L.other;
   $("foot").textContent = L.foot;
-
-  /* path */
-  var ph = "", cur = NODE_OF[S.step], icons = ["▶", "🔍", "🧠", "🧩", "🧭"];
-  for (var i = 0; i < 5; i++) {
-    var cls = i < cur ? "done" : i === cur ? "now" : "";
-    ph += '<div class="node ' + cls + '"><span class="dot" aria-hidden="true">' + icons[i] + "</span>" +
-      "<small>" + esc(L.nodes[i]) + "</small></div>";
-    if (i < 4) ph += '<span class="link' + (i < cur ? " on" : "") + '"></span>';
-  }
-  $("path").innerHTML = ph;
+  renderCredits(L);
+  renderTabs(L);
   $("barFill").style.width = (S.step / (STEPS.length - 1) * 100) + "%";
   $("stepCount").textContent = L.step.replace("%1", S.step + 1).replace("%2", STEPS.length);
 
   /* screen */
-  if (timerId) { clearInterval(timerId); timerId = null; }
+  if (!(STEPS[S.step] === "cp2" && S.cp2.started)) stopTimer();
   var body = V[STEPS[S.step]]();
 
   /* nav */
-  var g = gate(), navH = '<div class="actions">';
-  if (S.step > 0) navH += '<button class="btn" data-go="' + (S.step - 1) + '">' + esc(L.prev) + "</button>";
+  var g = gate(), back = prevStep(), navH = '<div class="actions">';
+  if (back >= 0) navH += '<button class="btn" data-go="' + back + '">' + esc(L.prev) + "</button>";
   navH += '<span class="spacer"></span>';
-  if (S.step < STEPS.length - 1 && S.step > 0) {
+  if (S.step < STEPS.length - 1) {
     navH += '<button class="btn primary" id="nextBtn"' + (g ? " disabled" : "") + ">" + esc(L.next) + "</button>";
   }
-  navH += "</div>";
-  if (g) navH += '<p class="gate" role="status">⚠ ' + esc(g) + "</p>";
-  if (S.step > 0 && S.step < STEPS.length - 1) {
+  navH += "</div>" +
+    '<p class="gate" id="gateMsg" role="status"' + (g ? ">⚠ " + esc(g) : " hidden>") + "</p>";
+  if (S.step > 0) {
     navH += '<div class="actions"><button class="btn ghost danger" id="restartBtn" style="font-size:13px;padding:8px 14px">' + esc(L.restart) + "</button></div>";
   }
   if (!store.available && S.step === 0) {
     body += '<div class="callout warn" style="margin-top:16px">⚠ ' + esc(L.noStore) + "</div>";
   }
 
-  $("screen").innerHTML = body + (S.step > 0 ? navH : "");
+  $("screen").innerHTML = body + navH;
   postHeight();
   try { $("screen").focus({ preventScroll: true }); } catch (e) {}
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function go(n) {
-  if (n > S.step && gate()) return;
-  S.step = Math.max(0, Math.min(STEPS.length - 1, n));
+  n = Math.max(0, Math.min(STEPS.length - 1, n));
+  if (!canEnter(n)) return;
+  /* Leaving during the memory countdown cancels it; the challenge can be started again. */
+  if (S.cp2.started && n !== S.step) { stopTimer(); S.cp2.started = false; }
+  S.step = n;
   save(); render();
 }
 
 /* =========================================================================
-   10. WIRING — bound once to the stable #screen container, never per render,
+   10. WIRING — bound once to the stable containers, never per render,
    otherwise listeners accumulate and every click fires N times.
    ========================================================================= */
 function wire() {
@@ -1015,26 +1195,21 @@ function wire() {
   sc.addEventListener("input", function (e) {
     var k = e.target.getAttribute("data-k");
     if (!k) return;
-    set(k, e.target.value); save();
-    var b = $("nextBtn"); if (b) { var g = gate(); b.disabled = !!g; }
+    set(k, e.target.value); save(); refresh();
   });
   sc.addEventListener("change", function (e) {
     var k = e.target.getAttribute("data-k");
-    if (k && e.target.tagName === "SELECT") { set(k, e.target.value); save(); }
+    if (k && e.target.tagName === "SELECT") { set(k, e.target.value); save(); refresh(); }
   });
 
   sc.addEventListener("click", function (e) {
     var el = e.target.closest("[data-go]");
     if (el) { go(Number(el.getAttribute("data-go"))); return; }
 
-    var ch = e.target.closest("[data-group]");
-    if (ch) {
-      var grp = ch.getAttribute("data-group");
-      S[grp].choice = Number(ch.getAttribute("data-pts"));
-      save(); render(); return;
-    }
+    var ch = e.target.closest("[data-choice]");
+    if (ch) { pick(ch); return; }
 
-    var id = e.target.id;
+    var b = e.target.closest("button"), id = b ? b.id : "";
     if (id === "nextBtn") { go(S.step + 1); return; }
     if (id === "startMem") { startMemory(); return; }
     if (id === "revealFacts") { S.cp2.showFacts = true; save(); render(); return; }
@@ -1052,66 +1227,103 @@ function wire() {
     var ch = e.target.closest("[role=radio]");
     if (ch && (e.key === " " || e.key === "Enter")) { e.preventDefault(); ch.click(); }
   });
+
+  $("tabs").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-go]");
+    if (b && !b.disabled) go(Number(b.getAttribute("data-go")));
+  });
 }
 
-/* memory timer */
+/* Self-evaluation answers update in place, so choosing one does not jump the page back to the top. */
+function pick(btn) {
+  set(btn.getAttribute("data-choice"), Number(btn.getAttribute("data-pts"))); save();
+  var all = btn.parentNode.querySelectorAll("[data-choice]");
+  for (var i = 0; i < all.length; i++) {
+    var on = all[i] === btn;
+    all[i].setAttribute("aria-checked", on ? "true" : "false");
+    all[i].querySelector(".tick").textContent = on ? "✓" : "";
+  }
+  refresh();
+}
+
+/* Re-check the gates after typing or choosing, without re-rendering (keeps focus and scroll position). */
+function refresh() {
+  var g = gate(), b = $("nextBtn"), m = $("gateMsg");
+  if (b) b.disabled = !!g;
+  if (m) { m.hidden = !g; m.textContent = g ? "⚠ " + g : ""; }
+  var need = $("screen").querySelectorAll("[data-needs]");
+  for (var i = 0; i < need.length; i++) need[i].disabled = !has(need[i].getAttribute("data-needs"));
+  renderTabs(t());
+  postHeight();
+}
+
+/* memory timer — counts down to a fixed deadline, so a re-render (e.g. switching language) does not stop it */
+var timerId = null, memEnd = 0, lastSaid = -1;
+function secondsLeft() { return Math.max(0, Math.ceil((memEnd - Date.now()) / 1000)); }
+function stopTimer() { if (timerId) { clearInterval(timerId); timerId = null; } }
 function startMemory() {
-  S.cp2.started = true; S.cp2.showFacts = false; render();
-  var left = TIMER_SECONDS, clock = $("clock"), sr = $("timerSR");
-  timerId = setInterval(function () {
-    left--;
-    if (clock) {
-      clock.textContent = left;
-      if (left <= 10) clock.classList.add("low");
-    }
-    if (sr && (left === 30 || left === 10 || left === 5)) sr.textContent = left + "";
-    if (left <= 0) {
-      clearInterval(timerId); timerId = null;
-      S.cp2.started = false; S.cp2.revealed = true; save(); render();
-    }
-  }, 1000);
+  memEnd = Date.now() + TIMER_SECONDS * 1000; lastSaid = -1;
+  S.cp2.started = true; S.cp2.showFacts = false;
+  render();
+  stopTimer(); timerId = setInterval(tick, 250);
+}
+function tick() {
+  var left = secondsLeft(), clock = $("clock"), sr = $("timerSR");
+  if (clock) {
+    clock.textContent = left;
+    if (left <= 10) clock.classList.add("low");
+  }
+  if (sr && left !== lastSaid && (left === 30 || left === 10 || left === 5)) { sr.textContent = left + ""; lastSaid = left; }
+  if (left <= 0) {
+    stopTimer();
+    S.cp2.started = false; S.cp2.revealed = true; save(); render();
+  }
 }
 
 /* transcript */
 function buildTranscript() {
-  var L = t(), T = L.tr, n = total(), id = L.ids[band(n)], sc = scores();
-  var B = T.blank, nl = "\n";
-  function line(k, v) { return k + ": " + (String(v || "").trim() || B) + nl; }
+  var L = t(), T = L.tr, n = total(), id = L.ids[band(n)], sc = scores(), i;
+  var B = T.blank, nl = "\n", rule = "-".repeat(40) + nl;
+  function line(k, v) { return k + (/[?:]$/.test(k) ? " " : ": ") + (String(v || "").trim() || B) + nl; }
   var o = T.head + nl + "=".repeat(56) + nl + nl;
   o += line(T.name, S.card.name);
   o += line(T.identity, id[0] + " " + id[1]);
   o += line(T.total, n + " / 9") + nl;
 
-  o += T.cp1 + " (" + sc[0] + "/3)" + nl + "-".repeat(40) + nl;
+  o += T.s1 + nl + rule;
   o += line(T.first, S.cp1.pasted);
-  for (var i = 0; i < L.c1Cards.length; i++) o += line(L.c1Cards[i][0], S.cp1["a" + (i + 1)]);
-  o += line(T.choice, S.cp1.choice ? L.c1Opts[S.cp1.choice - 1][0] : "");
+  for (i = 0; i < L.c1Checks.length; i++) o += line(L.c1Checks[i][0], S.cp1[CP1_KEYS[i]]);
   o += line(T.reflect, S.cp1.reflect) + nl;
 
-  o += T.cp2 + " (" + sc[1] + "/3)" + nl + "-".repeat(40) + nl;
+  o += T.s2 + nl + rule;
   o += line(T.recall, S.cp2.recall);
-  o += line(T.choice, S.cp2.choice ? L.c2Opts[S.cp2.choice - 1][0] : "");
   o += line(T.reflect, S.cp2.reflect) + nl;
 
-  o += T.cp3 + " (" + sc[2] + "/3)" + nl + "-".repeat(40) + nl;
-  var keys = ["problem", "s1", "s2", "s3", "best"];
-  for (var j = 0; j < L.c3F.length; j++) o += line(L.c3F[j][0], S.cp3[keys[j]]);
+  o += T.s3 + nl + rule;
+  o += line(L.c3First, S.cp3.first);
   o += line(T.ai, S.cp3.ai);
-  for (var k = 0; k < L.c3C.length; k++) o += line(L.c3C[k], S.cp3["c" + (k + 1)]);
-  o += line(T.choice, S.cp3.choice ? L.c3Opts[S.cp3.choice - 1][0] : "");
+  o += line(L.c3Improved, S.cp3.improved);
+  o += line(L.c3Compare, S.cp3.compare);
   o += line(T.reflect, S.cp3.reflect) + nl;
 
-  o += T.card + nl + "-".repeat(40) + nl;
-  o += line(T.skill, S.card.skill);
+  o += T.self + nl + rule;
+  var opts = [L.c1Opts, L.c2Opts, L.c3Opts];
+  for (i = 0; i < 3; i++) {
+    var p = S.self[SELF_KEYS[i]];
+    o += line(L.idSkills[i], p ? opts[i][p - 1][0] + " (" + sc[i] + "/3)" : "");
+  }
+  o += nl;
+
+  o += T.card + nl + rule;
+  o += line(T.skill, has("card.skill") ? L.idSkills[Number(S.card.skill)] : "");
   o += line(T.helps, S.card.helps);
   o += line(T.replaces, S.card.replaces);
   o += T.rules + ":" + nl;
   for (var r = 0; r < 3; r++) {
     o += "  " + (r + 1) + ". " + (String(S.card["r" + (r + 1)] || "").trim() || L.rules[r][1]) + nl;
   }
-  o += nl + T.fin + nl + "-".repeat(40) + nl;
-  o += line(L.fQ, S.fin.changed);
-  for (var f = 0; f < L.fFs.length; f++) o += line(L.fFs[f], S.fin["f" + (f + 1)]);
+  o += nl + T.fin + nl + rule;
+  for (i = 0; i < L.fQs.length; i++) o += line(L.fQs[i], S.fin[FIN_KEYS[i]]);
   o += nl + L.fMantra + nl;
   return o;
 }
@@ -1176,6 +1388,9 @@ $("langBtn").addEventListener("click", function () {
   save(); render();
 });
 
+if (!C[S.lang]) S.lang = "es";
+S.step = S.step | 0;
+if (S.step < 0 || S.step >= STEPS.length || !canEnter(S.step)) S.step = 0;
 wire();
 render();
 setTimeout(postHeight, 400);

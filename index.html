@@ -208,6 +208,11 @@ button{font:inherit;cursor:pointer}
   padding:18px;margin:22px 0 16px;color:var(--accent);
 }
 .foot{text-align:center;color:var(--muted);font-size:12px;padding:22px 0 0}
+.school-project{
+  margin:0 0 18px;padding:12px 14px;border:1px solid var(--line);
+  border-radius:10px;background:var(--panel2);color:var(--muted);font-size:13px;
+}
+.school-project b{color:var(--accent)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 @media print{
@@ -306,7 +311,7 @@ var C = {
     step: "Step %1 of %2", prev: "← Previous", next: "Next →",
     restart: "Restart WebQuest",
     restartAsk: "This will erase every answer you have written and start again from the beginning.\n\nAre you sure?",
-    foot: "The goal is not to stop using technology. The goal is to make sure technology remains the tool — and the human remains the thinker.",
+    foot: "School project · The goal is not to stop using technology. The goal is to make sure technology remains the tool — and the human remains the thinker.",
     gateChoice: "Choose the option that best describes you before continuing.",
     gateText: "Write something before continuing. It does not need to be perfect.",
     noStore: "Heads up: this browser is blocking local storage, so your answers will be lost if you refresh. On the published site this normally works.",
@@ -314,6 +319,9 @@ var C = {
     /* --- welcome --- */
     wTitle: "Who Is Thinking: You or the Technology?",
     wSub: "A DIGITAL MIND IDENTITY WEBQUEST",
+    wProject: "SCHOOL PROJECT · GROUP PRESENTATION",
+    wTeam: "Group members: Sara, Andrés, Kelly, Julián, and you.",
+    wClass: "The professor requires genuine collaboration; the grade will be reduced if it is clear that only two people did the work.",
     wBody1: "Welcome to the Digital Mind Lab.",
     wBody2: "Every day, we use search engines, smartphones, calculators, GPS and artificial intelligence to help us think, remember and solve problems. These tools can be powerful — but what happens when we rely on them so much that we stop exercising some of those abilities ourselves?",
     wAsk: "Am I using technology as a tool for my brain, or as a replacement for my brain?",
@@ -508,13 +516,16 @@ var C = {
     step: "Paso %1 de %2", prev: "← Anterior", next: "Siguiente →",
     restart: "Reiniciar el WebQuest",
     restartAsk: "Esto va a borrar todas las respuestas que usted ha escrito y va a empezar de nuevo desde el principio.\n\n¿Está seguro?",
-    foot: "El objetivo no es dejar de usar la tecnología. El objetivo es que la tecnología siga siendo la herramienta — y que el ser humano siga siendo quien piensa.",
+    foot: "Proyecto escolar · El objetivo no es dejar de usar la tecnología. El objetivo es que la tecnología siga siendo la herramienta — y que el ser humano siga siendo quien piensa.",
     gateChoice: "Escoja la opción que mejor lo describa antes de continuar.",
     gateText: "Escriba algo antes de continuar. No tiene que ser perfecto.",
     noStore: "Aviso: este navegador está bloqueando el almacenamiento local, así que sus respuestas se pierden si recarga la página. En el sitio publicado esto normalmente sí funciona.",
 
     wTitle: "¿Quién Está Pensando: Usted o la Tecnología?",
     wSub: "UN WEBQUEST DE IDENTIDAD MENTAL DIGITAL",
+    wProject: "PROYECTO ESCOLAR · PRESENTACIÓN GRUPAL",
+    wTeam: "Integrantes del grupo: Sara, Andrés, Kelly, Julián y usted.",
+    wClass: "El profesor exige una colaboración auténtica; la nota bajará si queda claro que solo dos personas hicieron el trabajo.",
     wBody1: "Bienvenido al Laboratorio de Mente Digital.",
     wBody2: "Todos los días usamos buscadores, celulares, calculadoras, GPS e inteligencia artificial para ayudarnos a pensar, recordar y resolver problemas. Estas herramientas pueden ser muy poderosas — pero ¿qué pasa cuando dependemos tanto de ellas que dejamos de ejercitar algunas de esas capacidades por nuestra cuenta?",
     wAsk: "¿Estoy usando la tecnología como herramienta para mi cerebro, o como reemplazo de mi cerebro?",
@@ -759,7 +770,8 @@ var V = {};
 
 V.welcome = function () {
   var L = t();
-  return '<section class="panel"><h1>' + esc(L.wTitle) + '</h1>' +
+  return '<section class="panel"><div class="school-project"><b>' + esc(L.wProject) + "</b><br>" +
+    esc(L.wTeam) + "<br>" + esc(L.wClass) + "</div><h1>" + esc(L.wTitle) + '</h1>' +
     '<p class="sub">' + esc(L.wSub) + "</p>" +
     '<p class="lead">' + esc(L.wBody1) + "</p>" +
     '<p class="lead">' + esc(L.wBody2) + "</p>" +

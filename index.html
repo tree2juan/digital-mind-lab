@@ -47,6 +47,12 @@ header{
   display:grid;place-items:center;font-size:19px;padding:5px;
 }
 .mark img{width:100%;height:100%;object-fit:contain}
+.ichip{
+  display:inline-grid;place-items:center;vertical-align:middle;flex:none;
+  width:20px;height:20px;border-radius:7px;background:var(--mint);margin-right:6px;
+}
+.ichip img{width:68%;height:68%;object-fit:contain;display:block}
+.tab .ti .ichip{margin-right:0}
 .brand b{display:block;font-size:14.5px;letter-spacing:.2px;line-height:1.25;font-weight:700}
 .brand span{display:block;font-size:11.5px;color:var(--muted)}
 .langbtn{
@@ -247,11 +253,24 @@ button{font:inherit;cursor:pointer}
 .credits dl{margin:0}
 .credits dt{display:inline;font-weight:700;color:var(--text)}
 .credits dd{display:inline;margin:0 0 0 4px}
+
+/* ---------- meet the team ---------- */
+.team{margin:26px 0 4px;padding:20px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel2)}
+.team .cap{font-size:11px;letter-spacing:1.6px;font-weight:700;color:var(--accent);text-transform:uppercase;margin:0 0 14px}
+.teamgrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.teammate{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.avatar{
+  width:34px;height:34px;border-radius:50%;flex:none;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#08131c;font-weight:800;font-size:12.5px;display:grid;place-items:center;letter-spacing:.3px;
+}
+.teammate b{font-size:13.5px;font-weight:600;line-height:1.3}
+.teammeta{margin:14px 0 0;font-size:12.5px;color:var(--muted);line-height:1.6}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 @media print{
   body{background:#fff;color:#000}
-  header,.tabs,.bar,.stepcount,.actions,.foot,nav{display:none!important}
+  header,.tabs,.bar,.stepcount,.actions,.foot,nav,.team{display:none!important}
   .panel,.idcard,.rule{border-color:#999;background:#fff;color:#000;box-shadow:none}
   .idcard .cap,.rule .n{color:#000}
   h1,h2,h3{color:#000}
@@ -371,6 +390,7 @@ var C = {
 
     /* --- credits --- */
     credTitle: "Credits",
+    teamCap: "Meet the Team",
     cred: [
       ["Created by", "Charles Niño, Juan José Betancour, Santiago Castrillón"],
       ["For", "Universidad Pontificia Bolivariana"],
@@ -526,7 +546,7 @@ var C = {
     rTitle: "Your Digital Thinking Identity",
     rOf: "%1 / 9 points",
     rBreak: "Where your points came from",
-    rSkills: ["🔍 Critical Thinking", "🧠 Memory", "🧩 Problem-Solving"],
+    rSkills: ["Critical Thinking", "Memory", "Problem-Solving"],
     rChallenge: "Your challenge",
     rNote: "The score is not a grade; it is only a way to show how much technology is being used to support or replace thinking.",
     ids: [
@@ -614,6 +634,7 @@ var C = {
     newTab: "(se abre en una pestaña nueva)",
 
     credTitle: "Créditos",
+    teamCap: "Conoce al Equipo",
     cred: [
       ["Creado por", "Charles Niño, Juan José Betancour, Santiago Castrillón"],
       ["Para", "Universidad Pontificia Bolivariana"],
@@ -762,7 +783,7 @@ var C = {
     rTitle: "Su Identidad de Pensamiento Digital",
     rOf: "%1 / 9 puntos",
     rBreak: "De dónde vienen sus puntos",
-    rSkills: ["🔍 Pensamiento Crítico", "🧠 Memoria", "🧩 Resolución de Problemas"],
+    rSkills: ["Pensamiento Crítico", "Memoria", "Resolución de Problemas"],
     rChallenge: "Su reto",
     rNote: "El puntaje no es una nota; es solo una forma de mostrar cuánto se está usando la tecnología para apoyar o reemplazar el pensamiento.",
     ids: [
@@ -875,6 +896,29 @@ function choices(path, opts, cur, label) {
 }
 function tile(icon, label) {
   return '<div class="choice tile"><span class="d"><span aria-hidden="true">' + icon + "</span> <b>" + esc(label) + "</b></span></div>";
+}
+/* Brand icon chip: the activity-icon SVGs are drawn in navy, so they need a light
+   backing chip to stay visible on the dark theme (same trick as the header .mark). */
+function ichip(file) {
+  return '<span class="ichip" aria-hidden="true"><img src="assets/brand/' + file + '" alt=""></span>';
+}
+/* Same three icons represent Critical Thinking / Memory / Problem-Solving everywhere
+   they appear (Task tiles, Process steps, Result headings) — one lookup, reused by index. */
+var SKILL_ICON = [ichip("icons/critical-thinking.svg"), ichip("icons/memory.svg"), ichip("icons/problem-solving.svg")];
+function initials(name) {
+  var p = name.trim().split(/\s+/);
+  return (p[0].charAt(0) + p[p.length - 1].charAt(0)).toUpperCase();
+}
+/* "Meet the Team": a proper, visible introduction of the three students behind the
+   project, shown on the Introduction page (the small print "Credits" footer still
+   carries the same info site-wide, but this is the real, readable section). */
+function teamSection(L) {
+  var names = L.cred[0][1].split(/,\s*/), h = '<div class="team"><p class="cap">' + esc(L.teamCap) + '</p><div class="teamgrid">';
+  for (var i = 0; i < names.length; i++) {
+    h += '<div class="teammate"><span class="avatar" aria-hidden="true">' + esc(initials(names[i])) + '</span><b>' + esc(names[i]) + "</b></div>";
+  }
+  h += '</div><p class="teammeta">' + esc(L.cred[1][1]) + " · " + esc(L.cred[2][1]) + " · " + esc(L.cred[3][1]) + "</p></div>";
+  return h;
 }
 function factList() {
   var f = t().facts, h = '<div class="factlist">';
@@ -1008,7 +1052,10 @@ var STEPS = [
 ];
 /* Section (tab) of each page: 0 Introduction · 1 Task · 2 Process · 3 Result · 4 Resources · 5 Evaluation */
 var SECTION_OF = [0, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 5];
-var SECTION_ICON = ["📖", "🎯", "🔬", "🧭", "📚", "📝"];
+var SECTION_ICON = [
+  ichip("logo-icon.svg"), ichip("icons/digital-habits.svg"), ichip("icons/problem-solving.svg"),
+  ichip("icons/assessment.svg"), ichip("icons/research.svg"), ichip("icons/reflection.svg")
+];
 var SECTION_FIRST = [];
 for (var si = 0; si < STEPS.length; si++) {
   if (SECTION_FIRST[SECTION_OF[si]] === undefined) SECTION_FIRST[SECTION_OF[si]] = si;
@@ -1025,14 +1072,14 @@ V.intro = function () {
     '<p class="sub">' + esc(L.iSub) + "</p>" +
     '<p class="lead"><em>' + esc(L.iQuestion) + "</em></p><h2>" + esc(L.iHead) + "</h2>";
   for (var i = 0; i < L.iP.length; i++) h += '<p class="lead">' + esc(L.iP[i]) + "</p>";
-  return h + "</section>";
+  return h + teamSection(L) + "</section>";
 };
 
 V.task = function () {
   var L = t(), i, h = '<section class="panel"><h2>' + esc(L.tHead) + "</h2>" +
     '<p class="lead">' + esc(L.tLead) + "</p>" +
     "<h3>" + esc(L.tCpIntro) + '</h3><div class="cards three">';
-  for (i = 0; i < L.tCps.length; i++) h += tile(L.tCps[i][0], L.tCps[i][1]);
+  for (i = 0; i < L.tCps.length; i++) h += tile(SKILL_ICON[i], L.tCps[i][1]);
   h += "</div><p>" + esc(L.tEvery) + "</p><h3>" + esc(L.tIdIntro) + '</h3><div class="cards three">';
   for (i = 0; i < L.ids.length; i++) h += tile(L.ids[i][0], L.ids[i][1]);
   h += '</div><div class="callout">' + esc(L.tNotGrade) + "</div>" +
@@ -1045,7 +1092,7 @@ V.process = function () {
   var L = t(), h = '<section class="panel"><h2>' + esc(L.pHead) + "</h2>" +
     '<p class="lead">' + esc(L.pLead) + "</p>";
   for (var i = 0; i < L.pSteps.length; i++) {
-    h += '<div class="rule"><div class="n"><span aria-hidden="true">' + L.pSteps[i][0] + "</span> " +
+    h += '<div class="rule"><div class="n">' + SKILL_ICON[i] + " " +
       esc(L.pSteps[i][1]) + "</div><p>" + esc(L.pSteps[i][2]) + "</p></div>";
   }
   return h + "</section>";
@@ -1169,7 +1216,7 @@ V.selfeval = function () {
     var keys = ["cp1", "cp2", "cp3"];
     for (var i = 0; i < 3; i++) {
       var res = r[keys[i]];
-      h += "<h3>" + esc(L.rSkills[i]) + "</h3>" +
+      h += "<h3>" + SKILL_ICON[i] + esc(L.rSkills[i]) + "</h3>" +
         '<div class="meter"><div class="top"><b>' + esc(L.rSkills[i]) + "</b><span>" + res.score + "/3</span></div>" +
         '<div class="track"><div class="fill" style="width:' + (res.score / 3 * 100) + '%"></div></div></div>';
       if (res.why || res.insufficient) {
@@ -1184,7 +1231,7 @@ V.selfeval = function () {
 
   /* status === "manual": fallback used only when the grading API is unreachable. */
   for (var j = 0; j < 3; j++) {
-    h += "<h3>" + esc(L.rSkills[j]) + "</h3>" +
+    h += "<h3>" + SKILL_ICON[j] + esc(L.rSkills[j]) + "</h3>" +
       choices("self." + SELF_KEYS[j], opts[j], S.self[SELF_KEYS[j]], L.rSkills[j] + " — " + L.sQ);
   }
   h += '<div class="actions"><button class="btn ghost" id="backToAI">' + esc(L.sBackToAI) + "</button></div>";
@@ -1202,7 +1249,7 @@ V.identity = function () {
     '<div class="callout open"><b>' + esc(L.rChallenge) + ":</b> " + esc(id[3]) + "</div>" +
     "<h3>" + esc(L.rBreak) + "</h3>";
   for (var i = 0; i < 3; i++) {
-    h += '<div class="meter"><div class="top"><b>' + esc(L.rSkills[i]) + "</b><span>" + sc[i] + "/3</span></div>" +
+    h += '<div class="meter"><div class="top"><b>' + SKILL_ICON[i] + esc(L.rSkills[i]) + "</b><span>" + sc[i] + "/3</span></div>" +
       '<div class="track"><div class="fill" style="width:' + (sc[i] / 3 * 100) + '%"></div></div></div>';
   }
   h += '<div class="callout">' + esc(L.rNote) + "</div>";

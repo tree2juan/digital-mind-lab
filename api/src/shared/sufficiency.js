@@ -23,10 +23,33 @@ function isLowEffort(text) {
   const t = String(text || "").trim();
   if (!t) return true;
   if (/^(.)\1{3,}$/i.test(t.replace(/\s+/g, ""))) return true;
-  const words = t.toLowerCase().split(/\s+/).filter(Boolean);
+  const words = t
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((w) => w.replace(/[,.!?;:]+$/g, ""));
   if (words.length === 0) return true;
   const uniqueRatio = new Set(words).size / words.length;
-  if (words.length >= 4 && uniqueRatio < 0.3) return true;
+  // Lower bar (2+ words) so short low-effort answers like "yes, yes, yes"
+  // or "no se no se" can't dodge the check just by being under 4 words.
+  if (words.length >= 2 && uniqueRatio < 0.5) return true;
+  return false;
+}
+
+/**
+ * True if two or more fields contain the same (or near-identical) short
+ * answer — a common way to game the word-count check by pasting the same
+ * trivial phrase into every box instead of actually answering each one.
+ */
+function hasDuplicateFields(values) {
+  const seen = new Map();
+  for (const v of values) {
+    const key = String(v || "").trim().toLowerCase();
+    if (!key) continue;
+    const count = (seen.get(key) || 0) + 1;
+    seen.set(key, count);
+    if (count >= 2 && wordCount(key) <= 8) return true;
+  }
   return false;
 }
 
@@ -43,7 +66,10 @@ function checkSufficiency(fields, lang) {
     (v) => wordCount(v) >= MIN_WORDS_PER_FIELD && !isLowEffort(v)
   );
   const totalWords = values.reduce((sum, v) => sum + wordCount(v), 0);
-  const insufficient = answeredFields.length === 0 || totalWords < MIN_TOTAL_WORDS;
+  const insufficient =
+    answeredFields.length === 0 ||
+    totalWords < MIN_TOTAL_WORDS ||
+    hasDuplicateFields(values);
   const reason = insufficient
     ? lang === "es"
       ? "La respuesta está vacía, es muy corta o no tiene suficiente contenido para calificar con confianza."
@@ -52,4 +78,11 @@ function checkSufficiency(fields, lang) {
   return { insufficient, reason, totalWords };
 }
 
-module.exports = { checkSufficiency, wordCount, isLowEffort, MIN_WORDS_PER_FIELD, MIN_TOTAL_WORDS };
+module.exports = {
+  checkSufficiency,
+  wordCount,
+  isLowEffort,
+  hasDuplicateFields,
+  MIN_WORDS_PER_FIELD,
+  MIN_TOTAL_WORDS,
+};

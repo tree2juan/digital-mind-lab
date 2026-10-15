@@ -3,13 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>El Laboratorio de la Mente Digital · Una WebQuest sobre cómo la tecnología influye en nuestra forma de pensar</title>
-<meta name="description" content="The Digital Mind Lab: a Digital Thinking Identity WebQuest / El Laboratorio de la Mente Digital: una WebQuest sobre cómo la tecnología influye en nuestra forma de pensar">
+<title>Mente en Control · Una WebQuest sobre cómo la tecnología influye en nuestra forma de pensar</title>
+<meta name="description" content="Mind in Control: a Digital Thinking Identity WebQuest / Mente en Control: una WebQuest sobre cómo la tecnología influye en nuestra forma de pensar">
 <meta name="author" content="Charles Niño, Juan José Betancour, Santiago Castrillón">
+<link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0a0e1a; --panel:#121829; --panel2:#1a2236; --line:#2a3450;
-  --text:#e8ecf5; --muted:#93a3c4; --accent:#4dd0e1; --accent2:#a78bfa;
+  /* Mind in Control brand palette */
+  --navy:#0F2D4A; --teal:#14B8A6; --azure:#3B82F6; --mint:#A7E3D8; --lightgray:#F4F7FA; --charcoal:#334155;
+  --bg:#0a1726; --panel:#102136; --panel2:#16314c; --line:#234863;
+  --text:#eef3f8; --muted:#9fb3c8; --accent:var(--teal); --accent2:var(--azure);
   --ok:#34d399; --warn:#fbbf24; --lock:#fb7185; --focus:#fbbf24;
   --r:14px;
 }
@@ -17,29 +23,31 @@
 html,body{margin:0;padding:0}
 body{
   background:var(--bg); color:var(--text);
-  font:16px/1.6 "Segoe UI",system-ui,-apple-system,"Helvetica Neue",sans-serif;
+  font:16px/1.6 "Inter",system-ui,-apple-system,"Helvetica Neue",sans-serif;
   background-image:
-    radial-gradient(circle at 12% 8%,rgba(77,208,225,.10),transparent 42%),
-    radial-gradient(circle at 88% 92%,rgba(167,139,250,.10),transparent 42%);
+    radial-gradient(circle at 12% 8%,rgba(20,184,166,.12),transparent 42%),
+    radial-gradient(circle at 88% 92%,rgba(59,130,246,.12),transparent 42%);
   background-attachment:fixed;
   -webkit-text-size-adjust:100%;
 }
+h1,h2,h3,.brand b{font-family:"Montserrat","Inter",system-ui,sans-serif}
 .wrap{max-width:920px;margin:0 auto;padding:0 18px 64px}
 
 /* ---------- header ---------- */
 header{
   display:flex;align-items:center;justify-content:space-between;gap:14px;
   padding:14px 18px;border-bottom:1px solid var(--line);
-  background:rgba(10,14,26,.85);backdrop-filter:blur(8px);
+  background:rgba(10,23,38,.85);backdrop-filter:blur(8px);
   position:sticky;top:0;z-index:50;flex-wrap:wrap;
 }
 .brand{display:flex;align-items:center;gap:11px;min-width:0}
 .mark{
   width:36px;height:36px;border-radius:10px;flex:none;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
-  display:grid;place-items:center;font-size:19px;
+  display:grid;place-items:center;font-size:19px;padding:5px;
 }
-.brand b{display:block;font-size:14px;letter-spacing:.2px;line-height:1.25}
+.mark img{width:100%;height:100%;object-fit:contain}
+.brand b{display:block;font-size:14.5px;letter-spacing:.2px;line-height:1.25;font-weight:700}
 .brand span{display:block;font-size:11.5px;color:var(--muted)}
 .langbtn{
   background:var(--panel2);border:1px solid var(--line);color:var(--text);
@@ -256,9 +264,9 @@ button{font:inherit;cursor:pointer}
 
 <header>
   <div class="brand">
-    <div class="mark" aria-hidden="true">🧠</div>
+    <div class="mark" aria-hidden="true"><img src="assets/brand/logo-icon.svg" alt="" width="36" height="36"></div>
     <div>
-      <b id="brandTitle">The Digital Mind Lab</b>
+      <b id="brandTitle">Mind in Control</b>
       <span id="brandSub">A Digital Thinking Identity WebQuest</span>
     </div>
   </div>
@@ -343,7 +351,7 @@ function save() { try { store.set(KEY, JSON.stringify(S)); } catch (e) {} }
 var C = {
   en: {
     code: "en", other: "Español", htmlLang: "en",
-    brand: "The Digital Mind Lab", brandSub: "A Digital Thinking Identity WebQuest",
+    brand: "Mind in Control", brandSub: "A Digital Thinking Identity WebQuest",
     navLabel: "WebQuest sections",
     sections: ["Introduction", "Task", "Process", "Result", "Resources", "Evaluation"],
     locked: "Complete the three steps of the Process first.",
@@ -371,7 +379,7 @@ var C = {
     ],
 
     /* --- Introduction --- */
-    iTitle: "The Digital Mind Lab",
+    iTitle: "Mind in Control",
     iSub: "A DIGITAL THINKING IDENTITY WEBQUEST",
     iQuestion: "When does technology help us think, and when does it start doing the thinking for us?",
     iHead: "Introduction",
@@ -513,6 +521,8 @@ var C = {
     sFlagged: "⚠ Flagged for review",
     sFlaggedHint: "This answer was too short, blank, or unclear for the AI to grade with confidence. Go back and add more detail, or leave it — an instructor can review it.",
     sNeedsReview: "One or more of your answers was flagged for instructor review — see the notes below.",
+    liveFlag: "⚠ This answer looks too short or too general right now",
+    liveFlagHint: "Add specific detail (what you actually checked, thought, or noticed) so the AI grader can score this with confidence.",
     rTitle: "Your Digital Thinking Identity",
     rOf: "%1 / 9 points",
     rBreak: "Where your points came from",
@@ -571,7 +581,7 @@ var C = {
 
     /* --- transcript --- */
     tr: {
-      head: "THE DIGITAL MIND LAB — WEBQUEST TRANSCRIPT",
+      head: "MIND IN CONTROL — WEBQUEST TRANSCRIPT",
       name: "Name", identity: "Digital Thinking Identity", total: "Total score",
       s1: "PROCESS · STEP 1 — CRITICAL THINKING", s2: "PROCESS · STEP 2 — MEMORY",
       s3: "PROCESS · STEP 3 — PROBLEM-SOLVING", self: "RESULT · SELF-EVALUATION",
@@ -585,7 +595,7 @@ var C = {
 
   es: {
     code: "es", other: "English", htmlLang: "es",
-    brand: "El Laboratorio de la Mente Digital", brandSub: "Una WebQuest sobre cómo la tecnología influye en nuestra forma de pensar",
+    brand: "Mente en Control", brandSub: "Una WebQuest sobre cómo la tecnología influye en nuestra forma de pensar",
     navLabel: "Secciones del WebQuest",
     sections: ["Introducción", "Tarea", "Proceso", "Resultado", "Recursos", "Evaluación"],
     locked: "Primero complete los tres pasos del Proceso.",
@@ -611,7 +621,7 @@ var C = {
       ["Como requisito del curso", "English Communicative Competence II"]
     ],
 
-    iTitle: "El Laboratorio de la Mente Digital",
+    iTitle: "Mente en Control",
     iSub: "UNA WEBQUEST SOBRE CÓMO LA TECNOLOGÍA INFLUYE EN NUESTRA FORMA DE PENSAR",
     iQuestion: "¿Cuándo nos ayuda la tecnología a pensar y cuándo empieza a hacerlo por nosotros?",
     iHead: "Introducción",
@@ -747,6 +757,8 @@ var C = {
     sFlagged: "⚠ Marcado para revisión",
     sFlaggedHint: "Esta respuesta estaba muy corta, vacía o no fue clara para que la IA la calificara con confianza. Vuelva y agregue más detalle, o déjela así — un profesor puede revisarla.",
     sNeedsReview: "Una o más de sus respuestas fue marcada para revisión del profesor — vea las notas abajo.",
+    liveFlag: "⚠ Esta respuesta se ve muy corta o muy general por ahora",
+    liveFlagHint: "Agregue un detalle específico (qué revisó, pensó o notó realmente) para que la IA pueda calificarla con confianza.",
     rTitle: "Su Identidad de Pensamiento Digital",
     rOf: "%1 / 9 puntos",
     rBreak: "De dónde vienen sus puntos",
@@ -800,7 +812,7 @@ var C = {
     evP: "La evaluación se basa en la autorreflexión y la honestidad. Las personas eligen las respuestas que mejor representan sus hábitos y escriben reflexiones cortas sobre su experiencia. El WebQuest da un puntaje de 1 a 9 y lo usa para mostrar una de tres Identidades de Pensamiento Digital. El puntaje no es una nota; es solo una forma de mostrar cuánto se está usando la tecnología para apoyar o reemplazar el pensamiento. La reflexión final se evalúa según la claridad con que las personas explican lo que aprendieron sobre su propio uso de la tecnología.",
 
     tr: {
-      head: "EL LABORATORIO DE MENTE DIGITAL — TRANSCRIPCIÓN DEL WEBQUEST",
+      head: "MENTE EN CONTROL — TRANSCRIPCIÓN DEL WEBQUEST",
       name: "Nombre", identity: "Identidad de Pensamiento Digital", total: "Puntaje total",
       s1: "PROCESO · PASO 1 — PENSAMIENTO CRÍTICO", s2: "PROCESO · PASO 2 — MEMORIA",
       s3: "PROCESO · PASO 3 — RESOLUCIÓN DE PROBLEMAS", self: "RESULTADO · AUTOEVALUACIÓN",
@@ -924,6 +936,68 @@ function useManualEval() {
 }
 
 /* =========================================================================
+   6c. LIVE SUFFICIENCY PREVIEW — mirrors the rules in
+   api/src/shared/sufficiency.js (isLowEffort / checkSufficiency) so a
+   checkpoint page can flag a thin, blank, or low-effort answer the moment
+   it's typed, instead of only finding out from the AI grader at the end.
+   This is a preview only; the server pre-check is still the one that
+   actually decides needsReview. Keep the rules in sync with that file.
+   ========================================================================= */
+function wcLive(text) { return String(text || "").trim().split(/\s+/).filter(Boolean).length; }
+function lowEffortLive(text) {
+  var s = String(text || "").trim();
+  if (!s) return true;
+  if (/^(.)\1{3,}$/i.test(s.replace(/\s+/g, ""))) return true;
+  var words = s.toLowerCase().split(/\s+/).filter(Boolean).map(function (w) { return w.replace(/[,.!?;:]+$/g, ""); });
+  if (words.length === 0) return true;
+  var uniq = {}, i;
+  for (i = 0; i < words.length; i++) uniq[words[i]] = true;
+  var uniqueRatio = Object.keys(uniq).length / words.length;
+  if (words.length >= 2 && uniqueRatio < 0.5) return true;
+  return false;
+}
+function duplicateFieldsLive(values) {
+  var seen = {}, i, key;
+  for (i = 0; i < values.length; i++) {
+    key = String(values[i] || "").trim().toLowerCase();
+    if (!key) continue;
+    seen[key] = (seen[key] || 0) + 1;
+    if (seen[key] >= 2 && wcLive(key) <= 8) return true;
+  }
+  return false;
+}
+/* Fields checked per checkpoint must match what /api/evaluate sends to checkSufficiency. */
+var CP_SUFF_FIELDS = {
+  1: ["pasted", "correct", "trust", "source", "reflect"],
+  3: ["first", "ai", "improved", "compare", "reflect"]
+};
+function cpLiveInsufficient(n) {
+  if (n === 2) { var r = S.cp2.recall || ""; return wcLive(r) < 3 || lowEffortLive(r); }
+  var cp = n === 1 ? S.cp1 : S.cp3, keys = CP_SUFF_FIELDS[n], values = [], i, wc = 0;
+  for (i = 0; i < keys.length; i++) { values.push(cp[keys[i]] || ""); }
+  for (i = 0; i < values.length; i++) wc += wcLive(values[i]);
+  if (wc === 0) return null; /* nothing typed yet — stay quiet */
+  var answered = 0;
+  for (i = 0; i < values.length; i++) { if (wcLive(values[i]) >= 3 && !lowEffortLive(values[i])) answered++; }
+  return answered === 0 || wc < 15 || duplicateFieldsLive(values);
+}
+/* Renders (or re-renders in place) the live flag for the checkpoint currently on screen. */
+function liveFlagHTML(n) {
+  var bad = cpLiveInsufficient(n);
+  if (!bad) return "";
+  var L = t();
+  return '<div class="callout warn" id="liveFlag"><b>' + esc(L.liveFlag) + "</b><br>" + esc(L.liveFlagHint) + "</div>";
+}
+var STEP_CP = { cp1: 1, cp1r: 1, cp2: 2, cp2r: 2, cp3: 3, cp3r: 3 };
+function refreshLiveFlag() {
+  var n = STEP_CP[STEPS[S.step]];
+  var host = $("liveFlagHost");
+  if (!host) return;
+  if (n === undefined) { host.innerHTML = ""; return; }
+  host.innerHTML = liveFlagHTML(n);
+}
+
+/* =========================================================================
    7. PAGES — the same sections, in the same order, as the WebQuest document
    ========================================================================= */
 var STEPS = [
@@ -994,12 +1068,13 @@ V.cp1 = function () {
     h += field("textarea", "cp1." + CP1_KEYS[i],
       "<b>" + (i + 1) + ".</b> " + esc(L.c1Checks[i][0]), esc(L.c1Checks[i][1]));
   }
-  return h + "</section>";
+  return h + '<div id="liveFlagHost"></div></section>';
 };
 
 function reflectPage(n, path, q, tip) {
   return '<section class="panel"><h3>' + esc(t().kReflect.replace("%1", n)) + "</h3>" +
-    '<div class="eq">' + esc(q) + "</div>" + field("textarea", path, esc(tip), "") + "</section>";
+    '<div class="eq">' + esc(q) + "</div>" + field("textarea", path, esc(tip), "") +
+    '<div id="liveFlagHost"></div></section>';
 }
 V.cp1r = function () { var L = t(); return reflectPage(1, "cp1.reflect", L.c1RQ, L.c1RTip); };
 V.cp2r = function () { var L = t(); return reflectPage(2, "cp2.reflect", L.c2RQ, L.c2RTip); };
@@ -1033,7 +1108,7 @@ V.cp2 = function () {
     for (var i = 0; i < L.c2Qs.length; i++) h += "<li>" + esc(L.c2Qs[i]) + "</li>";
     h += "</ul></div>";
   }
-  return h + "</section>";
+  return h + '<div id="liveFlagHost"></div></section>';
 };
 
 V.cp3 = function () {
@@ -1056,7 +1131,7 @@ V.cp3 = function () {
       field("textarea", "cp3.compare", esc(L.c3Compare), esc(L.c3CompareTip)) +
       '<div class="actions"><button class="btn ghost" id="backR1">' + esc(L.c3Back1) + "</button></div>";
   }
-  return h + "</section>";
+  return h + '<div id="liveFlagHost"></div></section>';
 };
 
 /* Heading of a Result page: "RESULT · n OF 4" plus the page title. */
@@ -1104,7 +1179,6 @@ V.selfeval = function () {
         h += "</div>";
       }
     }
-    h += '<div class="actions"><button class="btn ghost" id="retryEval">' + esc(L.sRetry) + "</button></div>";
     return h + "</section>";
   }
 
@@ -1295,8 +1369,8 @@ function render() {
   }
 
   $("screen").innerHTML = body + navH;
+  refreshLiveFlag();
   postHeight();
-  try { $("screen").focus({ preventScroll: true }); } catch (e) {}
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -1381,6 +1455,7 @@ function refresh() {
   var need = $("screen").querySelectorAll("[data-needs]");
   for (var i = 0; i < need.length; i++) need[i].disabled = !has(need[i].getAttribute("data-needs"));
   renderTabs(t());
+  refreshLiveFlag();
   postHeight();
 }
 

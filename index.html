@@ -309,6 +309,11 @@ function blank() {
     cp2: { started: false, revealed: false, showFacts: false, recall: "", reflect: "" },
     cp3: { round: 1, first: "", ai: "", improved: "", compare: "", reflect: "" },
     self: { cp1: null, cp2: null, cp3: null },
+    /* AI grading run against the actual checkpoint answers (see §7 EVALUATE).
+       status: "idle" | "loading" | "done" | "error" | "manual".
+       sig is a snapshot of the answers the current result/attempt was run against,
+       so editing an earlier checkpoint and coming back automatically re-grades. */
+    selfEval: { status: "idle", sig: "", result: null, error: "" },
     card: { name: "", skill: "", helps: "", replaces: "", r1: "", r2: "", r3: "" },
     fin: { learned: "", changed: "" }
   };
@@ -494,9 +499,20 @@ var C = {
     /* --- Result --- */
     kResult: "RESULT · %1 OF 4",
     sTitle: "Self-Evaluation",
-    sLead: "After completing the three activities, people answer a short self-evaluation based on their habits and responses. The WebQuest gives them one of three Digital Thinking Identities: Automatic Outsourcer, Assisted Thinker, or Cognitive Navigator. Finally, they write a reflection about what they learned and whether the activity changed the way they think about using technology.",
-    sHint: "For each area, choose the answer that best represents your habits. Be honest — this is not a grade.",
+    sLead: "The AI grader now reads what you actually wrote in the three activities — not a self-reported habit — and scores each area from 1 to 3. The WebQuest then gives you one of three Digital Thinking Identities: Automatic Outsourcer, Assisted Thinker, or Cognitive Navigator. Finally, you write a reflection about what you learned.",
+    sHint: "This happens automatically from your answers. If you go back and change an earlier answer, it will be re-graded.",
     sQ: "What best describes you?",
+    sAnalyzing: "Analyzing your responses…",
+    sAnalyzingHint: "The AI grader is reading your answers from the three checkpoints. This takes a few seconds.",
+    sErrorTitle: "Couldn't reach the AI grader",
+    sErrorBody: "This usually means the grading service isn't available from where this page is hosted. You can retry, or grade yourself manually for now.",
+    sRetry: "↻ Retry AI grading",
+    sManualToggle: "Grade manually instead",
+    sBackToAI: "↻ Try AI grading again",
+    sWhy: "Why:",
+    sFlagged: "⚠ Flagged for review",
+    sFlaggedHint: "This answer was too short, blank, or unclear for the AI to grade with confidence. Go back and add more detail, or leave it — an instructor can review it.",
+    sNeedsReview: "One or more of your answers was flagged for instructor review — see the notes below.",
     rTitle: "Your Digital Thinking Identity",
     rOf: "%1 / 9 points",
     rBreak: "Where your points came from",
@@ -717,9 +733,20 @@ var C = {
 
     kResult: "RESULTADO · %1 DE 4",
     sTitle: "Autoevaluación",
-    sLead: "Después de completar las tres actividades, las personas responden una autoevaluación corta basada en sus hábitos y respuestas. El WebQuest les asigna una de tres Identidades de Pensamiento Digital: Delegador Automático, Pensador Asistido o Navegante Cognitivo. Finalmente, escriben una reflexión sobre lo que aprendieron y si la actividad cambió la forma en que piensan sobre el uso de la tecnología.",
-    sHint: "En cada área, escoja la respuesta que mejor represente sus hábitos. Sea honesto: esto no es una nota.",
+    sLead: "El calificador de IA ahora lee lo que usted realmente escribió en las tres actividades — no un hábito autoreportado — y califica cada área del 1 al 3. Luego el WebQuest le asigna una de tres Identidades de Pensamiento Digital: Delegador Automático, Pensador Asistido o Navegante Cognitivo. Finalmente, escribe una reflexión sobre lo que aprendió.",
+    sHint: "Esto ocurre automáticamente a partir de sus respuestas. Si vuelve atrás y cambia una respuesta anterior, se calificará de nuevo.",
     sQ: "¿Qué lo describe mejor?",
+    sAnalyzing: "Analizando sus respuestas…",
+    sAnalyzingHint: "El calificador de IA está leyendo sus respuestas de las tres etapas. Esto toma unos segundos.",
+    sErrorTitle: "No se pudo contactar al calificador de IA",
+    sErrorBody: "Esto suele significar que el servicio de calificación no está disponible desde donde está alojada esta página. Puede reintentar, o calificarse manualmente por ahora.",
+    sRetry: "↻ Reintentar calificación con IA",
+    sManualToggle: "Calificar manualmente",
+    sBackToAI: "↻ Intentar de nuevo con IA",
+    sWhy: "Por qué:",
+    sFlagged: "⚠ Marcado para revisión",
+    sFlaggedHint: "Esta respuesta estaba muy corta, vacía o no fue clara para que la IA la calificara con confianza. Vuelva y agregue más detalle, o déjela así — un profesor puede revisarla.",
+    sNeedsReview: "Una o más de sus respuestas fue marcada para revisión del profesor — vea las notas abajo.",
     rTitle: "Su Identidad de Pensamiento Digital",
     rOf: "%1 / 9 puntos",
     rBreak: "De dónde vienen sus puntos",
@@ -850,6 +877,51 @@ var SELF_KEYS = ["cp1", "cp2", "cp3"];
 function scores() { return [S.self.cp1 || 0, S.self.cp2 || 0, S.self.cp3 || 0]; }
 function total() { var s = scores(); return s[0] + s[1] + s[2]; }
 function band(n) { return n <= 4 ? 0 : n <= 7 ? 1 : 2; }
+
+/* =========================================================================
+   6b. AI EVALUATE — grades the self-evaluation from what was actually
+   written in cp1/cp2/cp3, instead of a self-reported habit pick. Calls the
+   Azure Functions API (/api/evaluate) deployed alongside this site. If that
+   API is unreachable (e.g. this page is served somewhere without it), the
+   UI falls back to the old manual self-pick so the WebQuest still works.
+   ========================================================================= */
+var EVAL_API = "/api/evaluate";
+function evalSignature() {
+  return JSON.stringify({ cp1: S.cp1, cp2: S.cp2.recall, cp3: S.cp3 });
+}
+function needsEval() {
+  return S.selfEval.status !== "manual" && S.selfEval.sig !== evalSignature();
+}
+function runEvaluate() {
+  var sig = evalSignature();
+  S.selfEval = { status: "loading", sig: sig, result: null, error: "" };
+  save(); render();
+  fetch(EVAL_API, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ lang: S.lang, cp1: S.cp1, cp2: { recall: S.cp2.recall }, cp3: S.cp3 })
+  })
+    .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+    .then(function (data) {
+      if (!data || !data.cp1 || !data.cp2 || !data.cp3) throw new Error("bad response shape");
+      S.selfEval.status = "done";
+      S.selfEval.result = data;
+      S.selfEval.sig = sig;
+      S.self.cp1 = data.cp1.score;
+      S.self.cp2 = data.cp2.score;
+      S.self.cp3 = data.cp3.score;
+      save(); render();
+    })
+    .catch(function (err) {
+      S.selfEval.status = "error";
+      S.selfEval.error = String((err && err.message) || err);
+      save(); render();
+    });
+}
+function useManualEval() {
+  S.selfEval.status = "manual";
+  save(); render();
+}
 
 /* =========================================================================
    7. PAGES — the same sections, in the same order, as the WebQuest document
@@ -998,10 +1070,50 @@ V.selfeval = function () {
   var h = '<section class="panel">' + resultHead(L.sTitle) +
     '<div class="callout">' + esc(L.sLead) + "</div>" +
     '<p class="hint">' + esc(L.sHint) + "</p>";
-  for (var i = 0; i < 3; i++) {
-    h += "<h3>" + esc(L.rSkills[i]) + "</h3>" +
-      choices("self." + SELF_KEYS[i], opts[i], S.self[SELF_KEYS[i]], L.rSkills[i] + " — " + L.sQ);
+
+  var st = S.selfEval.status;
+
+  if (st === "loading") {
+    h += '<div class="callout" role="status" aria-live="polite">' +
+      '<b>' + esc(L.sAnalyzing) + '</b><br>' + esc(L.sAnalyzingHint) + "</div>";
+    return h + "</section>";
   }
+
+  if (st === "error") {
+    h += '<div class="callout warn"><b>' + esc(L.sErrorTitle) + "</b><br>" + esc(L.sErrorBody) + "</div>" +
+      '<div class="actions">' +
+      '<button class="btn primary" id="retryEval">' + esc(L.sRetry) + "</button>" +
+      '<button class="btn ghost" id="manualEval">' + esc(L.sManualToggle) + "</button>" +
+      "</div>";
+    return h + "</section>";
+  }
+
+  if (st === "done") {
+    var r = S.selfEval.result;
+    if (r.needsReview) h += '<div class="callout warn">' + esc(L.sNeedsReview) + "</div>";
+    var keys = ["cp1", "cp2", "cp3"];
+    for (var i = 0; i < 3; i++) {
+      var res = r[keys[i]];
+      h += "<h3>" + esc(L.rSkills[i]) + "</h3>" +
+        '<div class="meter"><div class="top"><b>' + esc(L.rSkills[i]) + "</b><span>" + res.score + "/3</span></div>" +
+        '<div class="track"><div class="fill" style="width:' + (res.score / 3 * 100) + '%"></div></div></div>';
+      if (res.why || res.insufficient) {
+        h += '<div class="callout' + (res.insufficient ? " warn" : "") + '">';
+        if (res.why) h += "<p>" + esc(L.sWhy) + " " + esc(res.why) + "</p>";
+        if (res.insufficient) h += "<p><b>" + esc(L.sFlagged) + "</b> " + esc(res.reason || L.sFlaggedHint) + "</p>";
+        h += "</div>";
+      }
+    }
+    h += '<div class="actions"><button class="btn ghost" id="retryEval">' + esc(L.sRetry) + "</button></div>";
+    return h + "</section>";
+  }
+
+  /* status === "manual": fallback used only when the grading API is unreachable. */
+  for (var j = 0; j < 3; j++) {
+    h += "<h3>" + esc(L.rSkills[j]) + "</h3>" +
+      choices("self." + SELF_KEYS[j], opts[j], S.self[SELF_KEYS[j]], L.rSkills[j] + " — " + L.sQ);
+  }
+  h += '<div class="actions"><button class="btn ghost" id="backToAI">' + esc(L.sBackToAI) + "</button></div>";
   return h + "</section>";
 };
 
@@ -1160,6 +1272,10 @@ function render() {
 
   /* screen */
   if (!(STEPS[S.step] === "cp2" && S.cp2.started)) stopTimer();
+  if (STEPS[S.step] === "selfeval" && needsEval() && S.selfEval.status !== "loading") {
+    runEvaluate(); // sets status to "loading" and re-renders; this pass's body is stale, skip it.
+    return;
+  }
   var body = V[STEPS[S.step]]();
 
   /* nav */
@@ -1225,6 +1341,9 @@ function wire() {
     if (id === "backR1") { S.cp3.round = 1; save(); render(); return; }
     if (id === "printBtn" || id === "printBtn2") { window.print(); return; }
     if (id === "copyBtn" || id === "copyBtn2") { copyTranscript(); return; }
+    if (id === "retryEval") { runEvaluate(); return; }
+    if (id === "manualEval") { useManualEval(); return; }
+    if (id === "backToAI") { S.selfEval.sig = ""; save(); runEvaluate(); return; }
     if (id === "restartBtn") {
       if (confirm(t().restartAsk)) { store.del(KEY); S = blank(); save(); render(); }
       return;

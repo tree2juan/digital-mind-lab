@@ -36,6 +36,8 @@ body{
 }
 h1,h2,h3,.brand b{font-family:"Montserrat","Inter",system-ui,sans-serif}
 .wrap{max-width:920px;margin:0 auto;padding:0 18px 64px}
+.shell{display:flex;flex-direction:column;max-width:1180px;margin:0 auto}
+.sidenav{width:100%}
 
 /* ---------- header ---------- */
 header{
@@ -104,6 +106,27 @@ header{
 .bar{height:5px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:12px 0 22px}
 .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s ease}
 .stepcount{font-size:11.5px;color:var(--muted);text-align:right;margin:-16px 0 20px}
+
+/* ---------- desktop: sticky sidebar with a vertical stepper ---------- */
+@media(min-width:900px){
+  .shell{flex-direction:row;align-items:flex-start;gap:30px;padding:0 24px}
+  .sidenav{
+    width:216px;flex:none;position:sticky;top:80px;
+    padding:28px 0 28px 2px;
+  }
+  .wrap{max-width:800px;margin:0 auto;padding:28px 0 64px}
+  .tabs{flex-direction:column;padding:0 0 20px;margin:0;overflow:visible}
+  .tab{
+    flex-direction:row;justify-content:flex-start;gap:13px;min-height:50px;
+    padding:8px 10px;border-radius:10px;text-align:left;
+  }
+  .tab:hover:not(:disabled){background:var(--panel2)}
+  .tab.now{background:var(--panel2)}
+  .tab .tl{white-space:normal;font-size:12.5px}
+  .tab::before{top:-25px;left:27px;width:2px;height:50px}
+  .bar{margin:0 0 8px}
+  .stepcount{text-align:left;margin:0}
+}
 
 /* ---------- panels ---------- */
 .panel{
@@ -348,13 +371,17 @@ button{font:inherit;cursor:pointer}
   <button class="langbtn" id="langBtn" type="button"><span>🌐</span><span id="langLabel">English</span></button>
 </header>
 
-<div class="wrap">
-  <nav class="tabs" id="tabs" aria-label="WebQuest sections"></nav>
-  <div class="bar"><i id="barFill" style="width:0%"></i></div>
-  <div class="stepcount" id="stepCount"></div>
-  <main id="screen" tabindex="-1"></main>
-  <p class="foot" id="foot"></p>
-  <footer class="credits" id="credits"></footer>
+<div class="shell">
+  <div class="sidenav">
+    <nav class="tabs" id="tabs" aria-label="WebQuest sections"></nav>
+    <div class="bar"><i id="barFill" style="width:0%"></i></div>
+    <div class="stepcount" id="stepCount"></div>
+  </div>
+  <div class="wrap">
+    <main id="screen" tabindex="-1"></main>
+    <p class="foot" id="foot"></p>
+    <footer class="credits" id="credits"></footer>
+  </div>
 </div>
 
 <script>

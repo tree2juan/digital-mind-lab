@@ -1,0 +1,13 @@
+{
+  "name": "digital-mind-lab",
+  "private": true,
+  "description": "Mind in Control / Mente en Control — bilingual Digital Thinking Identity WebQuest (static site + Azure Functions grading API).",
+  "scripts": {
+    "test:unit": "node --test tests/unit/*.test.js",
+    "test:e2e": "playwright test",
+    "test": "npm run test:unit && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0"
+  }
+}

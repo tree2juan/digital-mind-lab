@@ -1,0 +1,23 @@
+{
+  "routes": [
+    { "route": "/tests", "statusCode": 404 },
+    { "route": "/tests/*", "statusCode": 404 },
+    { "route": "/package.json", "statusCode": 404 },
+    { "route": "/package-lock.json", "statusCode": 404 },
+    { "route": "/playwright.config.js", "statusCode": 404 },
+    { "route": "/playwright-report", "statusCode": 404 },
+    { "route": "/playwright-report/*", "statusCode": 404 },
+    { "route": "/test-results", "statusCode": 404 },
+    { "route": "/test-results/*", "statusCode": 404 },
+    { "route": "/node_modules", "statusCode": 404 },
+    { "route": "/node_modules/*", "statusCode": 404 },
+    { "route": "/.gitignore", "statusCode": 404 },
+    { "route": "/models.json", "statusCode": 404 },
+    { "route": "/task-process-resources-evaluation.md", "statusCode": 404 }
+  ],
+  "globalHeaders": {
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
+    "X-Frame-Options": "DENY",
+    "Permissions-Policy": "geolocation=(), microphone=(), camera=()"
+  }
+}

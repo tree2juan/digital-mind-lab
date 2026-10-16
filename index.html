@@ -12,12 +12,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* Mind in Control brand palette - clean, light, professional (same brand
-     hex values as the brand SVG assets; only the light/dark assignment changed) */
-  --navy:#0F2D4A; --teal:#14B8A6; --azure:#3B82F6; --mint:#A7E3D8; --lightgray:#F4F7FA; --charcoal:#334155;
-  --bg:#F3F6F9; --panel:#FFFFFF; --panel2:#EEF3F7; --line:#DCE4EC;
-  --text:#101B2A; --muted:#5B6B80; --accent:var(--teal); --accent2:var(--azure);
-  --ok:#0E9F6E; --warn:#B45309; --lock:#C22B3F; --focus:#2563EB;
+  /* Mind in Control design system — formal palette (docs/design-system.md).
+     The existing logo/icon SVGs keep their own baked-in navy/teal strokes
+     (#0F2D4A / #14B8A6, preserved as-is per brand guidance); these tokens
+     drive all surrounding UI chrome and are a close, compatible family.
+     --accent/--accent2 keep their original meaning (single brand highlight /
+     second gradient stop) so every existing rule below is unaffected; they
+     now resolve to --secondary and the new --indigo instead of the old
+     teal/azure pair. */
+  --primary:#14243A; --secondary:#20B7AC; --bg:#E9F3F6; --indigo:#697DE5;
+  --highlight:#F1B967; --surface:#FFFFFF;
+  --navy:var(--primary); --teal:var(--secondary); --azure:var(--indigo);
+  --accent:var(--secondary); --accent2:var(--indigo);
+  --mint:#CFEFEA;
+  --panel:var(--surface); --panel2:#F1F8F9; --line:#D3E4E9;
+  --text:#13233A; --muted:#5B7184;
+  /* --warn is a darker tone in the same gold family as --highlight: the
+     light #F1B967 highlight only passes WCAG AA as a background tint
+     (used via explicit rgba() below), not as text/border — at 1.77:1
+     contrast on white it fails AA (needs 4.5:1) badly. #8A6212 keeps the
+     same hue for visual cohesion while reaching 5.47:1. */
+  --ok:#1E9E6F; --warn:#8A6212; --lock:#D23B4E; --focus:var(--secondary);
   --r:12px;
 }
 *{box-sizing:border-box}
@@ -29,8 +44,16 @@ body{
 }
 h1,h2,h3,.brand b{font-family:"Montserrat","Inter",system-ui,sans-serif}
 .wrap{max-width:920px;margin:0 auto;padding:0 18px 64px}
-.shell{display:flex;flex-direction:column;max-width:1180px;margin:0 auto}
+.shell{display:flex;flex-direction:column;max-width:1320px;margin:0 auto}
 .sidenav{width:100%}
+
+/* ---------- skip link (WCAG 2.4.1 bypass-blocks) ---------- */
+.skiplink{
+  position:absolute;top:-48px;left:12px;z-index:100;
+  background:var(--navy);color:#fff;padding:10px 18px;border-radius:0 0 10px 10px;
+  font-weight:700;font-size:13.5px;text-decoration:none;transition:top .15s ease;
+}
+.skiplink:focus{top:0}
 
 /* ---------- header ---------- */
 header{
@@ -45,7 +68,7 @@ header{
   width:42px;height:42px;border-radius:12px;flex:none;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
   display:grid;place-items:center;font-size:19px;padding:7px;
-  box-shadow:0 6px 16px -6px rgba(20,184,166,.4);
+  box-shadow:0 6px 16px -6px rgba(32,183,172,.4);
 }
 .mark img{width:100%;height:100%;object-fit:contain}
 .ichip{
@@ -96,7 +119,7 @@ header{
 .tab.done{color:var(--ok)}
 .tab.done .ti{border-color:var(--ok);background:var(--ok);color:#fff}
 .tab.now{color:var(--accent)}
-.tab.now .ti{border-color:var(--accent);box-shadow:0 0 0 5px rgba(20,184,166,.16)}
+.tab.now .ti{border-color:var(--accent);box-shadow:0 0 0 5px rgba(32,183,172,.16)}
 .tab:disabled{opacity:.42;cursor:not-allowed}
 [hidden]{display:none!important}
 .bar{height:5px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:12px 0 22px}
@@ -154,12 +177,12 @@ p{margin:0 0 16px}
 .herologo{
   width:66px;height:66px;margin:0 auto 18px;border-radius:18px;padding:13px;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
-  display:grid;place-items:center;box-shadow:0 12px 28px -12px rgba(20,184,166,.4);
+  display:grid;place-items:center;box-shadow:0 12px 28px -12px rgba(32,183,172,.4);
 }
 .herologo img{width:100%;height:100%;object-fit:contain}
 .herotop h1{font-size:33px;color:var(--navy)}
 .herotop .sub{
-  display:inline-block;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);
+  display:inline-block;background:rgba(105,125,229,.1);border:1px solid rgba(105,125,229,.3);
   color:var(--accent2);padding:5px 16px;border-radius:999px;font-size:11.5px;margin:0 0 18px;
 }
 .herotop .heroq{font-size:19px;line-height:1.6;max-width:580px;margin:0 auto;color:var(--text)}
@@ -173,9 +196,9 @@ p{margin:0 0 16px}
   background:var(--panel2);border:1px solid var(--line);border-radius:var(--r);
   padding:16px 18px;margin:0 0 18px;font-size:14.5px;
 }
-.callout.warn{border-color:var(--warn);background:rgba(180,83,9,.08)}
-.callout.lock{border-color:var(--lock);background:rgba(194,43,63,.07)}
-.callout.open{border-color:var(--ok);background:rgba(14,159,110,.08)}
+.callout.warn{border-color:var(--warn);background:rgba(241,185,103,.18)}
+.callout.lock{border-color:var(--lock);background:rgba(210,59,78,.07)}
+.callout.open{border-color:var(--ok);background:rgba(30,158,111,.08)}
 .callout b{color:var(--text)}
 
 /* ---------- forms ---------- */
@@ -202,7 +225,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   display:flex;flex-direction:column;gap:8px;transition:.2s;width:100%;
 }
 .choice:hover{border-color:var(--accent2);transform:translateY(-2px)}
-.choice[aria-checked=true]{border-color:var(--accent);background:rgba(20,184,166,.08)}
+.choice[aria-checked=true]{border-color:var(--accent);background:rgba(32,183,172,.08)}
 .choice .k{font-weight:800;font-size:12.5px;letter-spacing:1.1px;color:var(--accent2);display:flex;align-items:center;gap:7px}
 .choice[aria-checked=true] .k{color:var(--accent)}
 .choice .k .tick{
@@ -337,9 +360,46 @@ button{font:inherit;cursor:pointer}
 .teammeta{margin:4px 0 0;font-size:12.5px;color:var(--muted);line-height:1.6}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
+/* ---------- full-bleed status strip (edge-to-edge, sits outside .shell
+   so it uses the full viewport width instead of stopping at the content
+   column — gives the page an intentional, designed band instead of flat
+   dead space right under the header) ---------- */
+.statusstrip{
+  background:var(--primary);color:#fff;
+  display:flex;justify-content:center;
+}
+.statusstrip ul{
+  display:flex;flex-wrap:wrap;gap:8px 28px;list-style:none;
+  margin:0;padding:10px 24px;max-width:1320px;width:100%;
+  font-size:12.5px;font-weight:600;letter-spacing:.2px;
+}
+.statusstrip li{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.statusstrip li .ichip{background:rgba(255,255,255,.16);margin-right:0}
+.statusstrip li .ichip img{filter:brightness(0) invert(1)}
+
+/* ---------- info rail (wide viewports only): fills the extra horizontal
+   space with real, useful content instead of leaving it empty ---------- */
+.rail{display:none}
+@media(min-width:1300px){
+  .shell{gap:0}
+  .rail{
+    display:block;width:260px;flex:none;position:sticky;top:80px;
+    padding:28px 0 28px 30px;margin-left:30px;border-left:1px solid var(--line);
+  }
+  .rail .cap{font-size:11px;letter-spacing:1.6px;font-weight:700;color:var(--secondary);text-transform:uppercase;margin:0 0 14px}
+  .railcard{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    padding:16px;margin:0 0 14px;box-shadow:0 1px 2px rgba(16,24,40,.04);
+  }
+  .railcard h4{margin:0 0 10px;font-size:13.5px;color:var(--navy);font-weight:700}
+  .railfact{display:flex;align-items:flex-start;gap:9px;font-size:12.5px;line-height:1.5;color:var(--text);margin:0 0 10px}
+  .railfact:last-child{margin-bottom:0}
+  .railfact .ichip{margin-top:1px}
+}
+
 @media print{
   body{background:#fff;color:#000}
-  header,.tabs,.bar,.stepcount,.actions,.foot,nav{display:none!important}
+  header,.tabs,.bar,.stepcount,.actions,.foot,nav,.statusstrip,.rail{display:none!important}
   .panel,.idcard,.rule{border-color:#999;background:#fff;color:#000;box-shadow:none}
   .herologo{box-shadow:none}
   .herotop .sub{background:none;border-color:#999;color:#000}
@@ -352,6 +412,7 @@ button{font:inherit;cursor:pointer}
 </head>
 <body>
 
+<a href="#screen" class="skiplink" id="skipLink">Skip to main content</a>
 <header>
   <div class="brand">
     <div class="mark" aria-hidden="true"><img src="assets/brand/logo-icon.svg" alt="" width="42" height="42"></div>
@@ -362,6 +423,8 @@ button{font:inherit;cursor:pointer}
   </div>
   <button class="langbtn" id="langBtn" type="button"><span>🌐</span><span id="langLabel">English</span></button>
 </header>
+
+<div class="statusstrip"><ul id="statusStrip" aria-hidden="true"></ul></div>
 
 <div class="shell">
   <div class="sidenav">
@@ -374,6 +437,7 @@ button{font:inherit;cursor:pointer}
     <p class="foot" id="foot"></p>
     <footer class="credits" id="credits"></footer>
   </div>
+  <aside class="rail" id="rail"></aside>
 </div>
 
 <script>
@@ -447,6 +511,22 @@ var C = {
     code: "en", other: "Español", htmlLang: "en",
     brand: "Mind in Control", brandSub: "A Digital Thinking Identity WebQuest",
     navLabel: "WebQuest sections",
+    skipLink: "Skip to main content",
+    /* --- status strip (full-bleed band under the header) --- */
+    statusFacts: [
+      ["icons/digital-habits.svg", "Bilingual — English & Spanish"],
+      ["icons/reflection.svg", "Free & private — no account needed"],
+      ["icons/assessment.svg", "About 15–20 minutes"],
+      ["icons/problem-solving.svg", "3 hands-on checkpoints"]
+    ],
+    /* --- info rail (wide screens) --- */
+    railTitle: "Quick Facts",
+    railFacts: [
+      ["icons/research.svg", "Based on the cognitive offloading theory of Risko & Gilbert (2016)."],
+      ["icons/digital-habits.svg", "Works on phones and computers — no installation required."],
+      ["icons/team.svg", "Your answers stay on your own device."],
+      ["icons/assessment.svg", "Checkpoints are graded by AI from what you actually wrote, with flags for instructor review."]
+    ],
     sections: ["Introduction", "Task", "Process", "Result", "Evaluation", "Meet the Team", "Resources"],
     locked: "Complete the three steps of the Process first.",
     step: "Page %1 of %2", prev: "← Previous", next: "Next →",
@@ -698,6 +778,22 @@ var C = {
     code: "es", other: "English", htmlLang: "es",
     brand: "Mente en Control", brandSub: "Una WebQuest sobre cómo la tecnología influye en nuestra forma de pensar",
     navLabel: "Secciones del WebQuest",
+    skipLink: "Saltar al contenido principal",
+    /* --- franja de estado (banda de ancho completo bajo el encabezado) --- */
+    statusFacts: [
+      ["icons/digital-habits.svg", "Bilingüe — inglés y español"],
+      ["icons/reflection.svg", "Gratis y privado — no necesita cuenta"],
+      ["icons/assessment.svg", "Unos 15–20 minutos"],
+      ["icons/problem-solving.svg", "3 etapas prácticas"]
+    ],
+    /* --- panel lateral (pantallas anchas) --- */
+    railTitle: "Datos Rápidos",
+    railFacts: [
+      ["icons/research.svg", "Basada en la teoría de la descarga cognitiva de Risko y Gilbert (2016)."],
+      ["icons/digital-habits.svg", "Funciona en celulares y computadores — no requiere instalación."],
+      ["icons/team.svg", "Sus respuestas se quedan en su propio dispositivo."],
+      ["icons/assessment.svg", "Las etapas se califican con IA a partir de lo que usted realmente escribió, con marcas para revisión del profesor."]
+    ],
     sections: ["Introducción", "Tarea", "Proceso", "Resultado", "Evaluación", "Conoce al Equipo", "Recursos"],
     locked: "Primero complete los tres pasos del Proceso.",
     step: "Página %1 de %2", prev: "← Anterior", next: "Siguiente →",
@@ -1085,7 +1181,7 @@ function lowEffortLive(text) {
   var uniq = {}, i;
   for (i = 0; i < words.length; i++) uniq[words[i]] = true;
   var uniqueRatio = Object.keys(uniq).length / words.length;
-  if (words.length >= 2 && uniqueRatio < 0.5) return true;
+  if (words.length >= 2 && uniqueRatio <= 0.5) return true;
   return false;
 }
 function duplicateFieldsLive(values) {
@@ -1489,6 +1585,25 @@ function renderCredits(L) {
   $("credits").innerHTML = h + "</dl>";
 }
 
+/* Full-bleed status strip (always visible, all pages) and the wide-viewport
+   info rail (desktop only, hidden by CSS on narrower screens): both are
+   static reference content, re-rendered on language toggle like the rest
+   of the chrome, not tied to the current step. */
+function renderStatusStrip(L) {
+  var h = "";
+  for (var i = 0; i < L.statusFacts.length; i++) {
+    h += "<li>" + ichip(L.statusFacts[i][0]) + "<span>" + esc(L.statusFacts[i][1]) + "</span></li>";
+  }
+  $("statusStrip").innerHTML = h;
+}
+function renderRail(L) {
+  var h = '<p class="cap">' + esc(L.railTitle) + '</p><div class="railcard">';
+  for (var i = 0; i < L.railFacts.length; i++) {
+    h += '<div class="railfact">' + ichip(L.railFacts[i][0]) + "<span>" + esc(L.railFacts[i][1]) + "</span></div>";
+  }
+  $("rail").innerHTML = h + "</div>";
+}
+
 function render() {
   var L = t();
   document.documentElement.lang = L.htmlLang;
@@ -1497,7 +1612,10 @@ function render() {
   $("brandSub").textContent = L.brandSub;
   $("langLabel").textContent = L.other;
   $("foot").textContent = L.foot;
+  $("skipLink").textContent = L.skipLink;
   renderCredits(L);
+  renderStatusStrip(L);
+  renderRail(L);
   renderTabs(L);
   $("barFill").style.width = (S.step / (STEPS.length - 1) * 100) + "%";
   $("stepCount").textContent = L.step.replace("%1", S.step + 1).replace("%2", STEPS.length);
@@ -1539,6 +1657,10 @@ function go(n) {
   if (S.cp2.started && n !== S.step) { stopTimer(); S.cp2.started = false; }
   S.step = n;
   save(); render();
+  /* Move focus to the new page content so keyboard/screen-reader users land on
+     it directly instead of staying on the nav button they just activated.
+     tabindex="-1" on #screen makes it focusable only via script, not Tab. */
+  $("screen").focus();
 }
 
 /* =========================================================================

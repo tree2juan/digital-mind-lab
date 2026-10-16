@@ -32,7 +32,11 @@ function isLowEffort(text) {
   const uniqueRatio = new Set(words).size / words.length;
   // Lower bar (2+ words) so short low-effort answers like "yes, yes, yes"
   // or "no se no se" can't dodge the check just by being under 4 words.
-  if (words.length >= 2 && uniqueRatio < 0.5) return true;
+  // Uses <= (not <) so an exact half-unique pattern (e.g. "no se no se" is
+  // 2 unique words out of 4, a ratio of exactly 0.5) is still caught —
+  // a strict "<" left that exact boundary case un-flagged despite being
+  // the documented example this check exists to catch.
+  if (words.length >= 2 && uniqueRatio <= 0.5) return true;
   return false;
 }
 

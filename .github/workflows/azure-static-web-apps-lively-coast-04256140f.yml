@@ -31,6 +31,10 @@ jobs:
           app_location: "/" # App source code path
           api_location: "api" # Api source code path - optional
           output_location: "" # Built app content directory - optional
+          skip_app_build: true # This is a plain static site (no bundler/framework) — adding a root
+          # package.json (for the tests/ npm scripts) would otherwise make Oryx auto-detect a Node
+          # app and try to run a build that doesn't exist. This keeps the deploy a literal file
+          # upload, exactly as it already behaved before package.json existed.
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:

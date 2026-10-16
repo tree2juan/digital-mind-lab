@@ -27,12 +27,12 @@ fail 0
 
 | Test | What it covers |
 |---|---|
-| Loads with expected brand/hero/status strip | Page loads, title/brand text render, status strip has its 4 facts. |
+| Loads with expected brand/hero | Page loads, title/brand text render, hero heading visible. |
 | Sidebar groups | Introduction and Meet-the-Team/Resources are standalone (no connector); Task→Evaluation is the 4-step connected stepper (Resources deliberately excluded from it). |
 | Gated steps locked | Result-section tab is disabled before any checkpoint is completed. |
 | Standalone pages reachable | Meet the Team and Resources load immediately, bypassing the gated sequence. |
 | Keyboard focus on navigation | `#screen` receives focus after a nav click (the accessibility fix from this pass). |
-| Language toggle | `<html lang>`, brand text, and the status strip all update; confirms the new bilingual chrome strings are wired correctly. |
+| Language toggle | `<html lang>` and brand text update; confirms the bilingual chrome strings are wired correctly. |
 | Persistence across reload | Step position survives a full page reload via `localStorage`. |
 | Restart | Clears progress back to the Introduction page. |
 
@@ -74,7 +74,7 @@ instance), not just curl-equivalent requests.
 | `--warn` color contrast | Computed WCAG relative-luminance contrast ratio directly (not eyeballed) for the light highlight gold vs. the fixed darker gold | `1.77:1` (fails AA) vs. `5.47:1` (passes AA) — confirmed numerically before shipping |
 | Sidebar restructure (Resources moved out of the stepper) | DOM inspection of `#tabs > div` group structure + real click-through navigation, both languages | 3 groups confirmed (`navmenu` / `stepper-wrap` / `navmenu`), stepper has exactly 4 tabs, trailing group has exactly 2 |
 | Focus management fix | `document.activeElement.id` checked immediately after a real `go()` navigation | `"screen"` |
-| Bilingual toggle updates all new chrome | Clicked the real language button, re-read `#statusStrip`/`.rail .cap`/`#brandTitle` | All updated to the new language's text |
+| Bilingual toggle updates all new chrome | Clicked the real language button, re-read `#brandTitle` and other chrome strings | All updated to the new language's text |
 | Live deployment (Azure) | `gh run watch` on each push to the feature branch's corresponding workflow run; fetched the live production URL after each merge-equivalent deploy during earlier parts of this project | All deploys this project succeeded; this pass's changes are on a feature branch, not yet merged — see note below |
 
 ## 3. YAML / JSON syntax validation

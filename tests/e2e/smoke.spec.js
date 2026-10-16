@@ -16,12 +16,10 @@ test.beforeEach(async ({ page }) => {
   await page.reload();
 });
 
-test("loads with the expected brand, hero, and status strip", async ({ page }) => {
+test("loads with the expected brand and hero", async ({ page }) => {
   await expect(page).toHaveTitle(/Mind in Control|Mente en Control/);
   await expect(page.locator("#brandTitle")).toHaveText(/Mind in Control|Mente en Control/);
   await expect(page.locator(".herotop h1")).toBeVisible();
-  // Status strip has 4 quick facts (bilingual, free, duration, checkpoints).
-  await expect(page.locator("#statusStrip li")).toHaveCount(4);
 });
 
 test("sidebar groups: Introduction and Meet the Team/Resources are standalone; Task-Evaluation is the connected stepper", async ({ page }) => {
@@ -55,7 +53,7 @@ test("navigating moves keyboard focus to the new page content", async ({ page })
   await expect(page.locator("main#screen")).toBeFocused();
 });
 
-test("language toggle updates the document language, brand text, and status strip", async ({ page }) => {
+test("language toggle updates the document language and brand text", async ({ page }) => {
   const initialLang = await page.evaluate(() => document.documentElement.lang);
   const initialBrand = await page.locator("#brandTitle").textContent();
 
@@ -64,8 +62,6 @@ test("language toggle updates the document language, brand text, and status stri
   await expect(page.locator("html")).not.toHaveAttribute("lang", initialLang || "");
   const newBrand = await page.locator("#brandTitle").textContent();
   expect(newBrand).not.toBe(initialBrand);
-  // Status strip and rail re-render in the new language too.
-  await expect(page.locator("#statusStrip li")).toHaveCount(4);
 });
 
 test("progress persists across a page reload", async ({ page }) => {

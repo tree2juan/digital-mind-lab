@@ -53,21 +53,12 @@ logo and brand identity wherever practical."
 - **Desktop (≥900px):** sticky left sidebar containing the stepper,
   content column to the right (`.wrap`, max-width ~800px for readable
   line length).
-- **Wide desktop (≥1300px):** an additional sticky right-hand info rail
-  (`.rail`, "Quick Facts" card) — fills otherwise-unused horizontal
-  space with real, localized, non-redundant content instead of leaving
-  it empty.
-- A full-bleed (edge-to-edge, 100% viewport width) status strip sits
-  directly under the header on every page, independent of the
-  constrained `.shell` content width — four quick facts (bilingual,
-  free/private, duration, checkpoint count), each with a brand icon.
 - **No outer page "card."** Content flows directly against the page
   background; card/border/shadow treatment is reserved for genuinely
   discrete, repeated items: choice buttons, rule cards, the identity
-  card, team member cards, the info-rail card. This was a deliberate
-  structural fix (not a recolor) made in response to feedback that the
-  site read as "one big box" — see the session history for before/after
-  reasoning.
+  card, team member cards. This was a deliberate structural fix (not a
+  recolor) made in response to feedback that the site read as "one big
+  box" — see the session history for before/after reasoning.
 
 ## 4. Navigation structure
 
@@ -90,7 +81,6 @@ Three groups in the sidebar/stepper, not one undifferentiated list:
 | `.callout` / `.callout.warn/.lock/.open` | Inline notice boxes; semantic border color + matching low-opacity background tint. |
 | `.idcard` | The Digital Thinking Identity result card — a soft gradient surface, distinct from ordinary content cards. |
 | Stepper icon nodes (`.tab .ti`) | 52px circles (enlarged from an earlier 34px pass per explicit feedback that they were too small), brand SVG icon on a light tinted chip background (`.ichip`) since the icons are drawn with a dark stroke meant for light backgrounds. |
-| `.statusstrip` / `.rail` | New this pass — see Layout above. |
 
 ## 6. Accessibility
 

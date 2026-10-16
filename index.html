@@ -360,46 +360,9 @@ button{font:inherit;cursor:pointer}
 .teammeta{margin:4px 0 0;font-size:12.5px;color:var(--muted);line-height:1.6}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-/* ---------- full-bleed status strip (edge-to-edge, sits outside .shell
-   so it uses the full viewport width instead of stopping at the content
-   column — gives the page an intentional, designed band instead of flat
-   dead space right under the header) ---------- */
-.statusstrip{
-  background:var(--primary);color:#fff;
-  display:flex;justify-content:center;
-}
-.statusstrip ul{
-  display:flex;flex-wrap:wrap;gap:8px 28px;list-style:none;
-  margin:0;padding:10px 24px;max-width:1320px;width:100%;
-  font-size:12.5px;font-weight:600;letter-spacing:.2px;
-}
-.statusstrip li{display:flex;align-items:center;gap:8px;white-space:nowrap}
-.statusstrip li .ichip{background:rgba(255,255,255,.16);margin-right:0}
-.statusstrip li .ichip img{filter:brightness(0) invert(1)}
-
-/* ---------- info rail (wide viewports only): fills the extra horizontal
-   space with real, useful content instead of leaving it empty ---------- */
-.rail{display:none}
-@media(min-width:1300px){
-  .shell{gap:0}
-  .rail{
-    display:block;width:260px;flex:none;position:sticky;top:80px;
-    padding:28px 0 28px 30px;margin-left:30px;border-left:1px solid var(--line);
-  }
-  .rail .cap{font-size:11px;letter-spacing:1.6px;font-weight:700;color:var(--secondary);text-transform:uppercase;margin:0 0 14px}
-  .railcard{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
-    padding:16px;margin:0 0 14px;box-shadow:0 1px 2px rgba(16,24,40,.04);
-  }
-  .railcard h4{margin:0 0 10px;font-size:13.5px;color:var(--navy);font-weight:700}
-  .railfact{display:flex;align-items:flex-start;gap:9px;font-size:12.5px;line-height:1.5;color:var(--text);margin:0 0 10px}
-  .railfact:last-child{margin-bottom:0}
-  .railfact .ichip{margin-top:1px}
-}
-
 @media print{
   body{background:#fff;color:#000}
-  header,.tabs,.bar,.stepcount,.actions,.foot,nav,.statusstrip,.rail{display:none!important}
+  header,.tabs,.bar,.stepcount,.actions,.foot,nav{display:none!important}
   .panel,.idcard,.rule{border-color:#999;background:#fff;color:#000;box-shadow:none}
   .herologo{box-shadow:none}
   .herotop .sub{background:none;border-color:#999;color:#000}
@@ -424,8 +387,6 @@ button{font:inherit;cursor:pointer}
   <button class="langbtn" id="langBtn" type="button"><span>🌐</span><span id="langLabel">English</span></button>
 </header>
 
-<div class="statusstrip"><ul id="statusStrip" aria-hidden="true"></ul></div>
-
 <div class="shell">
   <div class="sidenav">
     <nav class="tabs" id="tabs" aria-label="WebQuest sections"></nav>
@@ -437,7 +398,6 @@ button{font:inherit;cursor:pointer}
     <p class="foot" id="foot"></p>
     <footer class="credits" id="credits"></footer>
   </div>
-  <aside class="rail" id="rail"></aside>
 </div>
 
 <script>
@@ -512,21 +472,6 @@ var C = {
     brand: "Mind in Control", brandSub: "A Digital Thinking Identity WebQuest",
     navLabel: "WebQuest sections",
     skipLink: "Skip to main content",
-    /* --- status strip (full-bleed band under the header) --- */
-    statusFacts: [
-      ["icons/digital-habits.svg", "Bilingual — English & Spanish"],
-      ["icons/reflection.svg", "Free & private — no account needed"],
-      ["icons/assessment.svg", "About 15–20 minutes"],
-      ["icons/problem-solving.svg", "3 hands-on checkpoints"]
-    ],
-    /* --- info rail (wide screens) --- */
-    railTitle: "Quick Facts",
-    railFacts: [
-      ["icons/research.svg", "Based on the cognitive offloading theory of Risko & Gilbert (2016)."],
-      ["icons/digital-habits.svg", "Works on phones and computers — no installation required."],
-      ["icons/team.svg", "Your answers stay on your own device."],
-      ["icons/assessment.svg", "Checkpoints are graded by AI from what you actually wrote, with flags for instructor review."]
-    ],
     sections: ["Introduction", "Task", "Process", "Result", "Evaluation", "Meet the Team", "Resources"],
     locked: "Complete the three steps of the Process first.",
     step: "Page %1 of %2", prev: "← Previous", next: "Next →",
@@ -779,21 +724,6 @@ var C = {
     brand: "Mente en Control", brandSub: "Una WebQuest sobre cómo la tecnología influye en nuestra forma de pensar",
     navLabel: "Secciones del WebQuest",
     skipLink: "Saltar al contenido principal",
-    /* --- franja de estado (banda de ancho completo bajo el encabezado) --- */
-    statusFacts: [
-      ["icons/digital-habits.svg", "Bilingüe — inglés y español"],
-      ["icons/reflection.svg", "Gratis y privado — no necesita cuenta"],
-      ["icons/assessment.svg", "Unos 15–20 minutos"],
-      ["icons/problem-solving.svg", "3 etapas prácticas"]
-    ],
-    /* --- panel lateral (pantallas anchas) --- */
-    railTitle: "Datos Rápidos",
-    railFacts: [
-      ["icons/research.svg", "Basada en la teoría de la descarga cognitiva de Risko y Gilbert (2016)."],
-      ["icons/digital-habits.svg", "Funciona en celulares y computadores — no requiere instalación."],
-      ["icons/team.svg", "Sus respuestas se quedan en su propio dispositivo."],
-      ["icons/assessment.svg", "Las etapas se califican con IA a partir de lo que usted realmente escribió, con marcas para revisión del profesor."]
-    ],
     sections: ["Introducción", "Tarea", "Proceso", "Resultado", "Evaluación", "Conoce al Equipo", "Recursos"],
     locked: "Primero complete los tres pasos del Proceso.",
     step: "Página %1 de %2", prev: "← Anterior", next: "Siguiente →",
@@ -1585,25 +1515,6 @@ function renderCredits(L) {
   $("credits").innerHTML = h + "</dl>";
 }
 
-/* Full-bleed status strip (always visible, all pages) and the wide-viewport
-   info rail (desktop only, hidden by CSS on narrower screens): both are
-   static reference content, re-rendered on language toggle like the rest
-   of the chrome, not tied to the current step. */
-function renderStatusStrip(L) {
-  var h = "";
-  for (var i = 0; i < L.statusFacts.length; i++) {
-    h += "<li>" + ichip(L.statusFacts[i][0]) + "<span>" + esc(L.statusFacts[i][1]) + "</span></li>";
-  }
-  $("statusStrip").innerHTML = h;
-}
-function renderRail(L) {
-  var h = '<p class="cap">' + esc(L.railTitle) + '</p><div class="railcard">';
-  for (var i = 0; i < L.railFacts.length; i++) {
-    h += '<div class="railfact">' + ichip(L.railFacts[i][0]) + "<span>" + esc(L.railFacts[i][1]) + "</span></div>";
-  }
-  $("rail").innerHTML = h + "</div>";
-}
-
 function render() {
   var L = t();
   document.documentElement.lang = L.htmlLang;
@@ -1614,8 +1525,6 @@ function render() {
   $("foot").textContent = L.foot;
   $("skipLink").textContent = L.skipLink;
   renderCredits(L);
-  renderStatusStrip(L);
-  renderRail(L);
   renderTabs(L);
   $("barFill").style.width = (S.step / (STEPS.length - 1) * 100) + "%";
   $("stepCount").textContent = L.step.replace("%1", S.step + 1).replace("%2", STEPS.length);

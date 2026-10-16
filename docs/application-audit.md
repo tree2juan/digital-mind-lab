@@ -68,7 +68,7 @@ Checked **programmatically**, not by manual reading (see `tests/unit/i18n-parity
 ## 6. Accessibility, responsiveness, navigation
 
 - Mobile breakpoint (<900px): horizontal scrollable stepper, already implemented and working.
-- Desktop (≥900px): sticky sidebar with a vertical stepper; (≥1300px): an additional info rail.
+- Desktop (≥900px): sticky sidebar with a vertical stepper.
 - `prefers-reduced-motion` is respected (panel entrance animation and all transitions disabled).
 - `:focus-visible` outlines are defined on all interactive elements.
 - **Fixed this pass:** focus management on navigation (#3 above), skip link (#3 above), the `--warn` contrast defect (#2 above).

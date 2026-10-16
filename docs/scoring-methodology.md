@@ -72,6 +72,27 @@ client posts — enforced by the "client-side mirror" tests above):
 - CP3: `{ first, ai, improved, compare, reflect }` (5 fields)
 - CP2 uses a separate, simpler check: `wordCount(recall) < 3 || isLowEffort(recall)` — **not** `checkSufficiency`, since CP2 has only one free-text field (`recall`) and is graded deterministically, not by an LLM rubric.
 
+> **Flagged finding (investigated, not changed):** CP2's written
+> reflection (`cp2.reflect`) is **required** to proceed past that page
+> (`gateAt("cp2r")`) and is preserved in the printable transcript, but is
+> **never sent to `/api/evaluate` and never factors into the CP2 score**
+> — only `recall` does (see `runEvaluate()`'s fetch body: `cp2: { recall: S.cp2.recall }`).
+> This is asymmetric with CP1/CP3, where the reflection text **is** part
+> of what the LLM judge reads and scores.
+>
+> This was investigated during the modernization audit and left
+> **unchanged**: it matches the original architecture's own stated
+> intent ("Checkpoint 2 (Memory) is scored deterministically in facts.js
+> instead, since it's objectively checkable" — source comment in
+> `evaluate.js`), i.e. CP2 is deliberately the one purely objective,
+> non-gameable checkpoint, and its reflection is a separate reflective
+> exercise for the student/transcript rather than a graded input. Per the
+> directive's instruction not to silently reinterpret an ambiguous
+> existing design, **the formula was not changed**. If an instructor
+> wants the CP2 reflection to also influence that checkpoint's score,
+> that is a deliberate rubric decision for them to make, not something
+> this pass should decide unilaterally.
+
 ## 3. CP1 / CP3 — LLM rubric judge
 
 `api/src/shared/judge.js`. If `cp1Pre.insufficient` / `cp3Pre.insufficient`
@@ -164,7 +185,27 @@ the instructor, not something this pass silently changed.
 | Changed | Not changed (existing design, verified consistent) |
 |---|---|
 | `isLowEffort()` boundary (`< 0.5` → `<= 0.5`), server + client mirror | The 1-3 rubric bands and their written descriptions |
-| — | `factsToBand` thresholds (0-3/4-6/7-10) |
+| Evaluation page text corrected from "a score from 1 to 9" to "3 to 9" — 1-2 is mathematically impossible since every scoring path is hard-constrained to 1/2/3, verified empirically (see §7) | `factsToBand` thresholds (0-3/4-6/7-10) |
 | — | `band()` thresholds (3-4/5-7/8-9) |
 | — | The three Digital Thinking Identities and their names/descriptions |
 | — | The manual self-pick point values (1/2/3) |
+| — | CP2's reflection not factoring into its score (flagged in §2, left as-is — matches the original architecture's own stated intent) |
+
+## 7. Verification: "did you parse the grading parameters to ensure all are accounted for and the right formula is used?"
+
+Re-audited end to end in response to that exact question, rather than relying on the earlier pass:
+
+1. **Confirmed every scoring path's achievable range empirically**, not by reading the code and assuming:
+   ```
+   $ node -e "const {factsToBand}=require('./api/src/shared/facts.js');
+   for(let m=0;m<=10;m++)process.stdout.write(factsToBand(m)+',')"
+   1,1,1,1,2,2,2,3,3,3,3,   // never 0, even at 0 matched facts
+   ```
+   Plus: the AI judge's system prompt constrains `score: 1|2|3` and the
+   Azure OpenAI call `throw`s rather than accepting an out-of-range
+   value; every manual self-pick option in both languages is worth
+   exactly 1, 2, or 3 (`tests/unit/i18n-parity.test.js` already pinned
+   this). **Conclusion: minimum achievable total is 3, not 1** — found
+   the Evaluation page text contradicted this, fixed it (§6).
+2. **Traced every submitted field for CP1/CP2/CP3 to confirm none are silently dropped** between the UI and the actual scoring call: CP1's and CP3's full 5-field sets are each included in both the sufficiency pre-check *and* the LLM prompt (`buildCp1Prompt`/`buildCp3Prompt`) — nothing is collected and then ignored. **CP2 is the one exception** — its `reflect` field is collected and required, but neither pre-checked nor sent to `/api/evaluate`; flagged explicitly in §2 rather than silently left unmentioned.
+3. **Re-confirmed the identity-band formula** (`band()`/`total()`) is self-consistent across its full reachable range (already pinned by `tests/unit/client-scoring.test.js`), and that the manual-fallback point values exactly match the AI-path score range (1/2/3) in both languages.

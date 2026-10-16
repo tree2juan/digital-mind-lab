@@ -447,7 +447,7 @@ var C = {
     code: "en", other: "Español", htmlLang: "en",
     brand: "Mind in Control", brandSub: "A Digital Thinking Identity WebQuest",
     navLabel: "WebQuest sections",
-    sections: ["Introduction", "Task", "Process", "Result", "Resources", "Evaluation", "Meet the Team"],
+    sections: ["Introduction", "Task", "Process", "Result", "Evaluation", "Meet the Team", "Resources"],
     locked: "Complete the three steps of the Process first.",
     step: "Page %1 of %2", prev: "← Previous", next: "Next →",
     restart: "Restart WebQuest",
@@ -698,7 +698,7 @@ var C = {
     code: "es", other: "English", htmlLang: "es",
     brand: "Mente en Control", brandSub: "Una WebQuest sobre cómo la tecnología influye en nuestra forma de pensar",
     navLabel: "Secciones del WebQuest",
-    sections: ["Introducción", "Tarea", "Proceso", "Resultado", "Recursos", "Evaluación", "Conoce al Equipo"],
+    sections: ["Introducción", "Tarea", "Proceso", "Resultado", "Evaluación", "Conoce al Equipo", "Recursos"],
     locked: "Primero complete los tres pasos del Proceso.",
     step: "Página %1 de %2", prev: "← Anterior", next: "Siguiente →",
     restart: "Reiniciar el WebQuest",
@@ -1136,14 +1136,16 @@ var STEPS = [
   "intro", "task", "process",
   "cp1", "cp1r", "cp2", "cp2r", "cp3", "cp3r",
   "selfeval", "identity", "card", "final",
-  "resources", "evaluation", "team"
+  "evaluation", "team", "resources"
 ];
-/* Section (tab) of each page: 0 Introduction · 1 Task · 2 Process · 3 Result · 4 Resources · 5 Evaluation · 6 Meet the Team */
+/* Section (tab) of each page: 0 Introduction · 1 Task · 2 Process · 3 Result · 4 Evaluation · 5 Meet the Team · 6 Resources.
+   Evaluation is the last step of the guided stepper; Meet the Team and Resources are
+   standalone reference pages that follow it (always open, never gated — see FREE below). */
 var SECTION_OF = [0, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 5, 6];
 var SECTION_ICON = [
   ichip("logo-icon.svg"), ichip("icons/digital-habits.svg"), ichip("icons/problem-solving.svg"),
-  ichip("icons/assessment.svg"), ichip("icons/research.svg"), ichip("icons/reflection.svg"),
-  ichip("icons/team.svg")
+  ichip("icons/assessment.svg"), ichip("icons/reflection.svg"), ichip("icons/team.svg"),
+  ichip("icons/research.svg")
 ];
 var SECTION_FIRST = [];
 for (var si = 0; si < STEPS.length; si++) {
@@ -1459,16 +1461,21 @@ function tabButton(L, i, cur, standalone) {
     '<span class="ti" aria-hidden="true">' + (done ? "✓" : open ? SECTION_ICON[i] : "🔒") + "</span>" +
     '<span class="tl">' + esc(L.sections[i]) + "</span></button>";
 }
-/* Introduction and Meet the Team are standalone menu links (no connector, not
-   part of the guided sequence); Task through Evaluation form the connected
-   workflow stepper in between. */
+/* Introduction is a standalone menu link (no connector); Task through Evaluation
+   form the connected workflow stepper; Meet the Team and Resources are standalone
+   reference pages grouped together after the stepper (also no connector). */
+var SECTION_STANDALONE = [true, false, false, false, false, true, true];
 function renderTabs(L) {
-  var nav = $("tabs"), cur = SECTION_OF[S.step], lastSection = SECTION_FIRST.length - 1, h = "";
-  h += '<div class="navmenu">' + tabButton(L, 0, cur, true) + "</div>";
-  h += '<div class="stepper-wrap">';
-  for (var i = 1; i < lastSection; i++) h += tabButton(L, i, cur, false);
-  h += "</div>";
-  h += '<div class="navmenu">' + tabButton(L, lastSection, cur, true) + "</div>";
+  var nav = $("tabs"), cur = SECTION_OF[S.step], h = "", i = 0;
+  while (i < SECTION_FIRST.length) {
+    var standalone = SECTION_STANDALONE[i];
+    h += '<div class="' + (standalone ? "navmenu" : "stepper-wrap") + '">';
+    while (i < SECTION_FIRST.length && SECTION_STANDALONE[i] === standalone) {
+      h += tabButton(L, i, cur, standalone);
+      i++;
+    }
+    h += "</div>";
+  }
   nav.setAttribute("aria-label", L.navLabel);
   /* Called on every keystroke; only touch the DOM when something actually changed. */
   if (h !== lastTabs) { nav.innerHTML = h; lastTabs = h; }
